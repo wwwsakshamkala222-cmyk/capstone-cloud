@@ -1,5 +1,7 @@
 # CICIoT2023 Intrusion Detection — Capstone
 
+Author: Saksham Kala, Bennett University (B.Tech CSE 2023–2027)
+
 Gradient-boosted tree classifiers for IoT network-flow intrusion detection on the
 [CICIoT2023](https://www.unb.ca/cic/datasets/iotdataset-2023.html) dataset, benchmarked against
 the Random Forest results of Neto et al. (2023) at three label granularities (2, 8 and 34 classes),
@@ -13,7 +15,7 @@ plus an analysis of *why* the published numbers are hard to reproduce honestly.
   Spoofing, Web-based, Brute-force), 34-class (individual attacks).
 - Split: shuffled per-row 75 / 5 / 20 (train / val / test), seed 42, no de-duplication — this
   mirrors the paper's protocol so the comparison is like-for-like.
-- See [`data/README.md`](data/README.md) for download and the EC2 traffic-capture procedure.
+- See [`data/README.md`](data/README.md) for download.
   No data is stored in this repo.
 
 ## Results (test set, models selected on validation only)
