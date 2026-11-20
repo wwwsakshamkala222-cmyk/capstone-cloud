@@ -1,0 +1,6 @@
+[0]	val-mlogloss:2.85137
+[200]	val-mlogloss:0.26258
+[400]	val-mlogloss:0.25699
+[600]	val-mlogloss:0.25523
+[764]	val-mlogloss:0.25506
+xgb_best_34c_46nf val {'accuracy': 0.8972809860209606, 'macro_f1': 0.7152799518057215, 'weighted_f1': 0.8948962166746178} test {'accuracy': 0.8975715919917662, 'macro_f1': 0.7143033054694736, 'weighted_f1': 0.8952405433110094} 409s

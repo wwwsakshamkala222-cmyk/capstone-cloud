@@ -56,3 +56,9 @@ They can't be rebuilt from our per-window aggregates without the original pcaps.
 
 Until then, our results compare **39 features against the paper's 46**, so the paper had 8 extra
 inputs available.
+
+## Update 2026-11-20: v4 run on a 46-feature subset
+
+The 46-feature comparison was later run on the Kaggle subset `himadri07/ciciot2023` (7.85M rows), which has all 46
+features. See `results/v4_46feat/` and the v4 section of the main README. The 8 extra features add only
++0.012–0.013 macro-F1.

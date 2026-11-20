@@ -1,0 +1,97 @@
+{
+ "config": {
+  "max_leaves": 1024,
+  "max_depth": 0,
+  "grow_policy": "lossguide",
+  "learning_rate": 0.05,
+  "max_bin": 512,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "device": "cuda:0",
+  "seed": 42,
+  "verbosity": 0,
+  "objective": "binary:logistic",
+  "eval_metric": "logloss",
+  "weight_power": null
+ },
+ "best_iteration": 230,
+ "train_seconds": 44.16264462471008,
+ "val_metrics": {
+  "accuracy": 0.9973807224999761,
+  "macro_f1": 0.971954682420026,
+  "weighted_f1": 0.9974030161167229
+ },
+ "test_metrics": {
+  "accuracy": 0.9974157736587356,
+  "macro_f1": 0.9723181141382417,
+  "weighted_f1": 0.997435376769549
+ },
+ "test_confusion": [
+  [
+   35491,
+   1444
+  ],
+  [
+   2611,
+   1529589
+  ]
+ ],
+ "test_per_class_f1": [
+  0.9459599930700854,
+  0.9986762352063979
+ ],
+ "feature_importance": {
+  "IAT": 0.34827540959756426,
+  "rst_count": 0.17577032132940656,
+  "urg_count": 0.13376935650821908,
+  "Number": 0.12547509008262067,
+  "Weight": 0.06781352245422323,
+  "HTTP": 0.03167032799677379,
+  "fin_count": 0.014448061147231914,
+  "Variance": 0.014013388197918128,
+  "HTTPS": 0.008715521883885273,
+  "flow_duration": 0.007815136121848565,
+  "syn_flag_number": 0.006377099854265966,
+  "Rate": 0.004342606909516801,
+  "SSH": 0.0037031129578818716,
+  "Header_Length": 0.0034899899495956935,
+  "ARP": 0.003423117711917061,
+  "rst_flag_number": 0.0031941482453045978,
+  "IPv": 0.003167551867472953,
+  "Tot size": 0.0030605819830264564,
+  "ICMP": 0.002939857719705782,
+  "psh_flag_number": 0.002879778301484919,
+  "syn_count": 0.002800022915981713,
+  "ack_flag_number": 0.0026056409964000152,
+  "Srate": 0.002466746103849066,
+  "ack_count": 0.002449344721605674,
+  "UDP": 0.002445845883761545,
+  "Protocol Type": 0.0024151884975919906,
+  "Duration": 0.0023367705982872593,
+  "Magnitue": 0.0020793206389891914,
+  "Max": 0.0019840658962149704,
+  "TCP": 0.0019237130896576104,
+  "Min": 0.0017734847925864293,
+  "Std": 0.001712402555751725,
+  "AVG": 0.001662000226141296,
+  "Tot sum": 0.0015779314624497593,
+  "Covariance": 0.0015267021590244921,
+  "Radius": 0.0014391736341108274,
+  "DNS": 0.0012997848071370905,
+  "LLC": 0.001157880200595804,
+  "Drate": 0.0,
+  "fin_flag_number": 0.0,
+  "ece_flag_number": 0.0,
+  "cwr_flag_number": 0.0,
+  "Telnet": 0.0,
+  "SMTP": 0.0,
+  "IRC": 0.0,
+  "DHCP": 0.0
+ },
+ "model": "xgb_best",
+ "task": 2,
+ "fset": "46",
+ "name": "xgb_best_2c_46f",
+ "n_features": 46
+}

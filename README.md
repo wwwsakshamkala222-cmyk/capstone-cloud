@@ -54,6 +54,40 @@ What did **not** help (v3): post-hoc calibration / stacking (≤ +0.002 mF1), Ca
 - Takeaway: headline accuracies near 99% on CICIoT2023 (ours and the paper's) largely reflect
   memorisation of duplicated flows, not generalisation. Report them alongside a grouped split.
 
+## v4: 46-feature ablation (Kaggle subset)
+
+**Data caveat:** v4 uses the 2.2 GB Kaggle subset `himadri07/ciciot2023` (7.85M rows, the paper's 46
+features plus `label`), not the full 46.8M-row release used above. Results from the two datasets are
+not directly comparable. Protocol: merge the subset's train/val/test files, shuffle, 80/20
+train/test split (seed 42), 5% of train as validation (used for model selection only), StandardScaler
+fit on train, no de-duplication. Each model was trained on the **same rows** twice: once with all 46
+features and once with the 38 features that overlap our 39-feature release (the 8 paper-only features
+removed). Models: RF-200 (the paper's method), XGBoost with our best v3 configs, and one unweighted
+XGBoost per task. Each cell below shows the model that scored best on validation.
+
+| Task (judged on) | 38 features | 46 features | 46 features, **no IAT** | Neto et al. 2023 RF |
+|---|---|---|---|---|
+| 2-class (accuracy) | 0.9972 **BEAT** | 0.9977 **BEAT** | 0.9959 NOT BEAT | 0.9968 |
+| 8-class (macro-F1) | 0.8799 **BEAT** | 0.8925 **BEAT** | 0.7547 **BEAT** | 0.7193 |
+| 34-class (macro-F1) | 0.8361 **BEAT** | 0.8484 **BEAT** | 0.7143 BEAT by 0.0003 (a tie) | 0.7140 |
+
+- **The 8 extra features add little:** +0.0005 accuracy (2-class) and +0.012 to +0.013 macro-F1
+  (8 and 34-class). Most of the gap between v3 and the paper comes from the different data
+  version, not from the missing features. With the same 38 features, 34-class macro-F1 is 0.645 on
+  the full release and 0.836 on this subset.
+- **IAT acts as a timestamp.** In this subset `IAT` takes values around 8.3e7 (floods) or 1.66e8
+  (everything else), and each attack class sits in its own narrow band. A single depth-8 tree on
+  IAT alone reaches 99.05% 8-class accuracy. With IAT dropped, 8-class accuracy falls from 0.997 to
+  0.915 and 34-class from 0.996 to 0.898. The headline ~99.5% accuracies, ours and the paper's,
+  depend heavily on this capture-time artifact.
+- **DoS vs DDoS:** with IAT, only 285 test rows are DoS↔DDoS confusions (5% of 8-class errors). Without
+  IAT this rises to 123,149 (93% of errors), the same bottleneck we found in v3. The 8 paper-only
+  features don't fix it (38 features without IAT: 133,657).
+- **Twins:** 5.6% of test rows have an exact copy in train (3.5% duplicate rows overall), much lower
+  than the 59% on the full release.
+- Full tables: [`results/v4_46feat/tables.md`](results/v4_46feat/tables.md). Figures:
+  [`figures/v4/`](figures/v4/). Code: [`src/v4/`](src/v4/).
+
 ## Repository layout
 
 ```
@@ -61,10 +95,12 @@ src/common.py          shared paths, data loading, prediction helpers (v3 script
 src/preprocessing/     CSV → labelled parquet cache + 75/5/20 split; EDA profiling
 src/training/          LightGBM / XGBoost / CatBoost / RF / MLP / focal training; GPU queue scripts
 src/evaluation/        threshold tuning, calibration, ensembles, multi-seed eval, reports, figures
+src/v4/                v4 46-feature ablation (prep, train, report, launchers)
 src/novelty/           N1–N6 analyses (twins, protocol ladder, DoS vs DDoS, ablation, window,
                        class-weight sweep) and hierarchical 8→34
 results/{2,8,34}_class/  per-model results.json (v3 runs under v3/)
 results/novelty/       novelty-analysis JSONs
+results/v4_46feat/     v4 per-run JSONs, summary.json, tables.md
 reports/               REPORT.md, HTML report, run summaries, decision log
 figures/               all plots (figures/v3, figures/eda)
 logs/                  run logs

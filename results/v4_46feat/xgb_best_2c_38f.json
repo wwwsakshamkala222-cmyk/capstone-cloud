@@ -1,0 +1,89 @@
+{
+ "config": {
+  "max_leaves": 1024,
+  "max_depth": 0,
+  "grow_policy": "lossguide",
+  "learning_rate": 0.05,
+  "max_bin": 512,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "device": "cuda:0",
+  "seed": 42,
+  "verbosity": 0,
+  "objective": "binary:logistic",
+  "eval_metric": "logloss",
+  "weight_power": null
+ },
+ "best_iteration": 243,
+ "train_seconds": 44.334648847579956,
+ "val_metrics": {
+  "accuracy": 0.9965458676277057,
+  "macro_f1": 0.9631640340309822,
+  "weighted_f1": 0.9965820707335875
+ },
+ "test_metrics": {
+  "accuracy": 0.9967376930601892,
+  "macro_f1": 0.9652182725761043,
+  "weighted_f1": 0.9967699565886305
+ },
+ "test_confusion": [
+  [
+   35140,
+   1795
+  ],
+  [
+   3324,
+   1528876
+  ]
+ ],
+ "test_per_class_f1": [
+  0.9321078528892957,
+  0.9983286922629128
+ ],
+ "feature_importance": {
+  "IAT": 0.360128551652745,
+  "Number": 0.20348745700061582,
+  "rst_count": 0.1834561417318085,
+  "Variance": 0.06563651850675846,
+  "HTTP": 0.023163068677206886,
+  "Duration": 0.02313650966941591,
+  "ack_flag_number": 0.017405667894817595,
+  "HTTPS": 0.01177586306920006,
+  "fin_count": 0.010565715645750949,
+  "Tot size": 0.01020054512741312,
+  "psh_flag_number": 0.010082307914540675,
+  "syn_flag_number": 0.008750509359441095,
+  "Header_Length": 0.00826086246563128,
+  "rst_flag_number": 0.0073715508128709105,
+  "ICMP": 0.005986915380677579,
+  "Std": 0.005244067640974222,
+  "Rate": 0.004839827782095455,
+  "Protocol Type": 0.0044359264773116275,
+  "ARP": 0.003941821954585102,
+  "SSH": 0.0036866768974562897,
+  "IPv": 0.0033642008222783213,
+  "UDP": 0.003289833752604986,
+  "ack_count": 0.0028992046922721145,
+  "syn_count": 0.002635232480568504,
+  "TCP": 0.002536553201186502,
+  "AVG": 0.002355264742790604,
+  "Max": 0.002333521386521614,
+  "LLC": 0.002320703187328589,
+  "Min": 0.002171204826457667,
+  "DNS": 0.0018974455636274258,
+  "Tot sum": 0.0017978702378079864,
+  "fin_flag_number": 0.0008424594452391374,
+  "ece_flag_number": 0.0,
+  "cwr_flag_number": 0.0,
+  "Telnet": 0.0,
+  "SMTP": 0.0,
+  "IRC": 0.0,
+  "DHCP": 0.0
+ },
+ "model": "xgb_best",
+ "task": 2,
+ "fset": "38",
+ "name": "xgb_best_2c_38f",
+ "n_features": 38
+}

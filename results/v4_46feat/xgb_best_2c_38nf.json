@@ -1,0 +1,88 @@
+{
+ "config": {
+  "max_leaves": 1024,
+  "max_depth": 0,
+  "grow_policy": "lossguide",
+  "learning_rate": 0.05,
+  "max_bin": 512,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "device": "cuda:0",
+  "seed": 42,
+  "verbosity": 0,
+  "objective": "binary:logistic",
+  "eval_metric": "logloss",
+  "weight_power": null
+ },
+ "best_iteration": 292,
+ "train_seconds": 251.44009256362915,
+ "val_metrics": {
+  "accuracy": 0.9946053080200238,
+  "macro_f1": 0.9429087518249524,
+  "weighted_f1": 0.9946819962998945
+ },
+ "test_metrics": {
+  "accuracy": 0.994654379642287,
+  "macro_f1": 0.9436255953945432,
+  "weighted_f1": 0.9947356627192653
+ },
+ "test_confusion": [
+  [
+   33930,
+   3005
+  ],
+  [
+   5383,
+   1526817
+  ]
+ ],
+ "test_per_class_f1": [
+  0.8899905571293674,
+  0.997260633659719
+ ],
+ "feature_importance": {
+  "rst_count": 0.29258276342058914,
+  "Number": 0.13771325529061515,
+  "Variance": 0.12343004030030626,
+  "HTTP": 0.05505861124681378,
+  "Duration": 0.03927918959535313,
+  "fin_count": 0.03912535780845773,
+  "ICMP": 0.0372380315763188,
+  "syn_flag_number": 0.028401139077282065,
+  "HTTPS": 0.026453860345793574,
+  "fin_flag_number": 0.02244588921578563,
+  "psh_flag_number": 0.020221673321229004,
+  "Header_Length": 0.018560337169103214,
+  "rst_flag_number": 0.017941667972766532,
+  "Tot size": 0.014954458166957663,
+  "ack_flag_number": 0.012145345419339001,
+  "Protocol Type": 0.011670535280672991,
+  "Rate": 0.010496306798942347,
+  "ARP": 0.009909924719904714,
+  "ack_count": 0.009700505534865591,
+  "AVG": 0.009081228429382525,
+  "SSH": 0.009005447648046746,
+  "LLC": 0.006637108513716674,
+  "syn_count": 0.006520816132695482,
+  "IPv": 0.0064575552605511755,
+  "UDP": 0.006290403470095904,
+  "TCP": 0.005521368207680219,
+  "Std": 0.005320052736066193,
+  "Max": 0.005202319256189867,
+  "Min": 0.004814472349867063,
+  "Tot sum": 0.0039917860570279845,
+  "DNS": 0.00382854967758383,
+  "ece_flag_number": 0.0,
+  "cwr_flag_number": 0.0,
+  "Telnet": 0.0,
+  "SMTP": 0.0,
+  "IRC": 0.0,
+  "DHCP": 0.0
+ },
+ "model": "xgb_best",
+ "task": 2,
+ "fset": "38n",
+ "name": "xgb_best_2c_38nf",
+ "n_features": 37
+}

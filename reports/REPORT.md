@@ -170,3 +170,103 @@ Window-size artifact (`ids/novelty/N5_window_size/results.json`): features ident
 - New models: `ids_cache/v3_models/`
 - Scripts: `ids/v3/src/`, logs: `ids/v3/logs/`
 - Figures: `ids/v3/figures/`
+
+
+## 10. v4: 46-feature ablation (Kaggle `himadri07/ciciot2023` subset)
+
+Added 2026-11-20. **Different data:** a 2.2 GB Kaggle subset (7,845,673 rows, the paper's 46 features + `label`), not
+the full 46.8M-row release used in sections 1–9. The subset's own train/validation/test files were merged and
+re-split with the paper's protocol: shuffled 80/20 train/test (seed 42), then 5% of train as validation for
+selection only. Sizes: train 5,962,839, val 313,955, test 1,569,263. StandardScaler fit on train, no
+de-duplication. Each model was trained on the same rows with 46 features, with 38 features (46 minus
+flow_duration, Srate, Drate, urg_count, Magnitue, Radius, Covariance and Weight; this equals our 39-feature
+release without IGMP, which the subset lacks), and with each of those minus IAT. Models: RF-200 (`n_jobs=16`, sklearn
+defaults), XGBoost `xgb_best` (2-class cfg2, 8-class cfg3_weighted, 34-class balanced_p050) and `xgb_unw` (one unweighted
+XGBoost per task; no-IAT runs used RF + xgb_best only). Early stopping and model selection used validation only
+(2-class: accuracy; 8/34-class: macro-F1). Test was scored once per run.
+
+**Findings**
+
+1. **Paper beaten with or without the 8 extra features.** With 46 features: 2-class acc 0.9977 (paper 0.9968), 8-class mF1
+   0.8925 (0.7193), 34-class mF1 0.8484 (0.7140). With 38 features: 0.9972 / 0.8799 / 0.8361. The 8 paper-only
+   features add only +0.0005 acc and +0.012–0.013 mF1. **The v3-to-paper gap is mostly a data-version effect:** the
+   same 38 features give 34-class mF1 0.645 on the full release and 0.836 here.
+2. **IAT is a capture-time proxy.** IAT values cluster around 8.3e7 (floods) or 1.66e8 (all else), with a narrow band
+   per class (e.g. DoS 8.293–8.303e7, DDoS 8.303–8.34e7). One depth-8 tree on IAT alone reaches 99.05% 8-class
+   val accuracy (mF1 0.82; majority baseline 72.8%). IAT is the top 8-class feature (40% of gain).
+   **Without IAT:** 2-class acc 0.9959 (NOT BEAT), 8-class mF1 0.7547 (BEAT), 34-class mF1 0.7143 (above 0.7140 by
+   0.0003, effectively a tie). Accuracy falls to 0.915 (8-class) and 0.898 (34-class).
+3. **DoS vs DDoS.** With IAT the confusion nearly disappears (285 test rows, 5% of errors). Without IAT it comes back
+   (123,149 rows, 93% of errors), matching v3. **The 8 paper-only features do not fix it** (38f without IAT: 133,657).
+4. **Twins.** 5.61% of test rows have an exact copy in train (the same for 38 and 46 features); 3.51% of
+   all rows are duplicates. This is far below the full release's 59%, so twin memorisation is not what drives these numbers.
+
+Figures: `figures/v4/v4_ablation_headline.png`, `figures/v4/v4_top15_importance_46f.png`, `figures/v4/v4_8class_confusion.png`.
+Results: `results/v4_46feat/` (`summary.json`, `tables.md`, one JSON per run). Code: `src/v4/{prep_v4,train_v4,report_v4}.py`.
+Models and arrays stay in `/dev/shm/saksham/v4/` (not committed).
+
+### All features vs our 38
+
+| Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features | v4 46 features | Neto et al. 2023 RF | 38f vs paper | 46f vs paper |
+|---|---|---|---|---|---|---|---|
+| 2-class | accuracy | 0.9937 / 0.9339 | 0.9972 / 0.9696 (rf) | 0.9977 / 0.9754 (rf) | 0.9968 / 0.9653 | **BEAT** | **BEAT** |
+| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9961 / 0.8799 (xgb_best) | 0.9967 / 0.8925 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 34-class | macro-F1 | 0.7895 / 0.6452 | 0.9951 / 0.8361 (xgb_best) | 0.9957 / 0.8484 (xgb_best) | 0.9916 / 0.7140 | **BEAT** | **BEAT** |
+
+### Without IAT (capture-timestamp proxy removed)
+
+| Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features, no IAT | v4 46 features, no IAT | Neto et al. 2023 RF | 38nf vs paper | 46nf vs paper |
+|---|---|---|---|---|---|---|---|
+| 2-class | accuracy | 0.9937 / 0.9339 | 0.9947 / 0.9436 (xgb_best) | 0.9959 / 0.9562 (xgb_best) | 0.9968 / 0.9653 | NOT BEAT | NOT BEAT |
+| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9076 / 0.7346 (xgb_best) | 0.9154 / 0.7547 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 34-class | macro-F1 | 0.7895 / 0.6452 | 0.8900 / 0.6979 (xgb_best) | 0.8976 / 0.7143 (xgb_best) | 0.9916 / 0.7140 | NOT BEAT | **BEAT** |
+
+### DoS vs DDoS confusions (8-class test set; ✓ = validation-selected model)
+
+| Features | Model | DoS→DDoS | DDoS→DoS | Total | Share of all 8-class errors |
+|---|---|---|---|---|---|
+| 38 features | rf | 53 | 48 | 101 | 1.6% |
+| 38 features | xgb_best ✓ | 95 | 211 | 306 | 4.9% |
+| 38 features | xgb_unw | 159 | 96 | 255 | 3.5% |
+| 46 features | rf | 55 | 48 | 103 | 1.8% |
+| 46 features | xgb_best ✓ | 93 | 192 | 285 | 5.5% |
+| 46 features | xgb_unw | 145 | 82 | 227 | 3.7% |
+| 38 features, no IAT | rf | 93,258 | 41,787 | 135,045 | 91.7% |
+| 38 features, no IAT | xgb_best ✓ | 81,062 | 52,595 | 133,657 | 92.2% |
+| 46 features, no IAT | rf | 88,310 | 31,320 | 119,630 | 91.7% |
+| 46 features, no IAT | xgb_best ✓ | 75,432 | 47,717 | 123,149 | 92.8% |
+
+### All runs
+
+| Task | Features | Model | Val acc | Val mF1 | Test acc | Test mF1 | Test wF1 | Selected (val) |
+|---|---|---|---|---|---|---|---|---|
+| 2 | 38 features | rf | 0.9971 | 0.9685 | 0.9972 | 0.9696 | 0.9972 | ✓ |
+| 2 | 38 features | xgb_best | 0.9965 | 0.9632 | 0.9967 | 0.9652 | 0.9968 |  |
+| 2 | 38 features | xgb_unw | 0.9963 | 0.9602 | 0.9964 | 0.9618 | 0.9964 |  |
+| 2 | 46 features | rf | 0.9976 | 0.9744 | 0.9977 | 0.9754 | 0.9977 | ✓ |
+| 2 | 46 features | xgb_best | 0.9974 | 0.9720 | 0.9974 | 0.9723 | 0.9974 |  |
+| 2 | 46 features | xgb_unw | 0.9972 | 0.9696 | 0.9972 | 0.9696 | 0.9972 |  |
+| 2 | 38 features, no IAT | rf | 0.9944 | 0.9404 | 0.9945 | 0.9417 | 0.9946 |  |
+| 2 | 38 features, no IAT | xgb_best | 0.9946 | 0.9429 | 0.9947 | 0.9436 | 0.9947 | ✓ |
+| 2 | 46 features, no IAT | rf | 0.9954 | 0.9513 | 0.9955 | 0.9523 | 0.9956 |  |
+| 2 | 46 features, no IAT | xgb_best | 0.9959 | 0.9566 | 0.9959 | 0.9562 | 0.9959 | ✓ |
+| 8 | 38 features | rf | 0.9959 | 0.8806 | 0.9960 | 0.8758 | 0.9958 |  |
+| 8 | 38 features | xgb_best | 0.9962 | 0.8823 | 0.9961 | 0.8799 | 0.9960 | ✓ |
+| 8 | 38 features | xgb_unw | 0.9953 | 0.8219 | 0.9954 | 0.8138 | 0.9952 |  |
+| 8 | 46 features | rf | 0.9962 | 0.8639 | 0.9963 | 0.8681 | 0.9962 |  |
+| 8 | 46 features | xgb_best | 0.9968 | 0.8967 | 0.9967 | 0.8925 | 0.9966 | ✓ |
+| 8 | 46 features | xgb_unw | 0.9960 | 0.8381 | 0.9960 | 0.8254 | 0.9959 |  |
+| 8 | 38 features, no IAT | rf | 0.9064 | 0.7206 | 0.9061 | 0.7074 | 0.9022 |  |
+| 8 | 38 features, no IAT | xgb_best | 0.9075 | 0.7419 | 0.9076 | 0.7346 | 0.9055 | ✓ |
+| 8 | 46 features, no IAT | rf | 0.9170 | 0.7306 | 0.9168 | 0.7193 | 0.9130 |  |
+| 8 | 46 features, no IAT | xgb_best | 0.9156 | 0.7603 | 0.9154 | 0.7547 | 0.9136 | ✓ |
+| 34 | 38 features | rf | 0.9947 | 0.8082 | 0.9948 | 0.8011 | 0.9944 |  |
+| 34 | 38 features | xgb_best | 0.9951 | 0.8291 | 0.9951 | 0.8361 | 0.9949 | ✓ |
+| 34 | 38 features | xgb_unw | 0.9940 | 0.7780 | 0.9941 | 0.7819 | 0.9937 |  |
+| 34 | 46 features | rf | 0.9949 | 0.7901 | 0.9950 | 0.7962 | 0.9947 |  |
+| 34 | 46 features | xgb_best | 0.9957 | 0.8406 | 0.9957 | 0.8484 | 0.9956 | ✓ |
+| 34 | 46 features | xgb_unw | 0.9946 | 0.7926 | 0.9947 | 0.7907 | 0.9944 |  |
+| 34 | 38 features, no IAT | rf | 0.8844 | 0.6795 | 0.8842 | 0.6830 | 0.8810 |  |
+| 34 | 38 features, no IAT | xgb_best | 0.8900 | 0.6969 | 0.8900 | 0.6979 | 0.8873 | ✓ |
+| 34 | 46 features, no IAT | rf | 0.8951 | 0.6951 | 0.8950 | 0.6959 | 0.8922 |  |
+| 34 | 46 features, no IAT | xgb_best | 0.8973 | 0.7153 | 0.8976 | 0.7143 | 0.8952 | ✓ |

@@ -1,0 +1,96 @@
+{
+ "config": {
+  "max_leaves": 1024,
+  "max_depth": 0,
+  "grow_policy": "lossguide",
+  "learning_rate": 0.05,
+  "max_bin": 512,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "device": "cuda:0",
+  "seed": 42,
+  "verbosity": 0,
+  "objective": "binary:logistic",
+  "eval_metric": "logloss",
+  "weight_power": null
+ },
+ "best_iteration": 312,
+ "train_seconds": 284.2532534599304,
+ "val_metrics": {
+  "accuracy": 0.9959245061769701,
+  "macro_f1": 0.9565966063676843,
+  "weighted_f1": 0.9959699255370418
+ },
+ "test_metrics": {
+  "accuracy": 0.9958747972609112,
+  "macro_f1": 0.9561804462741724,
+  "weighted_f1": 0.9959230380771695
+ },
+ "test_confusion": [
+  [
+   34606,
+   2329
+  ],
+  [
+   4144,
+   1528056
+  ]
+ ],
+ "test_per_class_f1": [
+  0.9144744665389443,
+  0.9978864260094006
+ ],
+ "feature_importance": {
+  "rst_count": 0.2736259711745042,
+  "urg_count": 0.1682549121377595,
+  "Number": 0.08359297573535833,
+  "HTTP": 0.07506380455510459,
+  "Weight": 0.061096330214251635,
+  "Variance": 0.048786902459753353,
+  "fin_count": 0.040105971696596965,
+  "fin_flag_number": 0.03966548876086342,
+  "syn_flag_number": 0.02162544002989606,
+  "HTTPS": 0.019273403339368812,
+  "ICMP": 0.017532861238893065,
+  "rst_flag_number": 0.012885172762541943,
+  "flow_duration": 0.01208210185075817,
+  "SSH": 0.008781261262489145,
+  "Rate": 0.008501694237017512,
+  "Header_Length": 0.0077661618129218485,
+  "ack_count": 0.007696153375825446,
+  "ARP": 0.0073680118396596975,
+  "Magnitue": 0.006323554623172985,
+  "IPv": 0.006244709300200021,
+  "syn_count": 0.006092566586547094,
+  "psh_flag_number": 0.005588680984938839,
+  "ack_flag_number": 0.005454096606241547,
+  "UDP": 0.0051130614763979084,
+  "Srate": 0.004698000509876374,
+  "Protocol Type": 0.0045139469853044435,
+  "AVG": 0.0044289471892792745,
+  "Max": 0.003968046867562692,
+  "TCP": 0.003883859358485354,
+  "Min": 0.0038515186450101954,
+  "Tot size": 0.0036506588661697043,
+  "Duration": 0.003588478984475265,
+  "DNS": 0.003498983621789357,
+  "LLC": 0.0033718874589704034,
+  "Covariance": 0.0031325217957958837,
+  "Std": 0.0030410961009726943,
+  "Tot sum": 0.0030214153709322354,
+  "Radius": 0.0028293501843140536,
+  "Drate": 0.0,
+  "ece_flag_number": 0.0,
+  "cwr_flag_number": 0.0,
+  "Telnet": 0.0,
+  "SMTP": 0.0,
+  "IRC": 0.0,
+  "DHCP": 0.0
+ },
+ "model": "xgb_best",
+ "task": 2,
+ "fset": "46n",
+ "name": "xgb_best_2c_46nf",
+ "n_features": 45
+}

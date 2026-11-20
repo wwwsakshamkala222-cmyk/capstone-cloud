@@ -1,0 +1,4 @@
+[0]	val-logloss:0.17126
+[200]	val-logloss:0.01217
+[342]	val-logloss:0.01211
+xgb_best_2c_38nf val {'accuracy': 0.9946053080200238, 'macro_f1': 0.9429087518249524, 'weighted_f1': 0.9946819962998945} test {'accuracy': 0.994654379642287, 'macro_f1': 0.9436255953945432, 'weighted_f1': 0.9947356627192653} 251s
