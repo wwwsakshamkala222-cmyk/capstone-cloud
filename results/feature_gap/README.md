@@ -32,6 +32,15 @@ and our 39 = 38 + IGMP. We did not check this against the paper's raw files, bec
    "309 .csv files". We have the 309-file layout. The paper's 46-feature table matches the
    combined/merged release, which is not on this machine.
 
+## Update 2026-11-20: MERGED_CSV checked, still 39 features
+
+A `MERGED_CSV` copy (63 files `Merged01–63.csv`, 8.7 GB, ~45.0M rows) was uploaded to
+`/dev/shm/saksham/ciciot2023_merged/MERGED_CSV/`. All 63 files share one header: **the same 39
+features plus `Label`** (40 columns). It has none of flow_duration, Srate, Drate, urg_count, Magnitue,
+Radius, Covariance or Weight. So this merged release is the 39-feature version, not the 46-feature
+table described in the paper. The copy also has 9 cut-off files (Merged42, 44, 46–52): each ends
+partway through a row.
+
 ## Can the missing features be derived?
 
 Not reliably. `flow_duration`, `Srate`, `Drate`, `urg_count`, `Magnitue`, `Radius`, `Covariance` and
