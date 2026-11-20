@@ -1,0 +1,129 @@
+{
+ "binary_dos_vs_ddos_prior_run": {
+  "source": "/dev/shm/saksham/ids/novelty/N3_dos_vs_ddos/results.json",
+  "paper_protocol": {
+   "accuracy": 0.8561156078684102,
+   "auc": 0.8936887037915211,
+   "macro_f1": 0.7041997119782119,
+   "confusion_matrix": [
+    [
+     583032,
+     984734
+    ],
+    [
+     218207,
+     6574496
+    ]
+   ],
+   "top_features": {
+    "Protocol Type": 4201.30859375,
+    "Min": 2338.072509765625,
+    "fin_flag_number": 1821.095947265625,
+    "psh_flag_number": 786.1096801757812,
+    "Header_Length": 773.6781005859375,
+    "fin_count": 585.1106567382812,
+    "ICMP": 375.7103271484375,
+    "UDP": 348.8157958984375,
+    "syn_count": 235.63836669921875,
+    "AVG": 222.20982360839844,
+    "IAT": 202.8191680908203,
+    "IPv": 194.1337890625,
+    "Rate": 163.70132446289062,
+    "syn_flag_number": 149.4010467529297,
+    "Tot sum": 138.3743896484375,
+    "ack_flag_number": 134.0572509765625,
+    "Tot size": 126.41722106933594,
+    "rst_count": 96.64064025878906,
+    "ack_count": 95.14264678955078,
+    "TCP": 73.1380844116211
+   }
+  },
+  "file_grouped": {
+   "accuracy": 0.8081441326244448,
+   "auc": 0.7926860963497001,
+   "macro_f1": 0.6498357947260591,
+   "confusion_matrix": [
+    [
+     559745,
+     1153944
+    ],
+    [
+     428092,
+     6104180
+    ]
+   ]
+  },
+  "ambiguous_rows_pct": 8.810120000000001,
+  "memorization_signal": "WEAK",
+  "accuracy_drop": 0.04797147524396539,
+  "elapsed_seconds": 279.05499505996704
+ },
+ "val_8class_dos_ddos_cells": {
+  "DDoS->DDoS": 1468343,
+  "DDoS->DoS": 231577,
+  "DoS->DoS": 270424,
+  "DoS->DDoS": 121174,
+  "share_of_all_8class_errors": 0.9512112910010678
+ },
+ "val_8class": {
+  "accuracy": 0.8414575962214268,
+  "macro_f1": 0.7281950191784914,
+  "per_class_f1": {
+   "Benign": 0.8664809857314116,
+   "Brute_Force": 0.4233576642335766,
+   "DDoS": 0.8926875991917836,
+   "DoS": 0.6052224901665669,
+   "Mirai": 0.9988261082639699,
+   "Recon": 0.7941306109681364,
+   "Spoofing": 0.9031581596275636,
+   "Web_Based": 0.34169653524492233
+  }
+ },
+ "val_7class_flood": {
+  "accuracy": 0.992264920798056,
+  "macro_f1": 0.7610822118082506,
+  "per_class_f1": {
+   "Benign": 0.8664809857314116,
+   "Brute_Force": 0.4233576642335766,
+   "Flood(DoS+DDoS)": 0.9999254185881739,
+   "Mirai": 0.9988261082639699,
+   "Recon": 0.7941306109681364,
+   "Spoofing": 0.9031581596275636,
+   "Web_Based": 0.34169653524492233
+  }
+ },
+ "test_8class_dos_ddos_cells": {
+  "DDoS->DDoS": 5863330,
+  "DDoS->DoS": 928973,
+  "DoS->DoS": 1081776,
+  "DoS->DDoS": 485919,
+  "share_of_all_8class_errors": 0.9517611953149595
+ },
+ "test_8class": {
+  "accuracy": 0.8410085247264982,
+  "macro_f1": 0.7323664100395664,
+  "per_class_f1": {
+   "Benign": 0.867738042361513,
+   "Brute_Force": 0.4454449152542373,
+   "DDoS": 0.8922612222773355,
+   "DoS": 0.6045719462445486,
+   "Mirai": 0.998808860558858,
+   "Recon": 0.7950027663257839,
+   "Spoofing": 0.9050305345935248,
+   "Web_Based": 0.35007299270072995
+  }
+ },
+ "test_7class_flood": {
+  "accuracy": 0.9923304412776951,
+  "macro_f1": 0.7660030291165629,
+  "per_class_f1": {
+   "Benign": 0.867738042361513,
+   "Brute_Force": 0.4454449152542373,
+   "Flood(DoS+DDoS)": 0.9999230920212936,
+   "Mirai": 0.998808860558858,
+   "Recon": 0.7950027663257839,
+   "Spoofing": 0.9050305345935248,
+   "Web_Based": 0.35007299270072995
+  }
+ }
+}

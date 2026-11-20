@@ -1,0 +1,55 @@
+{
+ "model": "catboost",
+ "task": "2_class",
+ "config": {
+  "depth": 10,
+  "learning_rate": 0.08,
+  "iterations": 1500,
+  "border_count": 128,
+  "weights": "bal",
+  "seed": 42,
+  "cap_per_class": 1000000,
+  "prior_correction": true,
+  "early_stop_metric": "TotalF1:average=Macro (val, reweighted to train prior)",
+  "od_wait": 100
+ },
+ "best_iteration": 469,
+ "train_time_s": 14.3,
+ "vram_used_MiB_gpu0_after_fit": "531",
+ "val": {
+  "accuracy": 0.9926227531803048,
+  "macro_f1": 0.920690631122625,
+  "per_class_f1": {
+   "Benign": 0.8451599009367934,
+   "Attack": 0.9962213613084565
+  },
+  "confusion_matrix": [
+   [
+    47094,
+    7661
+   ],
+   [
+    9595,
+    2274734
+   ]
+  ]
+ },
+ "test": {
+  "accuracy": 0.9926475463871836,
+  "macro_f1": 0.921341396091199,
+  "per_class_f1": {
+   "Benign": 0.8464491920083088,
+   "Attack": 0.9962336001740892
+  },
+  "confusion_matrix": [
+   [
+    189484,
+    30367
+   ],
+   [
+    38380,
+    9091981
+   ]
+  ]
+ }
+}

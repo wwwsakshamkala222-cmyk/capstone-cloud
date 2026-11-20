@@ -1,0 +1,118 @@
+======================================================================
+FINAL SUMMARY — CICIoT2023 IDS Benchmark
+======================================================================
+
+2_CLASS:
+  Best model: lightgbm_cfg2
+  accuracy: 0.993750 +/- 0.000003 vs paper 0.9968 -> NOT MET (3-seed mean)
+  macro_f1: 0.932754 +/- 0.000030 vs paper 0.9653 -> NOT MET (3-seed mean)
+  Training time: 3861s
+
+8_CLASS:
+  Best model: xgboost_cfg3_weighted
+  macro_f1: 0.731714 +/- 0.000056 vs paper 0.7193 -> MET (3-seed mean)
+  accuracy: 0.840755 +/- 0.000060 vs paper 0.9944 -> NOT MET (3-seed mean)
+  Training time: 10626s
+
+34_CLASS:
+  Best model: xgboost_balanced_p050
+  macro_f1: 0.643416 +/- 0.000157 vs paper 0.7000 -> NOT MET (3-seed mean)
+  Training time: 4440s
+
+======================================================================
+NOVELTY FINDINGS:
+  N1 Twin Analysis: 59.1% test rows are exact twins of train rows
+    Twin inflation on macro-F1: -0.0176
+  N2 Protocol Ladder: macro-F1 drops 0.2751 from paper to strictest protocol
+  N3 DoS vs DDoS: paper acc=0.8561, file-grouped acc=0.8081
+    Memorization signal: WEAK
+  N4 Fingerprint: removing TTL+IAT drops acc by 0.000532
+    Removing top-10 features drops acc by 0.001655
+  N5 Window-Size: classifier acc=1.0000 (leak=YES)
+    8-class macro-F1 change without window features: -0.0184
+  N6 Class-Weight: best macro-F1 at p=0.25 (0.7285)
+
+======================================================================
+MULTI-SEED EVALUATION (3 seeds: 42, 123, 456):
+  2_class: lightgbm_cfg2
+    accuracy:  0.993750 +/- 0.000003
+    macro-F1:  0.932754 +/- 0.000030
+  8_class: xgboost_cfg3_weighted
+    accuracy:  0.840755 +/- 0.000060
+    macro-F1:  0.731714 +/- 0.000056
+  34_class: xgboost_balanced_p050
+    accuracy:  0.794500 +/- 0.000073
+    macro-F1:  0.643416 +/- 0.000157
+
+======================================================================
+ACCURACY PUSH (2-class additional strategies):
+  xgboost_deep_low_lr: acc=0.993613 mF1=0.931447
+    + threshold(0.490): acc=0.993620
+  xgboost_lossguide_wide: acc=0.993618 mF1=0.931427
+    + threshold(0.480): acc=0.993618
+  xgb_ensemble_threshold: acc=0.993397 mF1=0.931834
+    + threshold(0.421): acc=0.993639
+
+======================================================================
+FILE LOCATIONS:
+  Results:  /dev/shm/saksham/ids/results/
+  Novelty:  /dev/shm/saksham/ids/novelty/
+  Figures:  /dev/shm/saksham/ids/figures/
+  Scripts:  /dev/shm/saksham/ids/src/
+  Logs:     /dev/shm/saksham/ids/logs/
+  Models:   /dev/shm/saksham/ids_cache/models/
+  Decisions: /dev/shm/saksham/ids/DECISIONS.md
+
+RESULT FILES:
+  /dev/shm/saksham/ids/results/2_class/BEST/results.json
+  /dev/shm/saksham/ids/results/2_class/accuracy_push/results.json
+  /dev/shm/saksham/ids/results/2_class/catboost_balanced/results.json
+  /dev/shm/saksham/ids/results/2_class/ensemble_soft_vote/results.json
+  /dev/shm/saksham/ids/results/2_class/lightgbm_cfg1/results.json
+  /dev/shm/saksham/ids/results/2_class/lightgbm_cfg2/results.json
+  /dev/shm/saksham/ids/results/2_class/lightgbm_cfg3_weighted/results.json
+  /dev/shm/saksham/ids/results/2_class/mlp_v1/results.json
+  /dev/shm/saksham/ids/results/2_class/random_forest/results.json
+  /dev/shm/saksham/ids/results/2_class/rf_balanced/results.json
+  /dev/shm/saksham/ids/results/2_class/threshold_optimized/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_balanced_deep/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_cfg1/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_cfg2/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_cfg3_weighted/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_deep/results.json
+  /dev/shm/saksham/ids/results/2_class/xgboost_trainval/results.json
+  /dev/shm/saksham/ids/results/34_class/BEST/results.json
+  /dev/shm/saksham/ids/results/34_class/catboost_balanced/results.json
+  /dev/shm/saksham/ids/results/34_class/lightgbm_cfg1/results.json
+  /dev/shm/saksham/ids/results/34_class/lightgbm_cfg2/results.json
+  /dev/shm/saksham/ids/results/34_class/random_forest/results.json
+  /dev/shm/saksham/ids/results/34_class/rf_balanced/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_balanced_deep/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_balanced_p025/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_balanced_p050/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_cfg1/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_cfg2/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_cfg3_weighted/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_deep/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_deep_balanced/results.json
+  /dev/shm/saksham/ids/results/34_class/xgboost_trainval/results.json
+  /dev/shm/saksham/ids/results/8_class/BEST/results.json
+  /dev/shm/saksham/ids/results/8_class/catboost_balanced/results.json
+  /dev/shm/saksham/ids/results/8_class/lightgbm_cfg1/results.json
+  /dev/shm/saksham/ids/results/8_class/lightgbm_cfg2/results.json
+  /dev/shm/saksham/ids/results/8_class/lightgbm_cfg3_weighted/results.json
+  /dev/shm/saksham/ids/results/8_class/mlp_v1/results.json
+  /dev/shm/saksham/ids/results/8_class/random_forest/results.json
+  /dev/shm/saksham/ids/results/8_class/rf_balanced/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_balanced_deep/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_cfg1/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_cfg2/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_cfg3_weighted/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_deep/results.json
+  /dev/shm/saksham/ids/results/8_class/xgboost_trainval/results.json
+  /dev/shm/saksham/ids/novelty/N1_twin_analysis/results.json
+  /dev/shm/saksham/ids/novelty/N2_protocol_ladder/results.json
+  /dev/shm/saksham/ids/novelty/N3_dos_vs_ddos/results.json
+  /dev/shm/saksham/ids/novelty/N4_fingerprint_ablation/results.json
+  /dev/shm/saksham/ids/novelty/N5_window_size/results.json
+  /dev/shm/saksham/ids/novelty/N6_class_weight_sweep/results.json

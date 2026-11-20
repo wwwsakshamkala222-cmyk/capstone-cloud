@@ -1,0 +1,14 @@
+CICIoT2023 IDS v3 — SUMMARY (details: ids/v3/results/REPORT.md)
+
+2_class   acc=0.9937 mF1=0.9339  target acc 0.9968 / mF1 0.9653  -> NOT MET
+8_class   acc=0.8410 mF1=0.7324  target acc 0.9944 / mF1 0.7193  -> MET
+34_class  acc=0.7895 mF1=0.6452  target acc 0.9916 / mF1 0.714  -> NOT MET
+
+New in v3:
+- A1/A2/A3 post-hoc tuning: <=+0.002 mF1 (34c), <0.0002 acc (2c)
+- CatBoost GPU (fixed prior-shift early-stop bug): 34c mF1 ~0.54, 2c acc ~0.9927
+- Focal reweighting 34c: mF1 0.515 (worse)
+- Hierarchical 8->34: mF1 ~0.636 vs flat 0.643 (DoS/DDoS routing is the bottleneck)
+- DoS<->DDoS = 95% of 8-class errors; merged 'Flood' 7-class acc 0.992
+
+Test never used for selection. Every number cites a JSON in REPORT.md.

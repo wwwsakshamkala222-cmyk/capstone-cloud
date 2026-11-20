@@ -1,0 +1,28 @@
+{
+  "method": "calibration",
+  "task": "2_class",
+  "baseline_test": {
+    "accuracy": 0.9937536175650349,
+    "macro_f1": 0.9327547757885228,
+    "per_class_f1": {
+      "Benign": 0.8687088485807607,
+      "Attack": 0.996800702996285
+    }
+  },
+  "isotonic_test": {
+    "accuracy": 0.9937561843517558,
+    "macro_f1": 0.9328733871248485,
+    "per_class_f1": {
+      "Benign": 0.8689448648503039,
+      "Attack": 0.9968019093993932
+    }
+  },
+  "sigmoid_test": {
+    "accuracy": 0.9936136207392945,
+    "macro_f1": 0.928802890598021,
+    "per_class_f1": {
+      "Benign": 0.8608739818456319,
+      "Attack": 0.99673179935041
+    }
+  }
+}

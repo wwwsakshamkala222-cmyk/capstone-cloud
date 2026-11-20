@@ -1,0 +1,72 @@
+{
+  "method": "xgboost_balanced_deep",
+  "task": "2_class",
+  "config": {
+    "max_depth": 14,
+    "learning_rate": 0.05,
+    "max_bin": 512,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "tree_method": "gpu_hist",
+    "seed": 42,
+    "verbosity": 0,
+    "objective": "binary:logistic",
+    "eval_metric": "logloss"
+  },
+  "n_estimators_used": 2289,
+  "training_time_seconds": 534.8106384277344,
+  "val_metrics": {
+    "accuracy": 0.992656954602742,
+    "macro_f1": 0.9268045968713243,
+    "weighted_f1": 0.9929810735263898,
+    "per_class": {
+      "Benign": {
+        "precision": 0.7860982108869433,
+        "recall": 0.9428727970048397,
+        "f1": 0.8573777298015445
+      },
+      "Attack": {
+        "precision": 0.9986240927171486,
+        "recall": 0.9938502728810079,
+        "f1": 0.9962314639411041
+      }
+    },
+    "confusion_matrix": [
+      [
+        51627,
+        3128
+      ],
+      [
+        14048,
+        2270281
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.992665299995337,
+    "macro_f1": 0.9271802697249213,
+    "weighted_f1": 0.9929879607874613,
+    "per_class": {
+      "Benign": {
+        "precision": 0.786996281399408,
+        "recall": 0.9433889315945799,
+        "f1": 0.8581252029930222
+      },
+      "Attack": {
+        "precision": 0.9986303016109749,
+        "recall": 0.9938518312693222,
+        "f1": 0.9962353364568204
+      }
+    },
+    "confusion_matrix": [
+      [
+        207405,
+        12446
+      ],
+      [
+        56135,
+        9074226
+      ]
+    ]
+  }
+}

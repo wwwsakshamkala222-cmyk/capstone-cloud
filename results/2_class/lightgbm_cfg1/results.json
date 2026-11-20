@@ -1,0 +1,96 @@
+{
+  "method": "lightgbm_cfg1",
+  "task": "2_class",
+  "config": {
+    "num_leaves": 255,
+    "learning_rate": 0.1,
+    "min_child_samples": 100,
+    "objective": "binary",
+    "metric": "binary_logloss",
+    "device": "cpu",
+    "seed": 42,
+    "verbose": -1,
+    "num_threads": 16,
+    "force_col_wise": true,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8
+  },
+  "n_estimators_used": 1055,
+  "training_time_seconds": 1809.8349220752716,
+  "val_metrics": {
+    "accuracy": 0.9936599113157116,
+    "macro_f1": 0.9314166975572105,
+    "weighted_f1": 0.9936942123921583,
+    "per_class": {
+      "Benign": {
+        "precision": 0.8565814622296054,
+        "recall": 0.8757921650990778,
+        "f1": 0.8660802976394734
+      },
+      "Attack": {
+        "precision": 0.9970211567512782,
+        "recall": 0.9964851823007982,
+        "f1": 0.9967530974749477
+      }
+    },
+    "confusion_matrix": [
+      [
+        47954,
+        6801
+      ],
+      [
+        8029,
+        2276300
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.9936760792161717,
+    "macro_f1": 0.9318959915266251,
+    "weighted_f1": 0.9937106823621071,
+    "per_class": {
+      "Benign": {
+        "precision": 0.8574135270126624,
+        "recall": 0.8768666051098244,
+        "f1": 0.8670309653916212
+      },
+      "Attack": {
+        "precision": 0.9970334363318628,
+        "recall": 0.9964887478162145,
+        "f1": 0.996761017661629
+      }
+    },
+    "confusion_matrix": [
+      [
+        192780,
+        27071
+      ],
+      [
+        32059,
+        9098302
+      ]
+    ]
+  },
+  "feature_importance_top20": {
+    "IAT": 11919042.648925781,
+    "Number": 9208724.78994976,
+    "HTTPS": 5069126.575530246,
+    "Max": 2487854.6073854715,
+    "Time_To_Live": 2222841.2888082415,
+    "AVG": 2121146.15091531,
+    "Min": 1083600.7062167674,
+    "syn_flag_number": 1042020.917893067,
+    "psh_flag_number": 726447.246810466,
+    "Tot sum": 553559.4989075512,
+    "ack_count": 525829.6960602701,
+    "Std": 440451.8439537883,
+    "fin_flag_number": 409140.25812873244,
+    "ack_flag_number": 245319.85055918992,
+    "Rate": 238728.93341347575,
+    "Header_Length": 185117.1893146187,
+    "syn_count": 115818.404748559,
+    "DNS": 75463.86311098933,
+    "HTTP": 71230.55878302455,
+    "rst_flag_number": 62383.54242023826
+  }
+}

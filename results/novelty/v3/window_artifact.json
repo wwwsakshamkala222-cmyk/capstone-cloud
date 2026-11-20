@@ -1,0 +1,51 @@
+{
+ "source": "/dev/shm/saksham/ids/novelty/N5_window_size/results.json",
+ "note": "Prior run N5 on window-group classification; reused, not re-run.",
+ "results": {
+  "window_classifier_accuracy": 0.9999967915165988,
+  "window_classifier_f1": 0.9999829488337502,
+  "window_leaks_class": true,
+  "top_window_features": [
+   "Number",
+   "Header_Length",
+   "Protocol Type",
+   "ICMP",
+   "Tot sum",
+   "ack_flag_number",
+   "rst_flag_number",
+   "fin_count",
+   "Max",
+   "IAT"
+  ],
+  "8class_baseline": {
+   "macro_f1": 0.7106115374375598,
+   "accuracy": 0.8633591409478202,
+   "per_class_f1": {
+    "Benign": 0.8612127971309235,
+    "Brute_Force": 0.44045584045584046,
+    "DDoS": 0.9161271632968084,
+    "DoS": 0.49209218694641826,
+    "Mirai": 0.998687206864114,
+    "Recon": 0.7818979046526928,
+    "Spoofing": 0.9026148379593653,
+    "Web_Based": 0.29180436219431594
+   }
+  },
+  "8class_no_window_features": {
+   "macro_f1": 0.6922472478599175,
+   "accuracy": 0.8612695626580446,
+   "per_class_f1": {
+    "Benign": 0.8460652557741585,
+    "Brute_Force": 0.42323174238067857,
+    "DDoS": 0.9152904717328824,
+    "DoS": 0.48977179583103897,
+    "Mirai": 0.9984496948281706,
+    "Recon": 0.7715667959955932,
+    "Spoofing": 0.8669607039641116,
+    "Web_Based": 0.22664152237270702
+   }
+  },
+  "macro_f1_change": -0.018364289577642245,
+  "elapsed_seconds": 699.5358192920685
+ }
+}

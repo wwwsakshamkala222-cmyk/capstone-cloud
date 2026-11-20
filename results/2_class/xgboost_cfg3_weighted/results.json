@@ -1,0 +1,97 @@
+{
+  "method": "xgboost_cfg3_weighted",
+  "task": "2_class",
+  "config": {
+    "max_depth": "0",
+    "max_leaves": "1024",
+    "learning_rate": "0.05",
+    "max_bin": "512",
+    "subsample": "0.8",
+    "colsample_bytree": "0.8",
+    "grow_policy": "lossguide",
+    "scale_pos_weight": "0.024035366124306554",
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "tree_method": "gpu_hist",
+    "seed": "42",
+    "verbosity": "0"
+  },
+  "n_estimators_used": 3000,
+  "training_time_seconds": 498.9437599182129,
+  "val_metrics": {
+    "accuracy": 0.9903004765968216,
+    "macro_f1": 0.9101610249186953,
+    "weighted_f1": 0.9910392572244842,
+    "per_class": {
+      "Benign": {
+        "precision": 0.7134356571398144,
+        "recall": 0.9787964569445713,
+        "f1": 0.8253102959746219
+      },
+      "Attack": {
+        "precision": 0.9994871824318684,
+        "recall": 0.9905762261040332,
+        "f1": 0.9950117538627687
+      }
+    },
+    "confusion_matrix": [
+      [
+        53594,
+        1161
+      ],
+      [
+        21527,
+        2262802
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.9903159414995083,
+    "macro_f1": 0.9105779858368914,
+    "weighted_f1": 0.9910483332746713,
+    "per_class": {
+      "Benign": {
+        "precision": 0.7148254355389119,
+        "recall": 0.9785081714433866,
+        "f1": 0.826136712749616
+      },
+      "Attack": {
+        "precision": 0.9994778580310905,
+        "recall": 0.9906002621364041,
+        "f1": 0.995019258924167
+      }
+    },
+    "confusion_matrix": [
+      [
+        215126,
+        4725
+      ],
+      [
+        85823,
+        9044538
+      ]
+    ]
+  },
+  "feature_importance_top20": {
+    "Number": 36224.59765625,
+    "HTTPS": 6.613162517547607,
+    "ack_flag_number": 5.4749603271484375,
+    "rst_flag_number": 3.2568960189819336,
+    "syn_count": 2.593203544616699,
+    "rst_count": 2.5395259857177734,
+    "Min": 2.170020580291748,
+    "ack_count": 1.9032058715820312,
+    "syn_flag_number": 1.215586543083191,
+    "ece_flag_number": 1.1818472146987915,
+    "AVG": 0.9146745204925537,
+    "Max": 0.8931946754455566,
+    "fin_flag_number": 0.43902596831321716,
+    "Time_To_Live": 0.43367230892181396,
+    "fin_count": 0.41147518157958984,
+    "HTTP": 0.36460214853286743,
+    "SSH": 0.36186325550079346,
+    "cwr_flag_number": 0.35750114917755127,
+    "IRC": 0.3509927988052368,
+    "Tot sum": 0.3508554697036743
+  }
+}

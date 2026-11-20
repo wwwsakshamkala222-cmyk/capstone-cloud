@@ -1,0 +1,65 @@
+================================================================================
+TABLE 1: Performance Comparison — Our Best vs. Paper's RF
+================================================================================
+
+--- 2_class ---
+  Our best:  lightgbm_cfg2
+  Accuracy:  0.993754  (paper: 0.9968)
+  Macro-F1:  0.932755  (paper: 0.9653)
+  Per-class F1:
+    Benign              : 0.8687  (paper: 0.93)
+    Attack              : 0.9968
+
+--- 8_class ---
+  Our best:  xgboost_cfg3_weighted
+  Accuracy:  0.841009  (paper: 0.9944)
+  Macro-F1:  0.732366  (paper: 0.7193)
+  Per-class F1:
+    Benign              : 0.8677  (paper: 0.93)
+    Brute_Force         : 0.4454  (paper: 0.11)
+    DDoS                : 0.8923  (paper: 1.00)
+    DoS                 : 0.6046  (paper: 1.00)
+    Mirai               : 0.9988  (paper: 1.00)
+    Recon               : 0.7950  (paper: 0.80)
+    Spoofing            : 0.9050  (paper: 0.84)
+    Web_Based           : 0.3501  (paper: 0.08)
+
+--- 34_class ---
+  Our best:  xgboost_balanced_p050
+  Accuracy:  0.794564
+  Macro-F1:  0.642876  (paper: 0.7000)
+  Per-class F1:
+    Backdoor_Malware    : 0.1193
+    Benign_Final        : 0.8643
+    BrowserHijacking    : 0.4279
+    CommandInjection    : 0.3800
+    DDoS-ACK_Fragmentation: 0.9907
+    DDoS-HTTP_Flood     : 0.8288
+    DDoS-ICMP_Flood     : 0.9994
+    DDoS-ICMP_Fragmentation: 0.9906
+    DDoS-PSHACK_FLOOD   : 0.9993
+    DDoS-RSTFINFLOOD    : 0.9995
+    DDoS-SYN_Flood      : 0.4506
+    DDoS-SlowLoris      : 0.8963
+    DDoS-SynonymousIP_Flood: 0.5872
+    DDoS-TCP_Flood      : 0.7500
+    DDoS-UDP_Flood      : 0.8270
+    DDoS-UDP_Fragmentation: 0.9909
+    DNS_Spoofing        : 0.7326
+    DictionaryBruteForce: 0.4409
+    DoS-HTTP_Flood      : 0.9187
+    DoS-SYN_Flood       : 0.4475
+    DoS-TCP_Flood       : 0.5433
+    DoS-UDP_Flood       : 0.6315
+    MITM-ArpSpoofing    : 0.8089
+    Mirai-greeth_flood  : 0.9973
+    Mirai-greip_flood   : 0.9984
+    Mirai-udpplain      : 0.9982
+    Recon-HostDiscovery : 0.6910
+    Recon-OSScan        : 0.2616
+    Recon-PingSweep     : 0.0568
+    Recon-PortScan      : 0.3646
+    SqlInjection        : 0.1070
+    Uploading_Attack    : 0.0000
+    VulnerabilityScan   : 0.6712
+    XSS                 : 0.0865

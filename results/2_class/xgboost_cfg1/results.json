@@ -1,0 +1,94 @@
+{
+  "method": "xgboost_cfg1",
+  "task": "2_class",
+  "config": {
+    "max_depth": "12",
+    "learning_rate": "0.1",
+    "max_bin": "256",
+    "subsample": "0.8",
+    "colsample_bytree": "0.8",
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "tree_method": "gpu_hist",
+    "seed": "42",
+    "verbosity": "0"
+  },
+  "n_estimators_used": 426,
+  "training_time_seconds": 36.882962703704834,
+  "val_metrics": {
+    "accuracy": 0.9933683441894349,
+    "macro_f1": 0.928577329006347,
+    "weighted_f1": 0.9934185985042469,
+    "per_class": {
+      "Benign": {
+        "precision": 0.8473877095763327,
+        "recall": 0.8741302164185919,
+        "f1": 0.860551250471961
+      },
+      "Attack": {
+        "precision": 0.9969806374394824,
+        "recall": 0.9962264630007324,
+        "f1": 0.9966034075407331
+      }
+    },
+    "confusion_matrix": [
+      [
+        47863,
+        6892
+      ],
+      [
+        8620,
+        2275709
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.9934204700385403,
+    "macro_f1": 0.9294922098807468,
+    "weighted_f1": 0.9934724842450778,
+    "per_class": {
+      "Benign": {
+        "precision": 0.8486008058301592,
+        "recall": 0.8765618532551592,
+        "f1": 0.862354736366362
+      },
+      "Attack": {
+        "precision": 0.9970253587671845,
+        "recall": 0.9962343219506874,
+        "f1": 0.9966296833951316
+      }
+    },
+    "confusion_matrix": [
+      [
+        192713,
+        27138
+      ],
+      [
+        34382,
+        9095979
+      ]
+    ]
+  },
+  "feature_importance_top20": {
+    "Number": 82107.109375,
+    "Max": 67.2857437133789,
+    "HTTPS": 54.897560119628906,
+    "syn_count": 54.08899688720703,
+    "IAT": 33.93314743041992,
+    "Min": 33.921142578125,
+    "syn_flag_number": 30.517440795898438,
+    "ece_flag_number": 27.837434768676758,
+    "rst_flag_number": 27.01881217956543,
+    "fin_flag_number": 21.271347045898438,
+    "rst_count": 21.018239974975586,
+    "Time_To_Live": 15.00701904296875,
+    "HTTP": 13.005508422851562,
+    "AVG": 12.32119369506836,
+    "psh_flag_number": 11.808791160583496,
+    "ack_count": 9.321999549865723,
+    "Header_Length": 8.637198448181152,
+    "Rate": 8.579004287719727,
+    "fin_count": 7.985953330993652,
+    "SSH": 7.7130560874938965
+  }
+}

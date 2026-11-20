@@ -1,0 +1,29 @@
+{
+  "method": "lightgbm_cfg2_threshold_opt",
+  "base_model": "lightgbm_cfg2",
+  "threshold": 0.49,
+  "val_accuracy_at_threshold": 0.9937518276385114,
+  "test_metrics_default": {
+    "accuracy": 0.9937536175650349,
+    "macro_f1": 0.9327547757885228
+  },
+  "test_metrics_optimized": {
+    "accuracy": 0.9937479492443594,
+    "macro_f1": 0.9324348550708976,
+    "per_class_f1": {
+      "Benign": 0.8680716039575359,
+      "Attack": 0.9967981061842592
+    },
+    "confusion_matrix": [
+      [
+        192323,
+        27528
+      ],
+      [
+        30930,
+        9099431
+      ]
+    ]
+  },
+  "accuracy_improvement": -5.668320675500382e-06
+}

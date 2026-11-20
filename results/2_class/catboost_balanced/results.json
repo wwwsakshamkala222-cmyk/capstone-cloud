@@ -1,0 +1,89 @@
+{
+  "method": "catboost_balanced",
+  "task": "2_class",
+  "config": {
+    "depth": "10",
+    "learning_rate": "0.1",
+    "iterations": "3000",
+    "early_stopping_rounds": "50",
+    "auto_class_weights": "Balanced",
+    "loss_function": "Logloss"
+  },
+  "training_time_seconds": 111.05871391296387,
+  "val_metrics": {
+    "accuracy": 0.9863446545741837,
+    "macro_f1": 0.8834199898829249,
+    "weighted_f1": 0.987831372741698,
+    "per_class": {
+      "Benign": {
+        "precision": 0.6318697833576102,
+        "recall": 0.998228472285636,
+        "f1": 0.7738802324840539
+      },
+      "Attack": {
+        "precision": 0.9999569383045767,
+        "recall": 0.9860598013683668,
+        "f1": 0.9929597472817959
+      }
+    },
+    "confusion_matrix": [
+      [
+        54658,
+        97
+      ],
+      [
+        31844,
+        2252485
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.9863763516805822,
+    "macro_f1": 0.8840288113558015,
+    "weighted_f1": 0.9878521196142678,
+    "per_class": {
+      "Benign": {
+        "precision": 0.6334273189286219,
+        "recall": 0.9983443332074905,
+        "f1": 0.7750821918291964
+      },
+      "Attack": {
+        "precision": 0.9999595721983339,
+        "recall": 0.9860881732934765,
+        "f1": 0.9929754308824066
+      }
+    },
+    "confusion_matrix": [
+      [
+        219487,
+        364
+      ],
+      [
+        127020,
+        9003341
+      ]
+    ]
+  },
+  "feature_importance_top20": {
+    "Number": 40.55819011509323,
+    "syn_flag_number": 7.3918582583125545,
+    "UDP": 6.3010239134130535,
+    "Max": 5.663839004007888,
+    "HTTPS": 4.994161320824616,
+    "psh_flag_number": 4.8716950865420205,
+    "IAT": 3.5822367011665257,
+    "fin_flag_number": 3.422237961493361,
+    "HTTP": 3.2548030921031916,
+    "TCP": 2.2638711512700658,
+    "Tot sum": 2.0020687123522585,
+    "ICMP": 1.9330477888599238,
+    "Min": 1.8481576547009437,
+    "Header_Length": 1.843173581434169,
+    "Time_To_Live": 1.5273982658985337,
+    "ack_count": 1.2492159450122533,
+    "ack_flag_number": 1.2395126728617862,
+    "Std": 1.1024185615008162,
+    "rst_flag_number": 0.987966367621457,
+    "Rate": 0.9380255423014706
+  }
+}

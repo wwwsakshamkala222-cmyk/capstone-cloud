@@ -1,0 +1,96 @@
+{
+  "method": "lightgbm_cfg3_weighted",
+  "task": "2_class",
+  "config": {
+    "num_leaves": 512,
+    "learning_rate": 0.05,
+    "min_child_samples": 50,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "objective": "binary",
+    "metric": "binary_logloss",
+    "device": "cpu",
+    "seed": 42,
+    "verbose": -1,
+    "num_threads": 16,
+    "force_col_wise": true
+  },
+  "n_estimators_used": 3000,
+  "training_time_seconds": 7974.7307670116425,
+  "val_metrics": {
+    "accuracy": 0.9920524444611651,
+    "macro_f1": 0.922946139539132,
+    "weighted_f1": 0.9925017409507771,
+    "per_class": {
+      "Benign": {
+        "precision": 0.7614702777737612,
+        "recall": 0.9617569171765136,
+        "f1": 0.8499741752211246
+      },
+      "Attack": {
+        "precision": 0.9990775033734565,
+        "recall": 0.992778623394441,
+        "f1": 0.9959181038571393
+      }
+    },
+    "confusion_matrix": [
+      [
+        52661,
+        2094
+      ],
+      [
+        16496,
+        2267833
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.9920947246971512,
+    "macro_f1": 0.9236129315704964,
+    "weighted_f1": 0.9925382192269248,
+    "per_class": {
+      "Benign": {
+        "precision": 0.763244764327074,
+        "recall": 0.962288095118967,
+        "f1": 0.8512864259329304
+      },
+      "Attack": {
+        "precision": 0.9990861925132594,
+        "recall": 0.9928124419176854,
+        "f1": 0.9959394372080626
+      }
+    },
+    "confusion_matrix": [
+      [
+        211560,
+        8291
+      ],
+      [
+        65625,
+        9064736
+      ]
+    ]
+  },
+  "feature_importance_top20": {
+    "Number": 149416809.86975223,
+    "HTTPS": 32017306.83288402,
+    "IAT": 8159794.897541672,
+    "AVG": 5902023.3139711395,
+    "Max": 4265917.972220339,
+    "Min": 2528916.2459472343,
+    "Time_To_Live": 2416542.7943150774,
+    "Header_Length": 1907831.2663330063,
+    "Std": 1860313.801012218,
+    "Tot sum": 1506199.2385605797,
+    "ack_flag_number": 1500117.3195336387,
+    "syn_flag_number": 1310224.5438754112,
+    "Rate": 1043993.6994195506,
+    "ack_count": 974482.4245836586,
+    "psh_flag_number": 643449.2707148492,
+    "syn_count": 577279.1154342741,
+    "HTTP": 512215.6606335491,
+    "Tot size": 449554.9014916271,
+    "fin_flag_number": 393729.24311223626,
+    "UDP": 340737.7211908698
+  }
+}

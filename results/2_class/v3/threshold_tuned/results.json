@@ -1,0 +1,26 @@
+{
+  "method": "threshold_tuning",
+  "task": "2_class",
+  "multipliers": {
+    "Benign": 1.2000000476837158,
+    "Attack": 1.0
+  },
+  "baseline_test": {
+    "accuracy": 0.9937536175650349,
+    "macro_f1": 0.9327547757885228,
+    "per_class_f1": {
+      "Benign": 0.8687088485807607,
+      "Attack": 0.996800702996285
+    }
+  },
+  "tuned_test": {
+    "accuracy": 0.9937017470833817,
+    "macro_f1": 0.9333387040249619,
+    "per_class_f1": {
+      "Benign": 0.8699046541836402,
+      "Attack": 0.9967727538662836
+    }
+  },
+  "val_macro_f1_before": 0.9323365955288958,
+  "val_macro_f1_after": 0.9329048610667747
+}

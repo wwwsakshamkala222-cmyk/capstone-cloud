@@ -1,0 +1,191 @@
+[
+  {
+    "method": "xgboost_deep_low_lr",
+    "config": {
+      "max_depth": 16,
+      "learning_rate": 0.02,
+      "max_bin": 512
+    },
+    "training_time_seconds": 125.53634262084961,
+    "test_metrics": {
+      "accuracy": 0.9936129790426143,
+      "macro_f1": 0.9314465484975993,
+      "per_class": {
+        "Benign": {
+          "precision": 0.8536946313320287,
+          "recall": 0.8790044166276251,
+          "f1": 0.8661646721348214
+        },
+        "Attack": {
+          "precision": 0.9970844522423281,
+          "recall": 0.9963726516399516,
+          "f1": 0.9967284248603774
+        }
+      },
+      "confusion_matrix": [
+        [
+          193250,
+          26601
+        ],
+        [
+          33119,
+          9097242
+        ]
+      ]
+    },
+    "test_metrics_threshold_opt": {
+      "accuracy": 0.9936201446555436,
+      "macro_f1": 0.9312675289049857,
+      "per_class": {
+        "Benign": {
+          "precision": 0.8565247968094861,
+          "recall": 0.875283714879623,
+          "f1": 0.8658026577161279
+        },
+        "Attack": {
+          "precision": 0.996995357866806,
+          "recall": 0.9964695809946617,
+          "f1": 0.9967324000938436
+        }
+      },
+      "confusion_matrix": [
+        [
+          192432,
+          27419
+        ],
+        [
+          32234,
+          9098127
+        ]
+      ]
+    },
+    "threshold": 0.4901010101010101,
+    "n_estimators_used": 1601
+  },
+  {
+    "method": "xgboost_lossguide_wide",
+    "config": {
+      "max_leaves": 2048,
+      "learning_rate": 0.02,
+      "max_bin": 512
+    },
+    "training_time_seconds": 467.1294574737549,
+    "test_metrics": {
+      "accuracy": 0.9936175778688227,
+      "macro_f1": 0.9314267942755163,
+      "per_class": {
+        "Benign": {
+          "precision": 0.8545115710820333,
+          "recall": 0.8780537727824754,
+          "f1": 0.8661227255086269
+        },
+        "Attack": {
+          "precision": 0.9970616936919243,
+          "recall": 0.9964002518629876,
+          "f1": 0.9967308630424059
+        }
+      },
+      "confusion_matrix": [
+        [
+          193041,
+          26810
+        ],
+        [
+          32867,
+          9097494
+        ]
+      ]
+    },
+    "test_metrics_threshold_opt": {
+      "accuracy": 0.993617791767716,
+      "macro_f1": 0.9309033356643581,
+      "per_class": {
+        "Benign": {
+          "precision": 0.860056107034959,
+          "recall": 0.8701529672369014,
+          "f1": 0.8650750763651327
+        },
+        "Attack": {
+          "precision": 0.9968725144558699,
+          "recall": 0.9965907153068756,
+          "f1": 0.9967315949635837
+        }
+      },
+      "confusion_matrix": [
+        [
+          191304,
+          28547
+        ],
+        [
+          31128,
+          9099233
+        ]
+      ]
+    },
+    "threshold": 0.4802020202020202,
+    "n_estimators_used": 882
+  },
+  {
+    "method": "xgb_ensemble_threshold",
+    "models": [
+      "xgb_2_class_cfg1.json",
+      "xgb_2_class_cfg2.json",
+      "xgb_2_class_cfg3_weighted.json",
+      "xgb_2_class_deep.json",
+      "xgb_2_class_wide.json"
+    ],
+    "test_metrics": {
+      "accuracy": 0.9933967272613712,
+      "macro_f1": 0.9318335508766145,
+      "per_class": {
+        "Benign": {
+          "precision": 0.8232532844834989,
+          "recall": 0.915774774733797,
+          "f1": 0.8670528197067247
+        },
+        "Attack": {
+          "precision": 0.9979664281079018,
+          "recall": 0.9952657950764487,
+          "f1": 0.9966142820465043
+        }
+      },
+      "confusion_matrix": [
+        [
+          201334,
+          18517
+        ],
+        [
+          43225,
+          9087136
+        ]
+      ]
+    },
+    "test_metrics_threshold_opt": {
+      "accuracy": 0.9936389677581642,
+      "macro_f1": 0.9320038979346945,
+      "per_class": {
+        "Benign": {
+          "precision": 0.8513244713943972,
+          "recall": 0.8838167668102488,
+          "f1": 0.8672663933603069
+        },
+        "Attack": {
+          "precision": 0.9971998373158429,
+          "recall": 0.9962833890138626,
+          "f1": 0.9967414025090823
+        }
+      },
+      "confusion_matrix": [
+        [
+          194308,
+          25543
+        ],
+        [
+          33934,
+          9096427
+        ]
+      ]
+    },
+    "threshold": 0.4208080808080808
+  }
+]

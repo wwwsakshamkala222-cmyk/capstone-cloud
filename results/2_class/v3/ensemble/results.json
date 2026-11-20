@@ -1,0 +1,37 @@
+{
+  "method": "ensemble",
+  "task": "2_class",
+  "n_models": 5,
+  "soft_vote_test": {
+    "accuracy": 0.9934554425076138,
+    "macro_f1": 0.932733103152062,
+    "per_class_f1": {
+      "Benign": 0.8688222015953216,
+      "Attack": 0.9966440047088025
+    }
+  },
+  "weighted_vote_test": {
+    "accuracy": 0.9934864578471589,
+    "macro_f1": 0.9328988205915189,
+    "per_class_f1": {
+      "Benign": 0.8691375320425357,
+      "Attack": 0.996660109140502
+    }
+  },
+  "stacking_test": {
+    "accuracy": 0.9937206771354489,
+    "macro_f1": 0.9332249875462224,
+    "per_class_f1": {
+      "Benign": 0.8696671365306281,
+      "Attack": 0.9967828385618166
+    }
+  },
+  "soft_vote_tuned_test": {
+    "accuracy": 0.9936981108021936,
+    "macro_f1": 0.9334650451081221,
+    "per_class_f1": {
+      "Benign": 0.8701594031087352,
+      "Attack": 0.9967706871075092
+    }
+  }
+}

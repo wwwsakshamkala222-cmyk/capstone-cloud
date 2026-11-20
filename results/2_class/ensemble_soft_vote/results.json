@@ -1,0 +1,48 @@
+{
+  "method": "ensemble_soft_vote",
+  "task": "2_class",
+  "models_used": [
+    "lightgbm_cfg2",
+    "lightgbm_cfg1",
+    "xgboost_trainval"
+  ],
+  "test_metrics": {
+    "accuracy": 0.9937875205396413,
+    "macro_f1": 0.9331720796989766,
+    "per_class_f1": {
+      "Benign": 0.8695261540673124,
+      "Attack": 0.9968180053306408
+    },
+    "confusion_matrix": [
+      [
+        193560,
+        26291
+      ],
+      [
+        31797,
+        9098564
+      ]
+    ]
+  },
+  "threshold_optimized": {
+    "threshold": 0.5,
+    "metrics": {
+      "accuracy": 0.9937875205396413,
+      "macro_f1": 0.9331720796989766,
+      "per_class_f1": {
+        "Benign": 0.8695261540673124,
+        "Attack": 0.9968180053306408
+      },
+      "confusion_matrix": [
+        [
+          193560,
+          26291
+        ],
+        [
+          31797,
+          9098564
+        ]
+      ]
+    }
+  }
+}

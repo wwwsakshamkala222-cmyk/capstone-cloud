@@ -1,0 +1,194 @@
+{
+  "baseline": {
+    "accuracy": 0.9933924492835029,
+    "macro_f1": 0.9291937873989071,
+    "n_features": 39
+  },
+  "without_ttl_iat": {
+    "accuracy": 0.9928605896850253,
+    "macro_f1": 0.924034973801227,
+    "removed": [
+      "Time_To_Live",
+      "IAT"
+    ],
+    "n_features": 37,
+    "accuracy_drop": 0.0005318595984775687
+  },
+  "without_top10": {
+    "accuracy": 0.991737299646254,
+    "macro_f1": 0.9109112003558875,
+    "removed": [
+      "Number",
+      "Max",
+      "HTTPS",
+      "syn_count",
+      "IAT",
+      "Min",
+      "rst_flag_number",
+      "syn_flag_number",
+      "fin_flag_number",
+      "ece_flag_number"
+    ],
+    "n_features": 29,
+    "accuracy_drop": 0.0016551496372488872
+  },
+  "feature_importance_ranking": [
+    {
+      "feature": "Number",
+      "gain": 89950.859375
+    },
+    {
+      "feature": "Max",
+      "gain": 133.03533935546875
+    },
+    {
+      "feature": "HTTPS",
+      "gain": 116.98099517822266
+    },
+    {
+      "feature": "syn_count",
+      "gain": 103.5446548461914
+    },
+    {
+      "feature": "IAT",
+      "gain": 72.8813705444336
+    },
+    {
+      "feature": "Min",
+      "gain": 66.34400939941406
+    },
+    {
+      "feature": "rst_flag_number",
+      "gain": 51.767845153808594
+    },
+    {
+      "feature": "syn_flag_number",
+      "gain": 50.916595458984375
+    },
+    {
+      "feature": "fin_flag_number",
+      "gain": 42.67517852783203
+    },
+    {
+      "feature": "ece_flag_number",
+      "gain": 41.38532638549805
+    },
+    {
+      "feature": "rst_count",
+      "gain": 31.655723571777344
+    },
+    {
+      "feature": "Time_To_Live",
+      "gain": 30.8520565032959
+    },
+    {
+      "feature": "AVG",
+      "gain": 28.27640724182129
+    },
+    {
+      "feature": "HTTP",
+      "gain": 24.20288848876953
+    },
+    {
+      "feature": "psh_flag_number",
+      "gain": 23.8814697265625
+    },
+    {
+      "feature": "Rate",
+      "gain": 17.308778762817383
+    },
+    {
+      "feature": "ack_count",
+      "gain": 17.115020751953125
+    },
+    {
+      "feature": "fin_count",
+      "gain": 16.768741607666016
+    },
+    {
+      "feature": "Header_Length",
+      "gain": 16.003555297851562
+    },
+    {
+      "feature": "Tot sum",
+      "gain": 13.586041450500488
+    },
+    {
+      "feature": "SSH",
+      "gain": 12.693957328796387
+    },
+    {
+      "feature": "Std",
+      "gain": 12.649316787719727
+    },
+    {
+      "feature": "Tot size",
+      "gain": 11.258646965026855
+    },
+    {
+      "feature": "ack_flag_number",
+      "gain": 10.269598960876465
+    },
+    {
+      "feature": "cwr_flag_number",
+      "gain": 10.215599060058594
+    },
+    {
+      "feature": "DNS",
+      "gain": 10.064513206481934
+    },
+    {
+      "feature": "LLC",
+      "gain": 9.375215530395508
+    },
+    {
+      "feature": "Variance",
+      "gain": 9.353972434997559
+    },
+    {
+      "feature": "TCP",
+      "gain": 9.230385780334473
+    },
+    {
+      "feature": "IRC",
+      "gain": 9.070576667785645
+    },
+    {
+      "feature": "ICMP",
+      "gain": 8.540863990783691
+    },
+    {
+      "feature": "DHCP",
+      "gain": 8.272628784179688
+    },
+    {
+      "feature": "UDP",
+      "gain": 7.632848739624023
+    },
+    {
+      "feature": "Protocol Type",
+      "gain": 6.366363525390625
+    },
+    {
+      "feature": "ARP",
+      "gain": 6.330790042877197
+    },
+    {
+      "feature": "IPv",
+      "gain": 5.991962432861328
+    },
+    {
+      "feature": "IGMP",
+      "gain": 3.349673271179199
+    },
+    {
+      "feature": "Telnet",
+      "gain": 2.8331780433654785
+    },
+    {
+      "feature": "SMTP",
+      "gain": 1.6386064291000366
+    }
+  ],
+  "elapsed_seconds": 237.3299434185028
+}
