@@ -1,0 +1,48 @@
+# Arrays / model files
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.joblib
+*.cbm
+*.model
+*.pt
+*.pth
+*.onnx
+*.h5
+*.ubj
+models/
+checkpoints/
+probs/
+catboost_info/
+
+# Caches and datasets
+ids_cache/
+data/*
+!data/README.md
+*.parquet
+*.pcap
+*.pcapng
+*.zip
+*.tar.gz
+# CSVs over 10 MB: git can't filter by size, so CSVs are ignored by default;
+# small ones can be force-added with `git add -f`.
+*.csv
+
+# Environments
+ids_env/
+.venv/
+venv/
+envs/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local working copy of the raw RAM folder (not part of the repo)
+_raw/
+
+# TensorBoard / OS
+events.out.tfevents*
+.DS_Store
