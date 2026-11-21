@@ -1,0 +1,92 @@
+{
+ "model": "xgb_best 8-class no-IAT (cfg3_weighted)",
+ "features": 45,
+ "IAT_excluded": true,
+ "model_val_metrics": {
+  "accuracy": 0.9155999961762372,
+  "macro_f1": 0.7609835274910777
+ },
+ "stream": {
+  "source": "v4 TEST split (never used for training or selection)",
+  "rows": 200000,
+  "order": "random permutation, seed 42",
+  "class_counts": {
+   "DDoS": 145598,
+   "DoS": 34607,
+   "Mirai": 11321,
+   "Benign": 4686,
+   "Spoofing": 2107,
+   "Recon": 1526,
+   "Web_Based": 97,
+   "Brute_Force": 58
+  }
+ },
+ "plain_8class": {
+  "accuracy": 0.91522,
+  "macro_f1": 0.7603690063829142,
+  "errors": 16956
+ },
+ "dos_ddos_merged_8class_accuracy": 0.99401,
+ "action_level": {
+  "accuracy": 0.99448,
+  "errors": 1104,
+  "class_errors_with_correct_action": 15852,
+  "of_which_dos_ddos_confusions": 15758,
+  "gain_vs_plain_8class_accuracy": 0.07926,
+  "false_block_rate": 0.026461801109688432,
+  "false_block_count": 124,
+  "miss_rate": 0.0029030177048240268,
+  "miss_count": 567,
+  "per_action": {
+   "ALLOW": {
+    "precision": 0.8873435326842837,
+    "recall": 0.9530516431924883,
+    "f1": 0.9190245910073053,
+    "support": 4686,
+    "taken": 5033
+   },
+   "BLOCK": {
+    "precision": 0.9999477853140974,
+    "recall": 0.9999007967586646,
+    "f1": 0.9999242904843582,
+    "support": 191526,
+    "taken": 191517
+   },
+   "ALERT": {
+    "precision": 0.8034066713981547,
+    "recall": 0.7418086500655308,
+    "f1": 0.7713798977853492,
+    "support": 1526,
+    "taken": 1409
+   },
+   "BLOCK+ALERT": {
+    "precision": 0.8775110240078393,
+    "recall": 0.7917771883289124,
+    "f1": 0.8324424819893098,
+    "support": 2262,
+    "taken": 2041
+   }
+  }
+ },
+ "rules_generated": 193558,
+ "latency_ms_per_row": {
+  "cpu_threads": 8,
+  "single_row": {
+   "avg": 1.4636460957117379,
+   "p50": 1.3607088476419449,
+   "p99": 4.100334979593753,
+   "n": 2000
+  },
+  "batch_1000": {
+   "avg": 0.03630977803375572,
+   "p99": 0.04240617631934583,
+   "avg_batch_ms": 36.30977803375572,
+   "n_batches": 200
+  },
+  "includes": "scaling + XGBoost inference on CPU; excludes policy lookup and logging"
+ },
+ "notes": [
+  "Blocking is simulated: CICIoT2023 has no IP addresses, so rules use placeholder IPs from 203.0.113.0/24 and are generated, never executed.",
+  "The deployed model excludes IAT, which acts as a capture timestamp in CICIoT2023."
+ ]
+}

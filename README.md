@@ -88,6 +88,61 @@ XGBoost per task. Each cell below shows the model that scored best on validation
 - Full tables: [`results/v4_46feat/tables.md`](results/v4_46feat/tables.md). Figures:
   [`figures/v4/`](figures/v4/). Code: [`src/v4/`](src/v4/).
 
+## Intrusion Prevention (IDPS)
+
+A prevention layer on top of the v4 **no-IAT** 8-class model. That model is XGBoost cfg3_weighted with 45
+features, the 46 minus IAT; it was the best no-IAT 8-class model on validation. Each flow is classified,
+the class is mapped to an action, and BLOCK-type actions produce an iptables rule. Code:
+[`src/prevention/`](src/prevention/).
+
+| 8-class label | Action | Generated rule |
+|---|---|---|
+| Benign | ALLOW | none |
+| DDoS, DoS, Mirai | BLOCK (rate-limit) | `iptables -A INPUT -s <ip> -m hashlimit --hashlimit-mode srcip --hashlimit-above 100/second … -j DROP` |
+| Recon | ALERT | none (alert only) |
+| Spoofing, Web_Based, Brute_Force | BLOCK+ALERT | `iptables -A INPUT -s <ip> -j DROP` + alert |
+
+DoS and DDoS share one action on purpose: they are the pair the model confuses most.
+
+**Simulation:** 200,000 v4 test flows replayed in random order (seed 42). These rows were never used for
+training or selection. Full numbers: [`results/prevention/summary.json`](results/prevention/summary.json).
+
+| Metric | Value |
+|---|---|
+| Plain 8-class accuracy / macro-F1 | 0.9152 / 0.7604 |
+| **Action-level accuracy** (action taken = action of the true class) | **0.9945** |
+| Class errors that still trigger the right action | 15,852 of 16,956 (15,758 are DoS↔DDoS) |
+| False block rate (benign flows blocked) | 2.65% (124 of 4,686) |
+| Miss rate (attack flows allowed) | 0.29% (567 of 195,314) |
+| Per-action precision / recall | ALLOW 0.887 / 0.953 · BLOCK 1.000 / 1.000 · ALERT 0.803 / 0.742 · BLOCK+ALERT 0.878 / 0.792 |
+| Latency per flow, CPU (8 threads) | single row: avg 1.46 ms, p99 4.10 ms · batch of 1000: avg 0.036 ms, p99 0.042 ms |
+
+Sharing one action for DoS and DDoS (and Mirai) lifts accuracy from 0.915 to 0.994: the DoS/DDoS
+bottleneck from v3/v4 still exists at the class level, but it no longer causes wrong actions.
+The weak spots are the rare classes. 17% of Recon flows and 14% of Spoofing/Web/Brute-force flows are
+allowed, and 2.6% of benign flows are blocked. Figures:
+[`figures/prevention/action_confusion.png`](figures/prevention/action_confusion.png),
+[`figures/prevention/actions_taken.png`](figures/prevention/actions_taken.png).
+
+**Run it:**
+
+```bash
+cd src/prevention
+python train_model.py 0          # only if /dev/shm/saksham/v4/prevention/ has no model (GPU id as argument)
+python idps_simulator.py         # 200k-flow simulation -> results/prevention/, figures/prevention/
+python demo.py                   # live terminal demo (CPU): one coloured line per flow + running counters
+python demo.py --attacks-only --delay 0.3 --rows 200   # fewer DDoS rows, so rarer classes appear
+```
+
+`demo.py` reads 2,000 test flows from `results/prevention/demo_flows.csv` and the model from
+`/dev/shm/saksham/v4/prevention/` (change it with `--model-dir`). The model file is about 300 MB, so it isn't committed.
+
+**Notes:**
+- **Blocking is simulated.** CICIoT2023 rows carry no IP addresses, so rules use placeholder source IPs
+  from the RFC 5737 documentation range 203.0.113.0/24. They are generated as text and never executed.
+- **The deployed model excludes IAT.** In CICIoT2023, IAT acts as a capture timestamp that leaks the class
+  (see the v4 section), so a deployed system can't rely on it.
+
 ## Repository layout
 
 ```
@@ -95,11 +150,13 @@ src/common.py          shared paths, data loading, prediction helpers (v3 script
 src/preprocessing/     CSV → labelled parquet cache + 75/5/20 split; EDA profiling
 src/training/          LightGBM / XGBoost / CatBoost / RF / MLP / focal training; GPU queue scripts
 src/evaluation/        threshold tuning, calibration, ensembles, multi-seed eval, reports, figures
+src/prevention/        IDPS layer: policy.json, simulator, live demo, model retrain
 src/v4/                v4 46-feature ablation (prep, train, report, launchers)
 src/novelty/           N1–N6 analyses (twins, protocol ladder, DoS vs DDoS, ablation, window,
                        class-weight sweep) and hierarchical 8→34
 results/{2,8,34}_class/  per-model results.json (v3 runs under v3/)
 results/novelty/       novelty-analysis JSONs
+results/prevention/    IDPS summary.json, actions_log.csv (sample), demo_flows.csv
 results/v4_46feat/     v4 per-run JSONs, summary.json, tables.md
 reports/               REPORT.md, HTML report, run summaries, decision log
 figures/               all plots (figures/v3, figures/eda)

@@ -1,0 +1,21 @@
+{
+  "description": "8-class label -> IDPS action. DoS and DDoS deliberately share one action (the classes the model confuses most).",
+  "actions": {
+    "Benign": "ALLOW",
+    "DDoS": "BLOCK",
+    "DoS": "BLOCK",
+    "Mirai": "BLOCK",
+    "Recon": "ALERT",
+    "Spoofing": "BLOCK+ALERT",
+    "Web_Based": "BLOCK+ALERT",
+    "Brute_Force": "BLOCK+ALERT"
+  },
+  "action_meaning": {
+    "ALLOW": "forward the flow, no rule",
+    "BLOCK": "rate-limit the source (volumetric attack): iptables hashlimit drop above the threshold",
+    "ALERT": "forward the flow and raise an alert for the analyst (reconnaissance is not blocked, to avoid blocking scanners on false positives)",
+    "BLOCK+ALERT": "drop all traffic from the source and raise an alert"
+  },
+  "rate_limit": {"above": "100/second", "burst": 200},
+  "placeholder_ip_range": "203.0.113.0/24 (RFC 5737 TEST-NET-3; CICIoT2023 rows carry no IP addresses)"
+}
