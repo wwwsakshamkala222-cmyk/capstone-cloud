@@ -32,7 +32,7 @@ def main():
 
     def table(name):
         t = (REP / "tables" / f"{name}.md").read_text()
-        if name in ("missing",):
+        if name in ("not_recorded",):
             return t
         cap, _, body = t.partition("\n\n")
         return body.strip() + "\n\n*" + cap.strip("*") + "*"

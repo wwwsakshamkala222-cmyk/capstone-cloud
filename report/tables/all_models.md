@@ -1,4 +1,4 @@
-**Every model trained in this project (v1-v4). Val = validation split, mF1 = macro-F1. n/a: no separate validation (train+val run, or test-only push run). [MISSING]: not recorded in the result JSON.**
+**Every model trained in this project (v1-v4). Val = validation split, mF1 = macro-F1. n/a: no separate validation (train+val run, or test-only push run). n/r = not recorded during the original run.**
 
 | Ver | Data | Task | Model | Config | Val acc | Val mF1 | Test acc | Test mF1 | Train s |
 |---|---|---|---|---|---|---|---|---|---|
@@ -26,26 +26,26 @@
 | v1 | full 39f | 34 | xgboost_cfg1 | depth=12, lr=0.1 | 0.7959 | 0.6323 | 0.7958 | 0.6352 | 944 |
 | v1 | full 39f | 34 | xgboost_cfg2 | leaves=1024, lr=0.05 | 0.7977 | 0.6349 | 0.7975 | 0.6369 | 2,158 |
 | v1 | full 39f | 34 | xgboost_cfg3_weighted | leaves=1024, lr=0.05, sqrt class weights | 0.7939 | 0.6398 | 0.7939 | 0.6423 | 13,137 |
-| v2 | full 39f | 2 | accpush_xgb_ensemble_threshold | - | n/a | n/a | 0.9934 | 0.9318 | [MISSING] |
+| v2 | full 39f | 2 | accpush_xgb_ensemble_threshold | - | n/a | n/a | 0.9934 | 0.9318 | n/r |
 | v2 | full 39f | 2 | accpush_xgboost_deep_low_lr | depth=16, lr=0.02 | n/a | n/a | 0.9936 | 0.9314 | 126 |
 | v2 | full 39f | 2 | accpush_xgboost_lossguide_wide | leaves=2048, lr=0.02 | n/a | n/a | 0.9936 | 0.9314 | 467 |
-| v2 | full 39f | 2 | random_forest | trees=200 | [MISSING] | [MISSING] | 0.9933 | 0.9271 | 320 |
-| v2 | full 39f | 2 | rf_balanced | trees=100, w=balanced_subsample | [MISSING] | [MISSING] | 0.9928 | 0.9219 | 284 |
+| v2 | full 39f | 2 | random_forest | trees=200 | n/r | n/r | 0.9933 | 0.9271 | 320 |
+| v2 | full 39f | 2 | rf_balanced | trees=100, w=balanced_subsample | n/r | n/r | 0.9928 | 0.9219 | 284 |
 | v2 | full 39f | 2 | xgboost_balanced_deep | depth=14, lr=0.05, sqrt class weights | 0.9927 | 0.9268 | 0.9927 | 0.9272 | 535 |
 | v2 | full 39f | 2 | xgboost_deep | depth=16, lr=0.03 | 0.9935 | 0.9302 | 0.9936 | 0.9313 | 246 |
 | v2 | full 39f | 2 | xgboost_trainval | leaves=1024, lr=0.05 | n/a | n/a | 0.9936 | 0.9314 | 1,901 |
-| v2 | full 39f | 8 | random_forest | trees=200 | [MISSING] | [MISSING] | 0.8587 | 0.6978 | 768 |
-| v2 | full 39f | 8 | rf_balanced | trees=100, w=balanced_subsample | [MISSING] | [MISSING] | 0.7759 | 0.6998 | 664 |
+| v2 | full 39f | 8 | random_forest | trees=200 | n/r | n/r | 0.8587 | 0.6978 | 768 |
+| v2 | full 39f | 8 | rf_balanced | trees=100, w=balanced_subsample | n/r | n/r | 0.7759 | 0.6998 | 664 |
 | v2 | full 39f | 8 | xgboost_balanced_deep | depth=14, lr=0.05, sqrt class weights | 0.8419 | 0.7295 | 0.8415 | 0.7308 | 1,414 |
 | v2 | full 39f | 8 | xgboost_deep | depth=16, lr=0.03 | 0.8653 | 0.7156 | 0.8650 | 0.7159 | 2,054 |
 | v2 | full 39f | 8 | xgboost_trainval | leaves=1024, lr=0.05 | n/a | n/a | 0.8649 | 0.7172 | 6,675 |
-| v2 | full 39f | 34 | random_forest | trees=200 | [MISSING] | [MISSING] | 0.7891 | 0.6233 | 736 |
-| v2 | full 39f | 34 | rf_balanced | trees=100, w=balanced_subsample | [MISSING] | [MISSING] | 0.7737 | 0.6244 | 661 |
+| v2 | full 39f | 34 | random_forest | trees=200 | n/r | n/r | 0.7891 | 0.6233 | 736 |
+| v2 | full 39f | 34 | rf_balanced | trees=100, w=balanced_subsample | n/r | n/r | 0.7737 | 0.6244 | 661 |
 | v2 | full 39f | 34 | xgboost_balanced_deep | depth=14, lr=0.05, sqrt class weights | 0.7945 | 0.6401 | 0.7944 | 0.6420 | 4,137 |
-| v2 | full 39f | 34 | xgboost_balanced_p025 | depth=12, lr=0.05, w-power=0.25 | [MISSING] | [MISSING] | 0.7974 | 0.6412 | 7,419 |
-| v2 | full 39f | 34 | xgboost_balanced_p050 | depth=12, lr=0.05, w-power=0.5 | [MISSING] | [MISSING] | 0.7946 | 0.6429 | 4,440 |
+| v2 | full 39f | 34 | xgboost_balanced_p025 | depth=12, lr=0.05, w-power=0.25 | n/r | n/r | 0.7974 | 0.6412 | 7,419 |
+| v2 | full 39f | 34 | xgboost_balanced_p050 | depth=12, lr=0.05, w-power=0.5 | n/r | n/r | 0.7946 | 0.6429 | 4,440 |
 | v2 | full 39f | 34 | xgboost_deep | depth=16, lr=0.03 | 0.7977 | 0.6345 | 0.7977 | 0.6379 | 5,643 |
-| v2 | full 39f | 34 | xgboost_deep_balanced | depth=16, lr=0.03, w-power=0.5 | [MISSING] | [MISSING] | 0.7941 | 0.6416 | 4,589 |
+| v2 | full 39f | 34 | xgboost_deep_balanced | depth=16, lr=0.03, w-power=0.5 | n/r | n/r | 0.7941 | 0.6416 | 4,589 |
 | v2 | full 39f | 34 | xgboost_trainval | leaves=1024, lr=0.05 | n/a | n/a | 0.7980 | 0.6377 | 12,618 |
 | v3 | full 39f | 2 | catboost_c1_bal_s42 | depth=10, lr=0.08, iters=1500, w=bal | 0.9926 | 0.9207 | 0.9926 | 0.9213 | 14 |
 | v3 | full 39f | 2 | catboost_c1_none_s1 | depth=10, lr=0.08, iters=1500, w=none | 0.9928 | 0.9230 | 0.9928 | 0.9232 | 22 |

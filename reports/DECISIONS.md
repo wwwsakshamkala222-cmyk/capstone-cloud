@@ -96,7 +96,9 @@ Launched phase2_parallel_8_34.py with correct OMP_NUM_THREADS=16 to train all 8 
 Skip logic prevents double-training if Phase 2 main catches up.
 
 ## D19: 8-class target MET via balanced_deep (2026-11-17)
-XGBoost balanced_deep (depth=16, lr=0.03, sqrt class weights): mF1=0.730818, acc=0.841456.
+XGBoost balanced_deep (depth=14, lr=0.05, sqrt class weights): mF1=0.730818, acc=0.841456.
+(Corrected 2026-11-21: this entry originally said depth=16, lr=0.03, which is xgboost_deep. The script
+src/training/phase2_extra.py and the saved config both use depth 14, lr 0.05.)
 This exceeds the 0.7193 macro-F1 target by 0.012. The class weights boost rare classes:
 DoS F1 0.50→0.60, Brute_Force 0.44→0.44 (same), Web_Based 0.30→0.34.
 N6 sweep confirmed optimal weight power is 0.25 (mF1=0.7285) but power=0.5 also beats target.

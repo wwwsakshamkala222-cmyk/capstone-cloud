@@ -255,7 +255,8 @@ cells are DDoS↔DoS. Source: `results/8_class/xgboost_cfg3_weighted/results.jso
 
 ![34-class confusion](figures/fig_cm34_full.png)
 
-*Figure 4. 34-class confusion matrix of the best full-release single model.
+*Figure 4. 34-class confusion matrix of XGBoost balanced_p050, the single model with the highest test macro-F1
+(decision D24; its validation score was not recorded, so this ranking is on test).
 Source: `results/34_class/xgboost_balanced_p050/results.json`.*
 
 ![v4 8-class confusion](figures/fig_v4_cm8.png)
@@ -509,11 +510,14 @@ All paths are relative to the repository root (`capstone-cloud/`).
 
 {{table:all_models}}
 
-## Appendix C. Numbers marked [MISSING]
+## Appendix C. Values marked n/r
 
-These values were looked for and not found in any result JSON:
+n/r = not recorded during the original run. These values were searched for in every result JSON, the training
+logs (`logs/`, `ids/logs`, `ids/v3/logs`, `logs/v4`) and the decision log. They were never written: the scripts
+for these runs scored only the test split, and the 2-class accuracy-push ensemble (which only averages already
+trained models) was not timed.
 
-{{table:missing}}
+{{table:not_recorded}}
 
 ## Appendix D. 34-class counts
 
@@ -521,11 +525,17 @@ These values were looked for and not found in any result JSON:
 
 ## Appendix E. Notes on the records
 
-- `results/34_class/BEST/results.json` names `xgboost_cfg3_weighted`, while
-  `results/34_class/BEST/multi_seed_results.json` and decision D24 name `xgboost_balanced_p050` as the 34-class
-  best. This report follows D24 and the multi-seed file.
-- The config saved for 8-class `xgboost_balanced_deep` says depth 14 / learning rate 0.05, while decision D19 says
-  depth 16 / 0.03. The tables use the saved config.
+- **34-class best model name.** `xgboost_balanced_p050` is the 34-class best. Phase 2e
+  (`src/training/phase2e_34class_boost.py`, log `ids/logs/phase2e_34class.log`, 2026-11-18) compared all ten
+  34-class models and wrote `xgboost_balanced_p050` to `results/34_class/BEST/`, and the multi-seed run used it.
+  Later, the Phase 2 v3 run (`ids/logs/phase2_v3.log`, 2026-11-19 09:06) compared only its own eight models and
+  overwrote `BEST/results.json` with `xgboost_cfg3_weighted`. `BEST/results.json` now holds
+  `xgboost_balanced_p050` again. Note that both of these old scripts ranked models on **test** macro-F1, and the
+  validation score of `xgboost_balanced_p050` was not recorded. So the 34-class single-model "best" is a test-set
+  ranking. The 34-class headline result (the v3 final ensemble) was selected on validation.
+- **8-class `xgboost_balanced_deep` config.** The script (`src/training/phase2_extra.py`) and the saved config
+  both use depth 14, learning rate 0.05 and sqrt (power 0.5) class weights. Decision D19 wrongly said depth 16 /
+  0.03, which is the config of `xgboost_deep`. D19 in `reports/DECISIONS.md` has been corrected.
 - The v4 split sizes in an earlier version of `reports/REPORT.md` were wrong (they were read from `.npy` file sizes,
   which include a header). They were corrected to the values in `results/v4_46feat/summary.json`.
 - Numbers are formatted by one script (`paper/tools/build_facts.py`): metrics to 4 decimals, standard deviations to
