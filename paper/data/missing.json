@@ -1,0 +1,42 @@
+[
+ {
+  "key": "val metrics random_forest (2-class)",
+  "source": "results/2_class/random_forest/results.json"
+ },
+ {
+  "key": "val metrics rf_balanced (2-class)",
+  "source": "results/2_class/rf_balanced/results.json"
+ },
+ {
+  "key": "val metrics random_forest (8-class)",
+  "source": "results/8_class/random_forest/results.json"
+ },
+ {
+  "key": "val metrics rf_balanced (8-class)",
+  "source": "results/8_class/rf_balanced/results.json"
+ },
+ {
+  "key": "val metrics random_forest (34-class)",
+  "source": "results/34_class/random_forest/results.json"
+ },
+ {
+  "key": "val metrics rf_balanced (34-class)",
+  "source": "results/34_class/rf_balanced/results.json"
+ },
+ {
+  "key": "val metrics xgboost_balanced_p025 (34-class)",
+  "source": "results/34_class/xgboost_balanced_p025/results.json"
+ },
+ {
+  "key": "val metrics xgboost_balanced_p050 (34-class)",
+  "source": "results/34_class/xgboost_balanced_p050/results.json"
+ },
+ {
+  "key": "val metrics xgboost_deep_balanced (34-class)",
+  "source": "results/34_class/xgboost_deep_balanced/results.json"
+ },
+ {
+  "key": "training time accpush_xgb_ensemble_threshold (2-class)",
+  "source": "results/2_class/accuracy_push/results.json"
+ }
+]

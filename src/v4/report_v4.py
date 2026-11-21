@@ -127,7 +127,7 @@ def main():
 
     figs = []
     # 1) headline metric per task, 4 feature sets, paper as dashed reference
-    fig, ax = plt.subplots(figsize=(9, 4.6))
+    fig, ax = plt.subplots(figsize=(9, 5.0))
     x = np.arange(3)
     series = [("38", ORANGE, None), ("46", BLUE, None), ("38n", ORANGE, "///"), ("46n", BLUE, "///")]
     for j, (fset, col, hatch) in enumerate(series):
@@ -145,7 +145,7 @@ def main():
     ax.set_ylim(0, 1.18)
     ax.yaxis.grid(True, color=GRID, lw=0.6)
     ax.set_axisbelow(True)
-    ax.legend(frameon=False, loc="lower left", fontsize=8, ncol=2)
+    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.16), fontsize=8, ncol=4)
     ax.set_title("v4, same rows: 38 vs 46 features, with and without IAT, vs Neto et al. 2023 RF",
                  fontsize=10, color=INK, loc="left")
     fig.tight_layout()

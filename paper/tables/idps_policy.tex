@@ -1,0 +1,20 @@
+\begin{table}[!t]
+\centering
+\caption{IDPS policy (src/prevention/policy.json).}\label{tab:policy}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{ll}
+\toprule
+\textbf{8-class label} & \textbf{Action} \\
+\midrule
+Benign & ALLOW \\
+DDoS & BLOCK \\
+DoS & BLOCK \\
+Mirai & BLOCK \\
+Recon & ALERT \\
+Spoofing & BLOCK+ALERT \\
+Web\_Based & BLOCK+ALERT \\
+Brute\_Force & BLOCK+ALERT \\
+\bottomrule
+\end{tabular}
+\end{table}

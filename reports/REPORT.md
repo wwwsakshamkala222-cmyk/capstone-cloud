@@ -177,7 +177,7 @@ Window-size artifact (`ids/novelty/N5_window_size/results.json`): features ident
 Added 2026-11-20. **Different data:** a 2.2 GB Kaggle subset (7,845,673 rows, the paper's 46 features + `label`), not
 the full 46.8M-row release used in sections 1–9. The subset's own train/validation/test files were merged and
 re-split with the paper's protocol: shuffled 80/20 train/test (seed 42), then 5% of train as validation for
-selection only. Sizes: train 5,962,839, val 313,955, test 1,569,263. StandardScaler fit on train, no
+selection only. Sizes: train 5,962,711, val 313,827, test 1,569,135. StandardScaler fit on train, no
 de-duplication. Each model was trained on the same rows with 46 features, with 38 features (46 minus
 flow_duration, Srate, Drate, urg_count, Magnitue, Radius, Covariance and Weight; this equals our 39-feature
 release without IGMP, which the subset lacks), and with each of those minus IAT. Models: RF-200 (`n_jobs=16`, sklearn

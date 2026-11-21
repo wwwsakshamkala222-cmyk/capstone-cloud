@@ -1,0 +1,401 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
+\input{macros.tex} % every number in the text comes from here (generated from the result JSONs)
+
+\begin{document}
+
+\title{Beating a Benchmark Is Not Detecting Attacks: Leakage, Timestamp Proxies and a Deployable
+Intrusion Prevention Layer for CICIoT2023}
+
+\author{\IEEEauthorblockN{Saksham Kala}
+\IEEEauthorblockA{Department of Computer Science and Engineering\\
+Bennett University, Greater Noida, India\\
+B.Tech CSE (2023--2027)}}
+
+\maketitle
+
+\begin{abstract}
+CICIoT2023 is a large IoT intrusion detection benchmark on which many studies, including its authors' Random
+Forest (RF) baseline, report accuracies around 99\%. We trained \nModels{} models (RF, LightGBM, XGBoost and CatBoost on
+GPU, an MLP, focal-loss XGBoost and a hierarchical 8$\rightarrow$34 classifier) plus post-hoc thresholding,
+calibration and stacking, with all selection done on a validation split. On the full 39-feature release
+(\fullRows{} rows) we beat the published 8-class macro-F1 (\fullBestMfEight{} vs \paperMfEight{}) but not
+2-class accuracy (\fullBestAccTwo{} vs \paperAccTwo{}) or 34-class macro-F1 (\fullBestMfThirtyFour{} vs
+\paperMfThirtyFour{}). On a 46-feature subset that matches the paper's feature table we beat all three targets
+(\vfBAccTwo{}, \vfBMfEight{}, \vfBMfThirtyFour{}), but we show that this is mostly due to one feature: in this
+data, IAT behaves like a capture timestamp. A depth-8 tree on IAT alone reaches \iatAcc{} 8-class validation
+accuracy (majority class: \iatMaj{}). Without IAT, the 2-class target is no longer met, 8-class macro-F1 is
+\vfDMfEight{} and 34-class macro-F1 ties the paper (\vfDMfThirtyFour{} vs \paperMfThirtyFour{}). We also measure
+\nOneTwin{} exact train/test duplicates under the paper-style split, a \nTwoDrop{} macro-F1 drop under a
+file-grouped split, and that DoS$\leftrightarrow$DDoS confusion causes \nThreeShare{} of 8-class errors.
+Finally, we build an intrusion prevention layer on the no-IAT model: mapping classes to actions (with DoS and
+DDoS sharing one action) gives \idsActAcc{} action accuracy on \idsRows{} unseen flows, a \idsFalseBlock{} false
+block rate, a \idsMiss{} miss rate and \idsLatSingle{}\,ms per flow on a CPU.
+\end{abstract}
+
+\begin{IEEEkeywords}
+intrusion detection, IoT security, CICIoT2023, data leakage, gradient boosting, intrusion prevention
+\end{IEEEkeywords}
+
+%=====================================================================
+\section{Introduction}
+IoT devices are cheap, numerous and often poorly secured, which makes them easy targets for floods, botnets
+(e.g.\ Mirai), reconnaissance and spoofing. Machine-learning intrusion detection systems (IDS) learn to
+recognise such traffic from flow features. CICIoT2023~\cite{neto2023ciciot} is a widely used benchmark: 33
+attacks plus benign traffic captured from a 105-device testbed, with labels at 2, 8 and 34 classes. Its
+authors report RF accuracies of \paperAccTwo{}, \paperAccEight{} and \paperAccThirtyFour{} for the three
+label sets, and later studies report similar or higher numbers~\cite{gueriani2024cnnlstm,andrade2026dlids,bensaoud2025hybrid}.
+
+We set out to beat these numbers honestly, meaning that the test split is never used for any choice. In doing
+so we found that whether a number ``beats the paper'' depends more on the evaluation protocol and on the
+dataset version than on the model. Our contributions are:
+\begin{enumerate}
+\item A benchmark of \nModels{} trained models and \nPosthoc{} post-hoc variants on two versions of CICIoT2023, with
+validation-only selection and multi-seed checks (Tables~\ref{tab:best}, \ref{tab:multiseed} and the
+appendix table).
+\item Evidence that the paper-style shuffled split leaks: \nOneTwin{} of test rows have an exact copy in the
+training set, and a file-grouped split lowers 8-class macro-F1 from \nTwoAMf{} to \nTwoCMf{} (N1, N2).
+\item Evidence that IAT acts as a capture-time proxy in the 46-feature data (N4), and that the paper's
+pipeline kept IAT while removing only the timestamp column (N7).
+\item An analysis of the DoS vs DDoS bottleneck (N3), the capture-window artifact (N5) and negative results
+for hierarchical, CatBoost and focal-loss models (N6).
+\item A simulated intrusion prevention system (IDPS) built on the no-IAT model, evaluated on
+\idsRows{} unseen flows with latency measurements.
+\end{enumerate}
+
+%=====================================================================
+\section{Related Work}
+\textbf{Benchmark.} Neto et al.~\cite{neto2023ciciot} describe the CICIoT2023 testbed, the feature extraction
+and an ML evaluation in which each label set is split 80\%/20\% into train and test and normalised with
+StandardScaler. Their RF results (Table~6 of~\cite{neto2023ciciot}) are our targets: accuracy / F1 of
+\paperAccTwo{} / \paperMfTwo{} (2-class), \paperAccEight{} / \paperMfEight{} (8-class) and
+\paperAccThirtyFour{} / \paperMfThirtyFour{} (34-class). The paper does not state how its F1 is averaged; we
+compare against our macro-F1.
+
+\textbf{High reported accuracies.} Gueriani et al.~\cite{gueriani2024cnnlstm} report 98.42\% binary accuracy
+with a CNN+LSTM model on CICIoT2023. Andrade et al.~\cite{andrade2026dlids} report 99.34\% (CNN) and 99.42\%
+(LSTM) binary accuracy and 98.6\% / 98.68\% multiclass accuracy. Bensaoud and Kalita~\cite{bensaoud2025hybrid}
+report accuracy of up to 99.99\% across NSL-KDD, UNSW-NB15 and CICIoT2023. These figures are taken from the
+cited abstracts. Like the original benchmark, these studies report row-level splits, so the issues below may
+apply to them as well; we do not re-evaluate their models.
+
+\textbf{Dataset quality and leakage.} Engelen et al.~\cite{engelen2021troubleshooting} found errors in
+CICIDS2017's traffic generation, flow construction, feature extraction and labelling, and noted that many
+studies treat high ML scores as proof that a dataset is correct. Arp et al.~\cite{arp2022dos} list common
+pitfalls of ML in security, including data snooping and spurious correlations. Our N1, N2, N4 and N5 results
+are concrete instances of these pitfalls in CICIoT2023.
+
+%=====================================================================
+\section{Dataset}
+\textbf{Full release (39 features).} The public CSV release we used has 309 per-attack files in 34 class
+folders, \fullRows{} rows and \fullFeat{} numeric features (Table~\ref{tab:counts}). Its feature set lacks 8 of
+the paper's 46 features (flow\_duration, Srate, Drate, urg\_count, Magnitue, Radius, Covariance, Weight) and
+contains IGMP, which the paper's table does not list. The paper's \emph{Duration} appears to correspond to
+our \emph{Time\_To\_Live} (inferred from the column order; the 46-feature files use \emph{Duration}).
+
+\textbf{46-feature subset.} No 46-feature copy of the full release was available to us. A merged
+\texttt{MERGED\_CSV} copy we checked also had only the 39 features. We therefore used a public Kaggle subset
+with the paper's 46 features~\cite{kaggle46}: \vfRows{} rows after merging its train, validation and test files
+(\vfBenign{} benign, \vfAttack{} attack). It is a subset, not the full release, so absolute numbers on the two
+versions are not directly comparable.
+
+\input{tables/class_counts.tex}
+
+%=====================================================================
+\section{Methodology}
+\textbf{Splits.} \emph{Full release (v1--v3):} shuffled per-row 75/5/20 train/validation/test split with seed 42
+(train \vtTrain{}, validation \vtVal{}, test \vtTest{} rows), no de-duplication, mirroring the paper's shuffled
+protocol. \emph{Kaggle subset (v4):} the paper protocol, i.e.\ shuffled 80/20 train/test with seed 42, then 5\% of
+the training part held out as validation (train \vfTrain{}, validation \vfVal{}, test \vfTest{}). In both
+settings the validation split is used for early stopping, model selection and post-hoc tuning; the test split
+is scored once per reported model and never used for any choice.
+
+\textbf{Preprocessing.} No missing or infinite values were found. StandardScaler is fit on the training part
+only (v4); tree models use raw values in v1--v3. Labels are mapped to 2, 8 and 34 classes with a fixed map
+(\texttt{src/preprocessing/class\_maps.json}).
+
+\textbf{Class weighting.} Sample weights $w_c=(N/(k\,n_c))^{p}$ with $p=0.5$ (``sqrt'') by default; $p\in\{0,0.25,0.5\}$
+is swept in N6. CatBoost uses its \texttt{Balanced} option and one RF variant uses
+\texttt{balanced\_subsample}.
+
+\textbf{Models.} RF~\cite{breiman2001rf} (200 trees, the paper's method), LightGBM~\cite{ke2017lightgbm} (CPU,
+16 threads), XGBoost~\cite{chen2016xgboost} 2.1.4 on GPU (depth-wise configs and a loss-guided 1024-leaf config
+``cfg2''), CatBoost~\cite{prokhorenkova2018catboost} on GPU, a 3-layer MLP (1024-512-256), XGBoost with a
+focal-style reweighting~\cite{lin2017focal}, and a hierarchical classifier (an 8-class first stage followed by
+one expert per attack family for the 34 subtypes). Post-hoc methods: per-class probability multipliers
+(threshold tuning, A1), isotonic and sigmoid calibration (A2), soft and weighted voting and a stacked
+meta-learner (A3). Every config is listed in the appendix table.
+
+\textbf{Iterations.} We refer to four iterations: v1, the first benchmark (XGBoost/LightGBM configs cfg1--cfg3,
+CatBoost, MLP); v2, gap-closing runs (deeper and balanced XGBoost, RF, train+val, accuracy push), the N1--N6
+analyses and multi-seed runs; v3, post-hoc methods, CatBoost GPU, focal and hierarchical models; v4, the
+46-feature ablation (\nModelsVfour{} runs) and the IDPS.
+
+\textbf{Selection and seeds.} 2-class models are selected on validation accuracy (the paper's headline
+metric for 2-class) and 8/34-class models on validation macro-F1. The best full-release models were rerun
+with seeds 42, 123 and 456; the hierarchical and CatBoost runs used seeds 1, 2 and 42. Hardware: NVIDIA H200
+GPUs and a 224-core CPU server; scikit-learn~\cite{pedregosa2011sklearn} 1.9.1.
+
+%=====================================================================
+\section{Results}
+Table~\ref{tab:best} compares our best model per task with the paper. On the full release we beat the
+8-class target (macro-F1 \fullBestMfEight{} vs \paperMfEight{}) but not 2-class accuracy or 34-class
+macro-F1. Post-hoc methods change test macro-F1 by small amounts (Table~\ref{tab:posthoc}). The multi-seed
+standard deviations are at most \msMfSdThirtyFour{} (Table~\ref{tab:multiseed}), so these differences are not
+seed noise.
+
+\input{tables/best_vs_paper.tex}
+
+\textbf{v4 ablation.} Table~\ref{tab:v4} and Fig.~\ref{fig:v4} use the same rows with 38 features (the 46
+without the 8 paper-only features), all 46, and each without IAT. With all 46 features we beat every target
+(2-class accuracy \vfBAccTwo{}, 8-class macro-F1 \vfBMfEight{}, 34-class macro-F1 \vfBMfThirtyFour{}), and 38
+features do almost as well (\vfAAccTwo{}, \vfAMfEight{}, \vfAMfThirtyFour{}). The 8 paper-only features are
+therefore not what separates the versions; the data version is. With the same features, 34-class macro-F1 is
+\fullBestMfThirtyFour{} on the full release and \vfAMfThirtyFour{} on the subset. Removing IAT changes the
+picture (Section~\ref{sec:iat}).
+
+\input{tables/v4_ablation.tex}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_v4_ablation.png}
+\caption{v4 ablation on the same rows (judged metric per task). Dashed line: Neto et al.~\cite{neto2023ciciot}. Source: \texttt{results/v4\_46feat/summary.json}.}
+\label{fig:v4}
+\end{figure}
+
+\input{tables/multiseed.tex}
+\input{tables/posthoc.tex}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.85\columnwidth]{fig_cm8_full.png}
+\caption{8-class confusion matrix (row-normalised) of the best full-release model, XGBoost cfg3\_weighted.
+Source: \texttt{results/8\_class/xgboost\_cfg3\_weighted/results.json}.}
+\label{fig:cm8}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_perclass_f1_8.png}
+\caption{Per-class test F1, 8-class, full release. Brute\_Force, DoS and Web\_Based are the weak classes.
+Source: \texttt{results/8\_class/*/results.json}.}
+\label{fig:pcf1}
+\end{figure}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.62\textwidth]{fig_cm34_full.png}
+\caption{34-class confusion matrix (row-normalised) of the best full-release single model. Source:
+\texttt{results/34\_class/xgboost\_balanced\_p050/results.json}.}
+\label{fig:cm34}
+\end{figure*}
+
+%=====================================================================
+\section{Analysis and Novelty}
+Table~\ref{tab:novelty} summarises the analyses and their evidence files.
+\input{tables/novelty.tex}
+
+\textbf{N1 -- twin leakage.} Under the shuffled 75/5/20 split, \nOneTwin{} of full-release test rows are exact
+duplicates (``twins'') of a training row: \nOneDDoS{} for DDoS but only \nOneBenign{} for benign
+(Table~\ref{tab:n1}, Fig.~\ref{fig:twins}). On twin rows the 8-class macro-F1 is \nOneTwinMf{}, compared with
+\nOneNonTwinMf{} on non-twin rows. In the v4 subset only \vfTwin{} of test rows have a twin (\vfDup{} of all
+rows are duplicates), so twins do not explain the v4 scores.
+
+\input{tables/n1_twins.tex}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_twins.png}
+\caption{N1: twin share per class and F1 on twin vs non-twin test rows (full release). Source:
+\texttt{results/novelty/N1\_twin\_analysis/results.json}.}
+\label{fig:twins}
+\end{figure}
+
+\textbf{N2 -- protocol ladder.} Keeping the model fixed (8-class XGBoost balanced\_deep), we tighten the
+protocol step by step (Table~\ref{tab:n2}, Fig.~\ref{fig:ladder}). De-duplication alone (removing
+\nTwoDedupPct{} of rows) barely changes macro-F1 (\nTwoAMf{} $\rightarrow$ \nTwoBMf{}). Grouping by source
+file, so that no capture file contributes to both train and test, drops it to \nTwoCMf{} (\nTwoDMf{} when
+also twin-free), a fall of \nTwoDrop{} from the paper protocol to the strictest one.
+
+\input{tables/n2_ladder.tex}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_protocol_ladder.png}
+\caption{N2: 8-class macro-F1 and accuracy under four protocols. Source:
+\texttt{results/novelty/N2\_protocol\_ladder/results.json}.}
+\label{fig:ladder}
+\end{figure}
+
+\textbf{N3 -- DoS vs DDoS.} On the full release, DoS$\leftrightarrow$DDoS confusions are \nThreeShare{} of all
+8-class test errors. Re-scoring the \emph{same} predictions with DoS and DDoS merged into one class raises
+accuracy from \nThreeEightAcc{} to \nThreeFloodAcc{} (macro-F1 \nThreeEightMf{} $\rightarrow$ \nThreeFloodMf{};
+Fig.~\ref{fig:merge}). A binary DoS-vs-DDoS model falls from \nThreeBinPaper{} to \nThreeBinGroup{} accuracy
+under a file-grouped split. Single-source and distributed floods look the same per flow; the difference is in
+the aggregate traffic. In v4 the confusion almost disappears when IAT is used (\vfDdWith{} errors,
+\vfDdWithShare{}) and returns without IAT (\vfDdNo{} errors, \vfDdNoShare{}). The 8 paper-only features do not
+remove it (38 features without IAT: \vfDdNoA{}).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_dosddos_merge.png}
+\caption{N3: (a) merging DoS and DDoS on the same predictions; (b) DoS$\leftrightarrow$DDoS share of 8-class
+test errors. Sources: \texttt{results/novelty/v3/dos\_ddos.json}, \texttt{results/v4\_46feat/summary.json}.}
+\label{fig:merge}
+\end{figure}
+
+\textbf{N4 -- IAT acts as a capture timestamp.}\label{sec:iat} In the v4 subset, the median raw IAT is \iatMedDoSTCP{} for DoS-TCP\_Flood,
+\iatMedDDoSICMP{} for DDoS-ICMP\_Flood and \iatMedBenign{} for benign traffic, and each attack class occupies its
+own narrow band (Table~\ref{tab:iat}, Fig.~\ref{fig:iat}). Values of this size do not fit the
+paper's description of IAT as ``the time difference with the previous packet''~\cite{neto2023ciciot}; they
+behave like a capture clock. A depth-8 decision tree on IAT alone reaches \iatAcc{} 8-class validation
+accuracy (macro-F1 \iatMf{}; majority class \iatMaj{}). The next-best single feature (\iatSecondName{}) reaches
+\iatSecondAcc{}. IAT carries \iatImpEight{} of the gain in the 46-feature 8-class model
+(Fig.~\ref{fig:imp}). Without IAT, the 46-feature results fall to \vfDAccTwo{} accuracy (2-class, below the
+paper), \vfDMfEight{} macro-F1 (8-class, still above \paperMfEight{}) and \vfDMfThirtyFour{} (34-class, a tie
+with \paperMfThirtyFour{}); 8-class accuracy falls from \vfBAccEight{} to \vfDAccEight{}. On the full release,
+by contrast, removing TTL and IAT changed 2-class accuracy by only \nFourDrop{} (baseline \nFourBase{}), so
+the proxy is specific to this data version.
+
+\input{tables/iat_bands.tex}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.9\textwidth]{fig_iat_probe.png}
+\caption{N4: (a) single-feature probe, 8-class validation accuracy of a depth-8 tree per feature; (b)
+per-class IAT median and 1st--99th percentile range (log scale). Source:
+\texttt{results/v4\_46feat/iat\_probe.json}.}
+\label{fig:iat}
+\end{figure*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.95\textwidth]{fig_v4_importance.png}
+\caption{Top-15 feature importances of the selected 46-feature models (blue: paper-only features; orange:
+IAT). Source: \texttt{results/v4\_46feat/summary.json}.}
+\label{fig:imp}
+\end{figure*}
+
+\textbf{N5 -- window-size artifact.} The paper averages packets over windows of 10 or 100 packets ``to mitigate
+data size discrepancy''~\cite{neto2023ciciot}. A classifier recovers a row's capture window with
+\nFiveAcc{} accuracy from its features (top features: Number, Header\_Length, Protocol Type), so
+window-level artifacts are visible to any model. Removing the window features changes 8-class macro-F1 by
+\nFiveMfChange{}.
+
+\textbf{N6 -- negative results.} The hierarchical 8$\rightarrow$34 classifier reaches a 34-class test
+macro-F1 of \hierMf{} $\pm$ \hierMfSd{} over 3 seeds, below the flat XGBoost (\flatMfThirtyFour{};
+Fig.~\ref{fig:hier}): subtypes inside a family are easy to separate, and the errors come from the family
+level. The best CatBoost GPU run (by validation) gives \cbBestMf{}, and focal reweighting gives \focalMf{}. The
+class-weight sweep peaks at power \nSixBestP{} (8-class macro-F1 \nSixBestMf{}).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{fig_hier_f1.png}
+\caption{N6: per-class 34-class F1, flat vs hierarchical. Source: \texttt{results/novelty/v3/hierarchical\_s42.json}.}
+\label{fig:hier}
+\end{figure}
+
+\textbf{N7 -- the benchmark used IAT.} Table~4 of~\cite{neto2023ciciot} (``Features extracted from the network
+traffic'') lists 47 features. The list below is quoted from the paper exactly as rendered in the PubMed Central copy,
+where three names appear truncated (marked [sic]):
+\begin{quote}\footnotesize
+\emph{ts, flow duration, Header Length, Protocol Type, Duration, Rate, Srate, Drate, fin flag number, syn
+flag number, rst flag number, psh flag numbe [sic], ack flag number, ece flag numbe [sic], cwr flag number, ack count,
+syn count, fin count, urg coun [sic], rst count, HTTP, HTTPS, DNS, Telnet, SMTP, SSH, IRC, TCP, UDP, DHCP, ARP,
+ICMP, IPv, LLC, Tot sum, Min, Max, AVG, Std, Tot size, IAT, Number, Magnitude, Radius, Covariance,
+Variance, Weight} --- from~\cite{neto2023ciciot}, Table~4.
+\end{quote}
+IAT is described there as ``The time difference with the previous packet'', and the cleaning step states: ``In
+our experiments, we only remove the timestamp from the list since it does not illustrate the network
+behavior''~\cite{neto2023ciciot}. Only \emph{ts} was dropped, so the paper's models had IAT available. Given N4,
+the published 99\% accuracies most likely rely in part on this capture-time proxy. We cannot re-run the
+authors' code, so this is an inference from their stated pipeline and our measurements.
+
+%=====================================================================
+\section{Intrusion Prevention (IDPS)}
+We deploy the best no-IAT 8-class model (XGBoost cfg3\_weighted, 45 features) behind a policy that maps each
+class to an action (Table~\ref{tab:policy}). DoS and DDoS share one action because they are the pair the
+model confuses most. BLOCK generates an \texttt{iptables} hashlimit rate-limit rule and BLOCK+ALERT a drop
+rule. Because CICIoT2023 has no IP addresses, the rules use placeholder sources from 203.0.113.0/24 and are
+generated as text, never executed.
+
+\input{tables/idps_policy.tex}
+
+We replay \idsRows{} v4 test flows in random order. Plain 8-class accuracy is \idsEightAcc{}, but action
+accuracy is \idsActAcc{}: of the \idsErr{} class errors, \idsAbsorbed{} still trigger the correct action, and
+\idsAbsorbedDd{} of those are DoS$\leftrightarrow$DDoS confusions. The false block rate (benign flows blocked)
+is \idsFalseBlock{} (\idsFalseBlockN{} flows) and the miss rate (attack flows allowed) is \idsMiss{}
+(\idsMissN{} flows). Per-action precision and recall are in Table~\ref{tab:idps} and Fig.~\ref{fig:idps}.
+Latency per flow on a CPU (8 threads, scaling plus inference) is \idsLatSingle{}\,ms on average (p99
+\idsLatSingleP{}\,ms) one flow at a time, and \idsLatBatch{}\,ms in batches of 1000.
+
+\input{tables/idps_actions.tex}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.9\columnwidth]{fig_idps_actions.png}
+\caption{IDPS: correct action vs action taken on \idsRows{} test flows. Source: \texttt{results/prevention/summary.json}.}
+\label{fig:idps}
+\end{figure}
+
+%=====================================================================
+\section{Discussion}
+A model that beats the benchmark by reading IAT is reading \emph{when} a capture was recorded. In a real
+network, attacks are not scheduled into separate capture sessions, so this signal would not exist and the
+learned rule would not transfer. The same reasoning applies to twins (N1) and file-level artifacts (N2, N5):
+they reward memorising a capture rather than recognising an attack. For deployment we therefore use the
+no-IAT model. Its 8-class macro-F1 (\vfDMfEight{}) is lower than the headline numbers, but it does not depend on
+capture timing, and at the action level (where DoS and DDoS need the same response) it is accurate
+(\idsActAcc{}). We recommend that results on CICIoT2023 report a file-grouped split and an IAT ablation next to
+the shuffled-split numbers.
+
+%=====================================================================
+\section{Limitations and Future Work}
+\textbf{Limitations.} (i) The 46-feature experiments use a public Kaggle subset of \vfRows{} rows, not the full
+release, and we could not verify how it was sampled. (ii) CICIoT2023 has no IP addresses, so blocking is
+simulated with placeholder IPs and generated rules. (iii) All results come from one dataset and one testbed.
+(iv) Some early runs did not record validation metrics (marked [MISSING] in the appendix). (v) Our claim about
+the paper's use of IAT is inferred from its stated pipeline (N7), not from re-running its code.
+
+\textbf{Future work.} Re-extract features from the original pcaps with a corrected IAT; evaluate under
+file-grouped and cross-dataset splits; add aggregate (multi-flow) features to separate DoS from DDoS; test the
+IDPS on live traffic with real addresses.
+
+%=====================================================================
+\section{Conclusion}
+On CICIoT2023, the gap between ``beats the benchmark'' and ``detects attacks'' comes from the evaluation, not
+the model. With validation-only selection we beat the published 8-class macro-F1 on the full release and all
+targets on a 46-feature subset, but the subset results rest largely on IAT, which behaves like a capture
+timestamp, and shuffled splits contain heavy duplication. A no-IAT model ties or beats the paper only on the
+multi-class macro-F1 targets, and wrapped in a prevention layer it chooses the right action for \idsActAcc{}
+of unseen flows at about \idsLatSingle{}\,ms per flow.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+%=====================================================================
+\onecolumn
+\appendix
+\section*{Appendix: every trained model}
+All rows are generated by \texttt{paper/tools/build\_facts.py} from the JSON file listed in
+\texttt{paper/data/all\_models.json}. Numbers not recorded in the JSONs are marked [MISSING]; the full list is
+in \texttt{paper/data/missing.json}.
+\input{tables/all_models.tex}
+
+\section*{Numbers marked [MISSING]}
+These values were looked for and not found in any result JSON:
+\input{tables/missing.tex}
+
+\end{document}

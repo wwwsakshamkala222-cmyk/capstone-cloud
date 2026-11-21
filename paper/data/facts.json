@@ -1,0 +1,657 @@
+{
+ "fullRows": {
+  "value": "46,775,660",
+  "raw": 46775660,
+  "source": "src/preprocessing/data_meta.json"
+ },
+ "fullFeat": {
+  "value": "39",
+  "raw": 39,
+  "source": "src/preprocessing/data_meta.json"
+ },
+ "fullBenign": {
+  "value": "1,098,126",
+  "raw": 1098126,
+  "source": "src/preprocessing/data_meta.json"
+ },
+ "fullAttack": {
+  "value": "45,677,534",
+  "raw": 45677534,
+  "source": "src/preprocessing/data_meta.json (total - Benign)"
+ },
+ "vfRows": {
+  "value": "7,845,673",
+  "raw": 7845673,
+  "source": "results/v4_46feat/class_counts.json"
+ },
+ "vfTrain": {
+  "value": "5,962,711",
+  "raw": 5962711,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfVal": {
+  "value": "313,827",
+  "raw": 313827,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfTest": {
+  "value": "1,569,135",
+  "raw": 1569135,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBenign": {
+  "value": "184,766",
+  "raw": 184766,
+  "source": "results/v4_46feat/class_counts.json"
+ },
+ "vfAttack": {
+  "value": "7,660,907",
+  "raw": 7660907,
+  "source": "results/v4_46feat/class_counts.json"
+ },
+ "vtVal": {
+  "value": "2,339,084",
+  "raw": 2339084,
+  "source": "results/2_class/lightgbm_cfg2/results.json (sum of val confusion matrix)"
+ },
+ "vtTest": {
+  "value": "9,350,212",
+  "raw": 9350212,
+  "source": "results/2_class/lightgbm_cfg2/results.json (sum of test confusion matrix)"
+ },
+ "vtTrain": {
+  "value": "35,086,364",
+  "raw": 35086364,
+  "source": "data_meta total - val - test"
+ },
+ "fullBestAcc2": {
+  "value": "0.9937",
+  "raw": 0.9936958648638127,
+  "source": "results/2_class/v3/final_ensemble/results.json"
+ },
+ "fullBestMf2": {
+  "value": "0.9339",
+  "raw": 0.9338835065616016,
+  "source": "results/2_class/v3/final_ensemble/results.json"
+ },
+ "fullBestAcc8": {
+  "value": "0.8410",
+  "raw": 0.8410085247264982,
+  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+ },
+ "fullBestMf8": {
+  "value": "0.7324",
+  "raw": 0.7323664100395664,
+  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+ },
+ "fullBestAcc34": {
+  "value": "0.7895",
+  "raw": 0.7894603887056251,
+  "source": "results/34_class/v3/final_ensemble/results.json"
+ },
+ "fullBestMf34": {
+  "value": "0.6452",
+  "raw": 0.6451798922352475,
+  "source": "results/34_class/v3/final_ensemble/results.json"
+ },
+ "paperAcc2": {
+  "value": "0.9968",
+  "raw": 0.99680798,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "paperMf2": {
+  "value": "0.9653",
+  "raw": 0.965279544,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "msAcc2": {
+  "value": "0.9938",
+  "raw": 0.9937504090816337,
+  "source": "results/2_class/BEST/multi_seed_results.json"
+ },
+ "msAccSd2": {
+  "value": "0.000003",
+  "raw": 2.810688976115647e-06,
+  "source": "results/2_class/BEST/multi_seed_results.json"
+ },
+ "msMf2": {
+  "value": "0.9328",
+  "raw": 0.9327542478515666,
+  "source": "results/2_class/BEST/multi_seed_results.json"
+ },
+ "msMfSd2": {
+  "value": "0.000030",
+  "raw": 3.012320424250702e-05,
+  "source": "results/2_class/BEST/multi_seed_results.json"
+ },
+ "paperAcc8": {
+  "value": "0.9944",
+  "raw": 0.994368173,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "paperMf8": {
+  "value": "0.7193",
+  "raw": 0.71928904,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "msAcc8": {
+  "value": "0.8408",
+  "raw": 0.840755054537801,
+  "source": "results/8_class/BEST/multi_seed_results.json"
+ },
+ "msAccSd8": {
+  "value": "0.000060",
+  "raw": 6.004891591626053e-05,
+  "source": "results/8_class/BEST/multi_seed_results.json"
+ },
+ "msMf8": {
+  "value": "0.7317",
+  "raw": 0.7317139745583626,
+  "source": "results/8_class/BEST/multi_seed_results.json"
+ },
+ "msMfSd8": {
+  "value": "0.000056",
+  "raw": 5.598206375470035e-05,
+  "source": "results/8_class/BEST/multi_seed_results.json"
+ },
+ "paperAcc34": {
+  "value": "0.9916",
+  "raw": 0.99164365,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "paperMf34": {
+  "value": "0.7140",
+  "raw": 0.714021981,
+  "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
+ },
+ "msAcc34": {
+  "value": "0.7945",
+  "raw": 0.7944995970857844,
+  "source": "results/34_class/BEST/multi_seed_results.json"
+ },
+ "msAccSd34": {
+  "value": "0.000073",
+  "raw": 7.313352652362892e-05,
+  "source": "results/34_class/BEST/multi_seed_results.json"
+ },
+ "msMf34": {
+  "value": "0.6434",
+  "raw": 0.6434163715631299,
+  "source": "results/34_class/BEST/multi_seed_results.json"
+ },
+ "msMfSd34": {
+  "value": "0.000157",
+  "raw": 0.0001571398937338801,
+  "source": "results/34_class/BEST/multi_seed_results.json"
+ },
+ "vfAAcc2": {
+  "value": "0.9972",
+  "raw": 0.9971570323777112,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfAMf2": {
+  "value": "0.9696",
+  "raw": 0.9695884189088553,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBAcc2": {
+  "value": "0.9977",
+  "raw": 0.9977153017426799,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBMf2": {
+  "value": "0.9754",
+  "raw": 0.9754384818444922,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCAcc2": {
+  "value": "0.9947",
+  "raw": 0.994654379642287,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCMf2": {
+  "value": "0.9436",
+  "raw": 0.9436255953945432,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDAcc2": {
+  "value": "0.9959",
+  "raw": 0.9958747972609112,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDMf2": {
+  "value": "0.9562",
+  "raw": 0.9561804462741724,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfAAcc8": {
+  "value": "0.9961",
+  "raw": 0.9960602497554385,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfAMf8": {
+  "value": "0.8799",
+  "raw": 0.8798925797977768,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBAcc8": {
+  "value": "0.9967",
+  "raw": 0.9966822484999698,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBMf8": {
+  "value": "0.8925",
+  "raw": 0.8925098445623375,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCAcc8": {
+  "value": "0.9076",
+  "raw": 0.9075917623403977,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCMf8": {
+  "value": "0.7346",
+  "raw": 0.7345953044707801,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDAcc8": {
+  "value": "0.9154",
+  "raw": 0.9154464083714913,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDMf8": {
+  "value": "0.7547",
+  "raw": 0.7547232625226119,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfAAcc34": {
+  "value": "0.9951",
+  "raw": 0.9950871021295172,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfAMf34": {
+  "value": "0.8361",
+  "raw": 0.8361367912651237,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBAcc34": {
+  "value": "0.9957",
+  "raw": 0.9957345926258735,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfBMf34": {
+  "value": "0.8484",
+  "raw": 0.84836600347252,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCAcc34": {
+  "value": "0.8900",
+  "raw": 0.8899916195865876,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfCMf34": {
+  "value": "0.6979",
+  "raw": 0.6978905213529392,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDAcc34": {
+  "value": "0.8976",
+  "raw": 0.8975715919917662,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDMf34": {
+  "value": "0.7143",
+  "raw": 0.7143033054694736,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "nOneTwin": {
+  "value": "59.05\\%",
+  "raw": 59.05170920188761,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "nOneDDoS": {
+  "value": "67.61\\%",
+  "raw": 67.60669500786358,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "nOneBenign": {
+  "value": "0.54\\%",
+  "raw": 0.5440048032531123,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "nOneInfl": {
+  "value": "-0.0176",
+  "raw": -0.017585426661809178,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "nOneTwinMf": {
+  "value": "0.6130",
+  "raw": 0.6129840084930931,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "nOneNonTwinMf": {
+  "value": "0.7292",
+  "raw": 0.7291599420356802,
+  "source": "results/novelty/N1_twin_analysis/results.json"
+ },
+ "vfTwin": {
+  "value": "5.61\\%",
+  "raw": 5.613474940014721,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDup": {
+  "value": "3.51\\%",
+  "raw": 3.508417952162931,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "nTwoAMf": {
+  "value": "0.7308",
+  "raw": 0.7308179663174619,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoAAcc": {
+  "value": "0.8415",
+  "raw": 0.8414560012115233,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoBMf": {
+  "value": "0.7297",
+  "raw": 0.7296942702843933,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoBAcc": {
+  "value": "0.8572",
+  "raw": 0.8571605347402501,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoCMf": {
+  "value": "0.4454",
+  "raw": 0.4454328347668277,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoCAcc": {
+  "value": "0.7455",
+  "raw": 0.7455027547376301,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoDMf": {
+  "value": "0.4557",
+  "raw": 0.4557160753481383,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoDAcc": {
+  "value": "0.7217",
+  "raw": 0.7216502920471902,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nTwoDrop": {
+  "value": "0.2751",
+  "raw": 0.2751018909693236,
+  "source": "results/novelty/N2_protocol_ladder/results.json (a - d)"
+ },
+ "nTwoDedupPct": {
+  "value": "54.65\\%",
+  "raw": 54.648870801609206,
+  "source": "results/novelty/N2_protocol_ladder/results.json"
+ },
+ "nThreeShare": {
+  "value": "95.18\\%",
+  "raw": 95.17611953149596,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeFloodAcc": {
+  "value": "0.9923",
+  "raw": 0.9923304412776951,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeFloodMf": {
+  "value": "0.7660",
+  "raw": 0.7660030291165629,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeEightAcc": {
+  "value": "0.8410",
+  "raw": 0.8410085247264982,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeEightMf": {
+  "value": "0.7324",
+  "raw": 0.7323664100395664,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeBinPaper": {
+  "value": "0.8561",
+  "raw": 0.8561156078684102,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "nThreeBinGroup": {
+  "value": "0.8081",
+  "raw": 0.8081441326244448,
+  "source": "results/novelty/v3/dos_ddos.json"
+ },
+ "vfDdWith": {
+  "value": "285",
+  "raw": 285,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDdWithShare": {
+  "value": "5.47\\%",
+  "raw": 5.474452554744526,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDdNo": {
+  "value": "123,149",
+  "raw": 123149,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDdNoShare": {
+  "value": "92.82\\%",
+  "raw": 92.81934939250505,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "vfDdNoA": {
+  "value": "133,657",
+  "raw": 133657,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "iatAcc": {
+  "value": "0.9905",
+  "raw": 0.9904788306933437,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatMf": {
+  "value": "0.8194",
+  "raw": 0.8194397959981513,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatMaj": {
+  "value": "0.7278",
+  "raw": 0.7277576499153993,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatSecondName": {
+  "value": "Min",
+  "raw": "Min",
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatSecondAcc": {
+  "value": "0.8111",
+  "raw": 0.8110997460384225,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatSecondMf": {
+  "value": "0.3892",
+  "raw": 0.38923219969734474,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatImpEight": {
+  "value": "39.55\\%",
+  "raw": 39.55344778935824,
+  "source": "results/v4_46feat/summary.json"
+ },
+ "nFourDrop": {
+  "value": "0.000532",
+  "raw": 0.0005318595984775687,
+  "source": "results/novelty/N4_fingerprint_ablation/results.json"
+ },
+ "nFourBase": {
+  "value": "0.9934",
+  "raw": 0.9933924492835029,
+  "source": "results/novelty/N4_fingerprint_ablation/results.json"
+ },
+ "nFiveAcc": {
+  "value": "99.9997\\%",
+  "raw": 99.99967915165988,
+  "source": "results/novelty/N5_window_size/results.json"
+ },
+ "nFiveMfChange": {
+  "value": "-0.0184",
+  "raw": -0.018364289577642245,
+  "source": "results/novelty/N5_window_size/results.json"
+ },
+ "hierMf": {
+  "value": "0.6352",
+  "raw": 0.635221082791635,
+  "source": "results/novelty/v3/hierarchical_s{1,2,42}.json (mean of hard_test)"
+ },
+ "hierMfSd": {
+  "value": "0.000102",
+  "raw": 0.00010160442865963941,
+  "source": "results/novelty/v3/hierarchical_s{1,2,42}.json (population std)"
+ },
+ "flatMfThirtyFour": {
+  "value": "0.6429",
+  "raw": 0.6428761988904571,
+  "source": "results/34_class/xgboost_balanced_p050/results.json"
+ },
+ "cbBestMf": {
+  "value": "0.5417",
+  "raw": 0.5417456993911165,
+  "source": "results/34_class/v3/catboost/cb_34_class_c1_none_s2/results.json"
+ },
+ "cbBestName": {
+  "value": "catboost\\_c1\\_none\\_s2",
+  "raw": "catboost\\_c1\\_none\\_s2",
+  "source": "results/34_class/v3/catboost/cb_34_class_c1_none_s2/results.json"
+ },
+ "focalMf": {
+  "value": "0.5152",
+  "raw": 0.5151867088895251,
+  "source": "results/34_class/v3/focal/xgb_34_class_focal_s42/results.json"
+ },
+ "nSixBestP": {
+  "value": "0.25",
+  "raw": 0.25,
+  "source": "results/novelty/N6_class_weight_sweep/results.json"
+ },
+ "nSixBestMf": {
+  "value": "0.7285",
+  "raw": 0.7284970613214448,
+  "source": "results/novelty/N6_class_weight_sweep/results.json"
+ },
+ "idsRows": {
+  "value": "200,000",
+  "raw": 200000,
+  "source": "results/prevention/summary.json"
+ },
+ "idsActAcc": {
+  "value": "0.99448",
+  "raw": 0.99448,
+  "source": "results/prevention/summary.json"
+ },
+ "idsEightAcc": {
+  "value": "0.91522",
+  "raw": 0.91522,
+  "source": "results/prevention/summary.json"
+ },
+ "idsEightMf": {
+  "value": "0.7604",
+  "raw": 0.7603690063829142,
+  "source": "results/prevention/summary.json"
+ },
+ "idsFalseBlock": {
+  "value": "2.65\\%",
+  "raw": 2.646180110968843,
+  "source": "results/prevention/summary.json"
+ },
+ "idsFalseBlockN": {
+  "value": "124",
+  "raw": 124,
+  "source": "results/prevention/summary.json"
+ },
+ "idsMiss": {
+  "value": "0.29\\%",
+  "raw": 0.2903017704824027,
+  "source": "results/prevention/summary.json"
+ },
+ "idsMissN": {
+  "value": "567",
+  "raw": 567,
+  "source": "results/prevention/summary.json"
+ },
+ "idsErr": {
+  "value": "16,956",
+  "raw": 16956,
+  "source": "results/prevention/summary.json"
+ },
+ "idsAbsorbed": {
+  "value": "15,852",
+  "raw": 15852,
+  "source": "results/prevention/summary.json"
+ },
+ "idsAbsorbedDd": {
+  "value": "15,758",
+  "raw": 15758,
+  "source": "results/prevention/summary.json"
+ },
+ "idsLatSingle": {
+  "value": "1.46",
+  "raw": 1.4636460957117379,
+  "source": "results/prevention/summary.json"
+ },
+ "idsLatSingleP": {
+  "value": "4.10",
+  "raw": 4.100334979593753,
+  "source": "results/prevention/summary.json"
+ },
+ "idsLatBatch": {
+  "value": "0.0363",
+  "raw": 0.03630977803375572,
+  "source": "results/prevention/summary.json"
+ },
+ "idsLatBatchP": {
+  "value": "0.0424",
+  "raw": 0.04240617631934583,
+  "source": "results/prevention/summary.json"
+ },
+ "nModels": {
+  "value": "92",
+  "raw": 92,
+  "source": "paper/data/all_models.json (rows collected above)"
+ },
+ "nPosthoc": {
+  "value": "20",
+  "raw": 20,
+  "source": "post-hoc rows collected above"
+ },
+ "nModelsVfour": {
+  "value": "30",
+  "raw": 30,
+  "source": "results/v4_46feat/*_*c_*f.json"
+ },
+ "iatMedDoSTCP": {
+  "value": "8.295e+07",
+  "raw": 82947241.1450585,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatMedDDoSICMP": {
+  "value": "8.313e+07",
+  "raw": 83128996.55448645,
+  "source": "results/v4_46feat/iat_probe.json"
+ },
+ "iatMedBenign": {
+  "value": "1.665e+08",
+  "raw": 166516302.8422706,
+  "source": "results/v4_46feat/iat_probe.json"
+ }
+}

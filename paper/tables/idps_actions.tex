@@ -1,0 +1,16 @@
+\begin{table}[!t]
+\centering
+\caption{IDPS per-action precision and recall on 200,000 test flows.}\label{tab:idps}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Action} & \textbf{Precision} & \textbf{Recall} & \textbf{Support} & \textbf{Taken} \\
+\midrule
+ALLOW & 0.8873 & 0.9531 & 4,686 & 5,033 \\
+BLOCK & 0.9999 & 0.9999 & 191,526 & 191,517 \\
+ALERT & 0.8034 & 0.7418 & 1,526 & 1,409 \\
+BLOCK+ALERT & 0.8775 & 0.7918 & 2,262 & 2,041 \\
+\bottomrule
+\end{tabular}
+\end{table}

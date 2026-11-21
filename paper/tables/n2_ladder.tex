@@ -1,0 +1,16 @@
+\begin{table}[!t]
+\centering
+\caption{N2: protocol ladder on the full release.}\label{tab:n2}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{4.6cm}rr}
+\toprule
+\textbf{Protocol (8-class, XGBoost balanced\_deep)} & \textbf{Test acc} & \textbf{Test mF1} \\
+\midrule
+(a) paper protocol: shuffled rows, no de-dup & 0.8415 & 0.7308 \\
+(b) + de-duplication & 0.8572 & 0.7297 \\
+(c) file-grouped split & 0.7455 & 0.4454 \\
+(d) file-grouped + twin-free & 0.7217 & 0.4557 \\
+\bottomrule
+\end{tabular}
+\end{table}

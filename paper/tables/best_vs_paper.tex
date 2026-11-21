@@ -1,0 +1,21 @@
+\begin{table*}[!t]
+\centering
+\caption{Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. $\Delta$ = ours minus paper.}\label{tab:best}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{3.4cm}lp{3.6cm}rrrrl}
+\toprule
+\textbf{Setting} & \textbf{Task} & \textbf{Model (selected on val)} & \textbf{Test acc} & \textbf{Test mF1} & \textbf{Paper acc / F1} & \textbf{$\Delta$ (judged metric)} & \textbf{Verdict} \\
+\midrule
+Full release, 39 features (v1-v3) & 2-class & Stacked ensemble + threshold (v3) & 0.9937 & 0.9339 & 0.9968 / 0.9653 & acc -0.0031 & NOT BEAT \\
+Full release, 39 features (v1-v3) & 8-class & XGBoost cfg3\_weighted (v1) & 0.8410 & 0.7324 & 0.9944 / 0.7193 & mF1 +0.0131 & \textbf{BEAT} \\
+Full release, 39 features (v1-v3) & 34-class & XGBoost balanced\_p050 + per-class thresholds (v3) & 0.7895 & 0.6452 & 0.9916 / 0.7140 & mF1 -0.0688 & NOT BEAT \\
+Kaggle subset, 46 features (v4) & 2-class & Random Forest (200 trees) & 0.9977 & 0.9754 & 0.9968 / 0.9653 & acc +0.0009 & \textbf{BEAT} \\
+Kaggle subset, 46 features (v4) & 8-class & XGBoost (prior best config) & 0.9967 & 0.8925 & 0.9944 / 0.7193 & mF1 +0.1732 & \textbf{BEAT} \\
+Kaggle subset, 46 features (v4) & 34-class & XGBoost (prior best config) & 0.9957 & 0.8484 & 0.9916 / 0.7140 & mF1 +0.1343 & \textbf{BEAT} \\
+Kaggle subset, 46 features, no IAT (v4) & 2-class & XGBoost (prior best config) & 0.9959 & 0.9562 & 0.9968 / 0.9653 & acc -0.0009 & NOT BEAT \\
+Kaggle subset, 46 features, no IAT (v4) & 8-class & XGBoost (prior best config) & 0.9154 & 0.7547 & 0.9944 / 0.7193 & mF1 +0.0354 & \textbf{BEAT} \\
+Kaggle subset, 46 features, no IAT (v4) & 34-class & XGBoost (prior best config) & 0.8976 & 0.7143 & 0.9916 / 0.7140 & mF1 +0.0003 & \textbf{BEAT} \\
+\bottomrule
+\end{tabular}
+\end{table*}

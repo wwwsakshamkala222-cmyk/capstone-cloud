@@ -150,6 +150,8 @@ src/common.py          shared paths, data loading, prediction helpers (v3 script
 src/preprocessing/     CSV → labelled parquet cache + 75/5/20 split; EDA profiling
 src/training/          LightGBM / XGBoost / CatBoost / RF / MLP / focal training; GPU queue scripts
 src/evaluation/        threshold tuning, calibration, ensembles, multi-seed eval, reports, figures
+paper/                 IEEE-format research paper (main.tex, refs.bib, figures/, tables/ generated from results)
+report/                capstone report (report.md, report.pdf)
 src/prevention/        IDPS layer: policy.json, simulator, live demo, model retrain
 src/v4/                v4 46-feature ablation (prep, train, report, launchers)
 src/novelty/           N1–N6 analyses (twins, protocol ladder, DoS vs DDoS, ablation, window,
