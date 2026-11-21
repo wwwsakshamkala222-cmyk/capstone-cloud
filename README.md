@@ -23,7 +23,7 @@ plus an analysis of *why* the published numbers are hard to reproduce honestly.
 | Task | Best model | Test accuracy | Test macro-F1 | Neto et al. 2023 (acc / mF1) | Status |
 |---|---|---|---|---|---|
 | 2-class | Stacked ensemble (LGBM+XGB+CatBoost) + threshold | 0.9937 | 0.9339 | 0.9968 / 0.9653 | Not met (judged on accuracy) |
-| 8-class | XGBoost, sqrt class weights (cfg3_weighted) | 0.8410 | **0.7324** | 0.9944 / 0.7193 | **Met** (macro-F1) |
+| 8-class | XGBoost balanced_deep (depth 14, sqrt class weights) | 0.8415 | **0.7308** | 0.9944 / 0.7193 | **Met** (macro-F1) |
 | 34-class | XGBoost balanced p=0.5 + per-class thresholds | 0.7895 | 0.6452 | 0.9916 / 0.714 | Not met (macro-F1) |
 
 Multi-seed (42/123/456) standard deviations are ≤ 0.0002 for every headline number

@@ -5,7 +5,7 @@
 | Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features | v4 46 features | Neto et al. 2023 RF | 38f vs paper | 46f vs paper |
 |---|---|---|---|---|---|---|---|
 | 2-class | accuracy | 0.9937 / 0.9339 | 0.9972 / 0.9696 (rf) | 0.9977 / 0.9754 (rf) | 0.9968 / 0.9653 | **BEAT** | **BEAT** |
-| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9961 / 0.8799 (xgb_best) | 0.9967 / 0.8925 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 8-class | macro-F1 | 0.8415 / 0.7308 | 0.9961 / 0.8799 (xgb_best) | 0.9967 / 0.8925 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
 | 34-class | macro-F1 | 0.7895 / 0.6452 | 0.9951 / 0.8361 (xgb_best) | 0.9957 / 0.8484 (xgb_best) | 0.9916 / 0.7140 | **BEAT** | **BEAT** |
 
 ## Without IAT (capture-timestamp proxy removed)
@@ -13,7 +13,7 @@
 | Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features, no IAT | v4 46 features, no IAT | Neto et al. 2023 RF | 38nf vs paper | 46nf vs paper |
 |---|---|---|---|---|---|---|---|
 | 2-class | accuracy | 0.9937 / 0.9339 | 0.9947 / 0.9436 (xgb_best) | 0.9959 / 0.9562 (xgb_best) | 0.9968 / 0.9653 | NOT BEAT | NOT BEAT |
-| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9076 / 0.7346 (xgb_best) | 0.9154 / 0.7547 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 8-class | macro-F1 | 0.8415 / 0.7308 | 0.9076 / 0.7346 (xgb_best) | 0.9154 / 0.7547 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
 | 34-class | macro-F1 | 0.7895 / 0.6452 | 0.8900 / 0.6979 (xgb_best) | 0.8976 / 0.7143 (xgb_best) | 0.9916 / 0.7140 | NOT BEAT | **BEAT** |
 
 ## DoS vs DDoS confusions (8-class test set; ✓ = validation-selected model)

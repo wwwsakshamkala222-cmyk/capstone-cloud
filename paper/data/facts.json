@@ -64,26 +64,6 @@
   "raw": 35086364,
   "source": "data_meta total - val - test"
  },
- "eightBdValMf": {
-  "value": "0.7295",
-  "raw": 0.729535505481701,
-  "source": "results/8_class/xgboost_balanced_deep/results.json"
- },
- "eightBdTestMf": {
-  "value": "0.7308",
-  "raw": 0.7308179663174619,
-  "source": "results/8_class/xgboost_balanced_deep/results.json"
- },
- "eightCfgThreeValMf": {
-  "value": "0.7282",
-  "raw": 0.7281950191784914,
-  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
- },
- "eightCfgThreeTestMf": {
-  "value": "0.7324",
-  "raw": 0.7323664100395664,
-  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
- },
  "thirtyfourPfiftyValMf": {
   "value": "0.6412",
   "raw": 0.6412203948410538,
@@ -100,14 +80,14 @@
   "source": "results/2_class/v3/final_ensemble/results.json"
  },
  "fullBestAcc8": {
-  "value": "0.8410",
-  "raw": 0.8410085247264982,
-  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+  "value": "0.8415",
+  "raw": 0.8414560012115233,
+  "source": "results/8_class/xgboost_balanced_deep/results.json"
  },
  "fullBestMf8": {
-  "value": "0.7324",
-  "raw": 0.7323664100395664,
-  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+  "value": "0.7308",
+  "raw": 0.7308179663174619,
+  "source": "results/8_class/xgboost_balanced_deep/results.json"
  },
  "fullBestAcc34": {
   "value": "0.7895",
@@ -160,23 +140,23 @@
   "source": "Neto et al. 2023, Table 6 (Random Forest; F1 averaging not stated in the paper)"
  },
  "msAcc8": {
-  "value": "0.8408",
-  "raw": 0.840755054537801,
+  "value": "0.8415",
+  "raw": 0.8414933622182398,
   "source": "results/8_class/BEST/multi_seed_results.json"
  },
  "msAccSd8": {
-  "value": "0.000060",
-  "raw": 6.004891591626053e-05,
+  "value": "0.000124",
+  "raw": 0.00012357314242601223,
   "source": "results/8_class/BEST/multi_seed_results.json"
  },
  "msMf8": {
-  "value": "0.7317",
-  "raw": 0.7317139745583626,
+  "value": "0.7309",
+  "raw": 0.7309314537233917,
   "source": "results/8_class/BEST/multi_seed_results.json"
  },
  "msMfSd8": {
-  "value": "0.000056",
-  "raw": 5.598206375470035e-05,
+  "value": "0.000055",
+  "raw": 5.5370869427749745e-05,
   "source": "results/8_class/BEST/multi_seed_results.json"
  },
  "paperAcc34": {
@@ -420,29 +400,29 @@
   "source": "results/novelty/N2_protocol_ladder/results.json"
  },
  "nThreeShare": {
-  "value": "95.18\\%",
-  "raw": 95.17611953149596,
-  "source": "results/novelty/v3/dos_ddos.json"
+  "value": "95.13\\%",
+  "raw": 95.1327558991379,
+  "source": "results/novelty/v3/dos_ddos_balanced_deep.json"
  },
  "nThreeFloodAcc": {
   "value": "0.9923",
-  "raw": 0.9923304412776951,
-  "source": "results/novelty/v3/dos_ddos.json"
+  "raw": 0.992283276571697,
+  "source": "results/novelty/v3/dos_ddos_balanced_deep.json"
  },
  "nThreeFloodMf": {
-  "value": "0.7660",
-  "raw": 0.7660030291165629,
-  "source": "results/novelty/v3/dos_ddos.json"
+  "value": "0.7642",
+  "raw": 0.7641607463948835,
+  "source": "results/novelty/v3/dos_ddos_balanced_deep.json"
  },
  "nThreeEightAcc": {
-  "value": "0.8410",
-  "raw": 0.8410085247264982,
-  "source": "results/novelty/v3/dos_ddos.json"
+  "value": "0.8415",
+  "raw": 0.8414560012115233,
+  "source": "results/novelty/v3/dos_ddos_balanced_deep.json"
  },
  "nThreeEightMf": {
-  "value": "0.7324",
-  "raw": 0.7323664100395664,
-  "source": "results/novelty/v3/dos_ddos.json"
+  "value": "0.7308",
+  "raw": 0.7308179663174618,
+  "source": "results/novelty/v3/dos_ddos_balanced_deep.json"
  },
  "nThreeBinPaper": {
   "value": "0.8561",

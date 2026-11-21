@@ -17,7 +17,7 @@ META = json.loads(Path("/dev/shm/saksham/v4/meta.json").read_text())
 REPO = Path(__file__).resolve().parents[2]
 RES, FIG = REPO / "results" / "v4_46feat", REPO / "figures" / "v4"
 PAPER = {2: (0.9968, 0.9653), 8: (0.9944, 0.7193), 34: (0.9916, 0.7140)}  # (acc, macro-F1)
-V3 = {2: (0.9937, 0.9339), 8: (0.8410, 0.7324), 34: (0.7895, 0.6452)}    # full release, 39f, 75/5/20
+V3 = {2: (0.9937, 0.9339), 8: (0.8415, 0.7308), 34: (0.7895, 0.6452)}    # full release, 39f, 75/5/20 (8-class: xgboost_balanced_deep, val-selected)
 EXTRA = set(META["extra_8"])
 FSETS = ("38", "46", "38n", "46n")  # n = IAT dropped
 FLABEL = {"38": "38 features", "46": "46 features", "38n": "38 features, no IAT", "46n": "46 features, no IAT"}

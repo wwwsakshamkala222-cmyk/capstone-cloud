@@ -121,7 +121,7 @@ The full 34-class counts are in Appendix D.
 The **validation split** is used for early stopping, model selection and tuning thresholds. The **test split**
 is scored once per reported model.
 
-All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 {{eightBdValMf}} vs {{eightCfgThreeValMf}}), and its test macro-F1 of {{eightBdTestMf}} also beats the paper's {{paperMfEight}}.
+All final reported results (v3 final ensembles, the 8-class XGBoost balanced_deep, and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 ### 4.2 Preprocessing
 
@@ -175,8 +175,8 @@ engineering versions (`phase2_train.py`, `phase2_train_v2.py`, `phase2_train_v3.
 hardware set-up and run order: XGBoost 3.x could not use the GPU with the installed driver, so I moved to 2.1.4,
 and LightGBM became much slower with more than 64 threads because of NUMA effects, so I limited it to 16 threads.
 
-**Result:** the 8-class target was met by XGBoost cfg3_weighted (macro-F1 {{fullBestMfEight}} vs
-{{paperMfEight}}). 2-class accuracy and 34-class macro-F1 stayed below the targets (all scores are in
+**Result:** the class-weighted XGBoost and LightGBM configs (cfg3) both passed the 8-class macro-F1 target of
+{{paperMfEight}}. 2-class accuracy and 34-class macro-F1 stayed below the targets (all scores are in
 Appendix B).
 
 ### 5.2 v2: closing the gap and asking why (full release)
@@ -188,7 +188,9 @@ started asking whether the *evaluation* was the problem, which led to the analys
 3-seed check of the best models.
 
 **Result:** every 2-class strategy converged to about the same accuracy (best single model
-{{msAccTwo}} averaged over 3 seeds). The analyses showed heavy duplication and file-level leakage (N1, N2).
+{{msAccTwo}} averaged over 3 seeds). For 8-class, the deeper class-weighted XGBoost (balanced_deep) has the
+highest validation macro-F1 of all models, so it is the final 8-class model: test macro-F1 {{fullBestMfEight}} vs
+{{paperMfEight}} for the paper. The analyses showed heavy duplication and file-level leakage (N1, N2).
 
 ### 5.3 v3: new methods on top (full release)
 
@@ -248,8 +250,8 @@ and not luck.
 
 ![8-class confusion](figures/fig_cm8_full.png)
 
-*Figure 2. 8-class confusion matrix of the best full-release model (XGBoost cfg3_weighted). The big off-diagonal
-cells are DDoS↔DoS. Source: `results/8_class/xgboost_cfg3_weighted/results.json`.*
+*Figure 2. 8-class confusion matrix of the best full-release model on validation (XGBoost balanced_deep). The big
+off-diagonal cells are DDoS↔DoS. Source: `results/8_class/xgboost_balanced_deep/results.json`.*
 
 ![per-class F1](figures/fig_perclass_f1_8.png)
 
@@ -461,7 +463,7 @@ same response anyway, it is accurate ({{idsActAcc}}).
 - Everything uses **one dataset** from one testbed.
 - A few early runs did not save validation metrics (Appendix C).
 - The claim that the paper used IAT is **inferred** from its text, not from running its code.
-- All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 {{eightBdValMf}} vs {{eightCfgThreeValMf}}), and its test macro-F1 of {{eightBdTestMf}} also beats the paper's {{paperMfEight}}.
+- All final reported results (v3 final ensembles, the 8-class XGBoost balanced_deep, and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 **Future work**
 
@@ -537,6 +539,13 @@ trained models) was not timed.
   score `xgboost_balanced_p050` on validation; v3 later computed its validation macro-F1 ({{thirtyfourPfiftyValMf}}) from saved
   predictions, the highest recorded for any 34-class single model. The 34-class headline result (the v3 final ensemble) was
   selected on validation.
+- **8-class headline model.** Earlier versions of this project reported XGBoost cfg3_weighted as the 8-class
+  best, because the early scripts ranked models on test macro-F1. On validation macro-F1, `xgboost_balanced_deep`
+  ranks first, so it is now the 8-class headline everywhere (`results/8_class/BEST/results.json` holds it, with a
+  note). Its 3-seed check was re-run with `src/evaluation/multi_seed_8c_balanced_deep.py`; the old cfg3_weighted
+  multi-seed file is kept as `results/8_class/BEST/multi_seed_results_cfg3_weighted.json`. N3 was recomputed for this
+  model from its saved confusion matrix (`src/novelty/n3_from_confusion.py` →
+  `results/novelty/v3/dos_ddos_balanced_deep.json`); the same script reproduces the old cfg3_weighted N3 numbers exactly.
 - **8-class `xgboost_balanced_deep` config.** The script (`src/training/phase2_extra.py`) and the saved config
   both use depth 14, learning rate 0.05 and sqrt (power 0.5) class weights. Decision D19 wrongly said depth 16 /
   0.03, which is the config of `xgboost_deep`. D19 in `reports/DECISIONS.md` has been corrected.

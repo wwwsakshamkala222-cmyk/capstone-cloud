@@ -31,14 +31,14 @@ XGBoost and a hierarchical classifier) and tried 20 post-hoc variants (threshold
 ensembles), choosing all final results on a validation split, not on the test split.
 
 - On the **full 39-feature release** (46,775,660 rows) I beat the paper's 8-class macro-F1
-  (0.7324 vs 0.7193) but not its 2-class accuracy (0.9937 vs 0.9968)
+  (0.7308 vs 0.7193) but not its 2-class accuracy (0.9937 vs 0.9968)
   or 34-class macro-F1 (0.6452 vs 0.7140).
 - On a **46-feature subset** that matches the paper's feature table I beat all three targets
   (0.9977, 0.8925, 0.8484). However, one feature, **IAT**, behaves like a capture
   timestamp: a small tree on IAT alone gets 0.9905 8-class accuracy. Without IAT the 2-class target is not met,
   8-class macro-F1 is 0.7547 and 34-class macro-F1 ties the paper (0.7143 vs 0.7140).
 - The paper-style shuffled split has **59.05% duplicate rows** between train and test, and a
-  file-grouped split lowers 8-class macro-F1 by 0.2751. **DoS vs DDoS** confusion causes 95.18%
+  file-grouped split lowers 8-class macro-F1 by 0.2751. **DoS vs DDoS** confusion causes 95.13%
   of 8-class errors.
 - Finally, I built an **intrusion prevention layer (IDPS)** on the no-IAT model. It chooses the right action
   for 0.99448 of 200,000 unseen flows, blocks 2.65% of benign flows, misses 0.29% of
@@ -133,7 +133,7 @@ The full 34-class counts are in Appendix D.
 The **validation split** is used for early stopping, model selection and tuning thresholds. The **test split**
 is scored once per reported model.
 
-All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 0.7295 vs 0.7282), and its test macro-F1 of 0.7308 also beats the paper's 0.7193.
+All final reported results (v3 final ensembles, the 8-class XGBoost balanced_deep, and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 ### 4.2 Preprocessing
 
@@ -187,8 +187,8 @@ engineering versions (`phase2_train.py`, `phase2_train_v2.py`, `phase2_train_v3.
 hardware set-up and run order: XGBoost 3.x could not use the GPU with the installed driver, so I moved to 2.1.4,
 and LightGBM became much slower with more than 64 threads because of NUMA effects, so I limited it to 16 threads.
 
-**Result:** the 8-class target was met by XGBoost cfg3_weighted (macro-F1 0.7324 vs
-0.7193). 2-class accuracy and 34-class macro-F1 stayed below the targets (all scores are in
+**Result:** the class-weighted XGBoost and LightGBM configs (cfg3) both passed the 8-class macro-F1 target of
+0.7193. 2-class accuracy and 34-class macro-F1 stayed below the targets (all scores are in
 Appendix B).
 
 ### 5.2 v2: closing the gap and asking why (full release)
@@ -200,7 +200,9 @@ started asking whether the *evaluation* was the problem, which led to the analys
 3-seed check of the best models.
 
 **Result:** every 2-class strategy converged to about the same accuracy (best single model
-0.9938 averaged over 3 seeds). The analyses showed heavy duplication and file-level leakage (N1, N2).
+0.9938 averaged over 3 seeds). For 8-class, the deeper class-weighted XGBoost (balanced_deep) has the
+highest validation macro-F1 of all models, so it is the final 8-class model: test macro-F1 0.7308 vs
+0.7193 for the paper. The analyses showed heavy duplication and file-level leakage (N1, N2).
 
 ### 5.3 v3: new methods on top (full release)
 
@@ -234,7 +236,7 @@ simulator and live demo run on unseen test flows (Section 8).
 | Setting | Task | Model | Test acc | Test mF1 | Paper acc / F1 | Δ (judged metric) | Verdict |
 |---|---|---|---|---|---|---|---|
 | Full release, 39 features (v1-v3) | 2-class | Stacked ensemble + threshold (v3) | 0.9937 | 0.9339 | 0.9968 / 0.9653 | acc -0.0031 | NOT BEAT |
-| Full release, 39 features (v1-v3) | 8-class | XGBoost cfg3_weighted (v1) | 0.8410 | 0.7324 | 0.9944 / 0.7193 | mF1 +0.0131 | **BEAT** |
+| Full release, 39 features (v1-v3) | 8-class | XGBoost balanced_deep (v2) | 0.8415 | 0.7308 | 0.9944 / 0.7193 | mF1 +0.0115 | **BEAT** |
 | Full release, 39 features (v1-v3) | 34-class | XGBoost balanced_p050 + per-class thresholds (v3) | 0.7895 | 0.6452 | 0.9916 / 0.7140 | mF1 -0.0688 | NOT BEAT |
 | Kaggle subset, 46 features (v4) | 2-class | Random Forest (200 trees) | 0.9977 | 0.9754 | 0.9968 / 0.9653 | acc +0.0009 | **BEAT** |
 | Kaggle subset, 46 features (v4) | 8-class | XGBoost (prior best config) | 0.9967 | 0.8925 | 0.9944 / 0.7193 | mF1 +0.1732 | **BEAT** |
@@ -243,7 +245,7 @@ simulator and live demo run on unseen test flows (Section 8).
 | Kaggle subset, 46 features, no IAT (v4) | 8-class | XGBoost (prior best config) | 0.9154 | 0.7547 | 0.9944 / 0.7193 | mF1 +0.0354 | **BEAT** |
 | Kaggle subset, 46 features, no IAT (v4) | 34-class | XGBoost (prior best config) | 0.8976 | 0.7143 | 0.9916 / 0.7140 | mF1 +0.0003 | **BEAT** |
 
-*Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper. All rows were selected on validation except the full-release 8-class row, an early (v1) model ranked on test macro-F1 (see Limitations).*
+*Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper. All rows were selected on validation.*
 
 **How to read this:** on the full release I beat the paper only on 8-class. On the 46-feature subset all three
 are beaten, but once IAT is removed, 2-class falls below the paper and 34-class only ties it.
@@ -268,7 +270,7 @@ Source: `results/v4_46feat/summary.json`.*
 | Task | Model | Seeds | Test acc (mean ± std) | Test mF1 (mean ± std) |
 |---|---|---|---|---|
 | 2-class | lightgbm_cfg2 | 42, 123, 456 | 0.9938 ± 0.000003 | 0.9328 ± 0.000030 |
-| 8-class | xgboost_cfg3_weighted | 42, 123, 456 | 0.8408 ± 0.000060 | 0.7317 ± 0.000056 |
+| 8-class | xgboost_balanced_deep | 42, 123, 456 | 0.8415 ± 0.000124 | 0.7309 ± 0.000055 |
 | 34-class | xgboost_balanced_p050 | 42, 123, 456 | 0.7945 ± 0.000073 | 0.6434 ± 0.000157 |
 | 34-class | hierarchical 8→34 (hard) | 1, 2, 42 | 0.7714 ± 0.000051 | 0.6352 ± 0.000102 |
 | 2-class | CatBoost c1, no weights | 1, 2, 42 | 0.9927 ± 0.000045 | 0.9223 ± 0.000673 |
@@ -310,8 +312,8 @@ and not luck.
 
 ![8-class confusion](figures/fig_cm8_full.png)
 
-*Figure 2. 8-class confusion matrix of the best full-release model (XGBoost cfg3_weighted). The big off-diagonal
-cells are DDoS↔DoS. Source: `results/8_class/xgboost_cfg3_weighted/results.json`.*
+*Figure 2. 8-class confusion matrix of the best full-release model on validation (XGBoost balanced_deep). The big
+off-diagonal cells are DDoS↔DoS. Source: `results/8_class/xgboost_balanced_deep/results.json`.*
 
 ![per-class F1](figures/fig_perclass_f1_8.png)
 
@@ -340,8 +342,8 @@ Appendix B.
 |---|---|---|---|
 | N1 twins | test rows with an exact train twin | 59.05% (full) / 5.61% (v4) | results/novelty/N1_twin_analysis/results.json; results/v4_46feat/summary.json |
 | N2 protocol ladder | 8-class mF1: paper protocol → file-grouped (twin-free) | 0.7308 → 0.4454 (0.4557) | results/novelty/N2_protocol_ladder/results.json |
-| N3 DoS vs DDoS | share of 8-class test errors (full / v4 no-IAT) | 95.18% / 92.82% | results/novelty/v3/dos_ddos.json; results/v4_46feat/summary.json |
-| N3 merge | 8-class acc → 7-class (DoS+DDoS merged) acc | 0.8410 → 0.9923 | results/novelty/v3/dos_ddos.json |
+| N3 DoS vs DDoS | share of 8-class test errors (full / v4 no-IAT) | 95.13% / 92.82% | results/novelty/v3/dos_ddos_balanced_deep.json; results/v4_46feat/summary.json |
+| N3 merge | 8-class acc → 7-class (DoS+DDoS merged) acc | 0.8415 → 0.9923 | results/novelty/v3/dos_ddos_balanced_deep.json |
 | N4 IAT | IAT-only depth-8 tree, 8-class val acc (majority baseline) | 0.9905 (0.7278) | results/v4_46feat/iat_probe.json |
 | N5 window | capture-window classifier accuracy | 99.9997% | results/novelty/N5_window_size/results.json |
 | N6 hierarchical | 34-class test mF1, hierarchical (3 seeds) vs flat | 0.6352 vs 0.6429 | results/novelty/v3/hierarchical_s*.json |
@@ -396,8 +398,8 @@ Appendix B.
 
 ### N3. DoS vs DDoS is the bottleneck
 
-**Finding:** **95.18%** of all 8-class test errors on the full release are DoS↔DDoS confusions.
-Re-scoring the *same* predictions with the two merged raises accuracy from 0.8410 to
+**Finding:** **95.13%** of all 8-class test errors on the full release are DoS↔DDoS confusions.
+Re-scoring the *same* predictions with the two merged raises accuracy from 0.8415 to
 **0.9923**. In v4 the confusion is 5.47% of errors with IAT but **92.82%**
 without it, and the 8 extra features do not fix it (133,657 confusions with 38 features and no IAT).
 
@@ -582,7 +584,7 @@ same response anyway, it is accurate (0.99448).
 - Everything uses **one dataset** from one testbed.
 - A few early runs did not save validation metrics (Appendix C).
 - The claim that the paper used IAT is **inferred** from its text, not from running its code.
-- All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 0.7295 vs 0.7282), and its test macro-F1 of 0.7308 also beats the paper's 0.7193.
+- All final reported results (v3 final ensembles, the 8-class XGBoost balanced_deep, and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 **Future work**
 
@@ -686,6 +688,7 @@ All paths are relative to the repository root (`capstone-cloud/`).
 - `results/34_class/xgboost_deep_balanced/results.json`
 - `results/34_class/xgboost_trainval/results.json`
 - `results/8_class/BEST/multi_seed_results.json`
+- `results/8_class/BEST/multi_seed_results_cfg3_weighted.json`
 - `results/8_class/BEST/results.json`
 - `results/8_class/catboost_balanced/results.json`
 - `results/8_class/lightgbm_cfg1/results.json`
@@ -707,6 +710,7 @@ All paths are relative to the repository root (`capstone-cloud/`).
 - `results/novelty/N5_window_size/results.json`
 - `results/novelty/N6_class_weight_sweep/results.json`
 - `results/novelty/v3/dos_ddos.json`
+- `results/novelty/v3/dos_ddos_balanced_deep.json`
 - `results/novelty/v3/hierarchical_s1.json`
 - `results/novelty/v3/hierarchical_s2.json`
 - `results/novelty/v3/hierarchical_s42.json`
@@ -917,6 +921,13 @@ trained models) was not timed.
   score `xgboost_balanced_p050` on validation; v3 later computed its validation macro-F1 (0.6412) from saved
   predictions, the highest recorded for any 34-class single model. The 34-class headline result (the v3 final ensemble) was
   selected on validation.
+- **8-class headline model.** Earlier versions of this project reported XGBoost cfg3_weighted as the 8-class
+  best, because the early scripts ranked models on test macro-F1. On validation macro-F1, `xgboost_balanced_deep`
+  ranks first, so it is now the 8-class headline everywhere (`results/8_class/BEST/results.json` holds it, with a
+  note). Its 3-seed check was re-run with `src/evaluation/multi_seed_8c_balanced_deep.py`; the old cfg3_weighted
+  multi-seed file is kept as `results/8_class/BEST/multi_seed_results_cfg3_weighted.json`. N3 was recomputed for this
+  model from its saved confusion matrix (`src/novelty/n3_from_confusion.py` →
+  `results/novelty/v3/dos_ddos_balanced_deep.json`); the same script reproduces the old cfg3_weighted N3 numbers exactly.
 - **8-class `xgboost_balanced_deep` config.** The script (`src/training/phase2_extra.py`) and the saved config
   both use depth 14, learning rate 0.05 and sqrt (power 0.5) class weights. Decision D19 wrongly said depth 16 /
   0.03, which is the config of `xgboost_deep`. D19 in `reports/DECISIONS.md` has been corrected.

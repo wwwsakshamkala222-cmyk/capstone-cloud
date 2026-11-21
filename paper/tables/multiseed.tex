@@ -8,7 +8,7 @@
 \textbf{Task} & \textbf{Model} & \textbf{Seeds} & \textbf{Test acc (mean $\pm$ std)} & \textbf{Test mF1 (mean $\pm$ std)} \\
 \midrule
 2-class & lightgbm\_cfg2 & 42, 123, 456 & 0.9938 $\pm$ 0.000003 & 0.9328 $\pm$ 0.000030 \\
-8-class & xgboost\_cfg3\_weighted & 42, 123, 456 & 0.8408 $\pm$ 0.000060 & 0.7317 $\pm$ 0.000056 \\
+8-class & xgboost\_balanced\_deep & 42, 123, 456 & 0.8415 $\pm$ 0.000124 & 0.7309 $\pm$ 0.000055 \\
 34-class & xgboost\_balanced\_p050 & 42, 123, 456 & 0.7945 $\pm$ 0.000073 & 0.6434 $\pm$ 0.000157 \\
 34-class & hierarchical 8$\rightarrow$34 (hard) & 1, 2, 42 & 0.7714 $\pm$ 0.000051 & 0.6352 $\pm$ 0.000102 \\
 2-class & CatBoost c1, no weights & 1, 2, 42 & 0.9927 $\pm$ 0.000045 & 0.9223 $\pm$ 0.000673 \\

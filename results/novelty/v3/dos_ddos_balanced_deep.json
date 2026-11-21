@@ -1,0 +1,34 @@
+{
+  "source": "results/8_class/xgboost_balanced_deep/results.json",
+  "method": "xgboost_balanced_deep",
+  "val_8class_dos_ddos_cells": {
+    "DDoS->DDoS": 1470245,
+    "DDoS->DoS": 229675,
+    "DoS->DoS": 269613,
+    "DoS->DDoS": 121981,
+    "share_of_all_8class_errors": 0.9509407838874196
+  },
+  "val_8class": {
+    "accuracy": 0.8419047798197927,
+    "macro_f1": 0.729535505481701
+  },
+  "val_7class_flood": {
+    "accuracy": 0.9922439724268133,
+    "macro_f1": 0.762550620153972
+  },
+  "test_8class_dos_ddos_cells": {
+    "DDoS->DDoS": 5871163,
+    "DDoS->DoS": 921122,
+    "DoS->DoS": 1078538,
+    "DoS->DDoS": 489145,
+    "share_of_all_8class_errors": 0.951327558991379
+  },
+  "test_8class": {
+    "accuracy": 0.8414560012115233,
+    "macro_f1": 0.7308179663174618
+  },
+  "test_7class_flood": {
+    "accuracy": 0.992283276571697,
+    "macro_f1": 0.7641607463948835
+  }
+}

@@ -30,7 +30,7 @@ B.Tech CSE (2023--2027)}}
 CICIoT2023 is a large IoT intrusion detection benchmark on which many studies, including its authors' Random
 Forest (RF) baseline, report accuracies around 99\%. We trained \nModels{} models (RF, LightGBM, XGBoost and CatBoost on
 GPU, an MLP, focal-loss XGBoost and a hierarchical 8$\rightarrow$34 classifier) plus post-hoc thresholding,
-calibration and stacking, with all selection done on a validation split. On the full 39-feature release
+calibration and stacking, with every reported result selected on a validation split. On the full 39-feature release
 (\fullRows{} rows) we beat the published 8-class macro-F1 (\fullBestMfEight{} vs \paperMfEight{}) but not
 2-class accuracy (\fullBestAccTwo{} vs \paperAccTwo{}) or 34-class macro-F1 (\fullBestMfThirtyFour{} vs
 \paperMfThirtyFour{}). On a 46-feature subset that matches the paper's feature table we beat all three targets
@@ -120,7 +120,7 @@ versions are not directly comparable.
 protocol. \emph{Kaggle subset (v4):} the paper protocol, i.e.\ shuffled 80/20 train/test with seed 42, then 5\% of
 the training part held out as validation (train \vfTrain{}, validation \vfVal{}, test \vfTest{}). In both
 settings the validation split is used for early stopping, model selection and post-hoc tuning; the test split
-is scored once per reported model. All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1--v2, e.g.\ picking \texttt{xgboost\_balanced\_p050} among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3\_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced\_deep ranks first (validation macro-F1 \eightBdValMf{} vs \eightCfgThreeValMf{}), and its test macro-F1 of \eightBdTestMf{} also beats the paper's \paperMfEight{}.
+is scored once per reported model. All final reported results (v3 final ensembles, the 8-class XGBoost balanced\_deep, and v4) were selected on validation only. Some early exploration runs (v1--v2, e.g.\ picking \texttt{xgboost\_balanced\_p050} among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 \textbf{Preprocessing.} No missing or infinite values were found. StandardScaler is fit on the training part
 only (v4); tree models use raw values in v1--v3. Labels are mapped to 2, 8 and 34 classes with a fixed map
@@ -144,7 +144,7 @@ analyses and multi-seed runs; v3, post-hoc methods, CatBoost GPU, focal and hier
 46-feature ablation (\nModelsVfour{} runs) and the IDPS.
 
 \textbf{Selection and seeds.} 2-class models are selected on validation accuracy (the paper's headline
-metric for 2-class) and 8/34-class models on validation macro-F1 (for the final results; see the exception noted above). The best full-release models were rerun
+metric for 2-class) and 8/34-class models on validation macro-F1. The best full-release models were rerun
 with seeds 42, 123 and 456; the hierarchical and CatBoost runs used seeds 1, 2 and 42. Hardware: NVIDIA H200
 GPUs and a 224-core CPU server; scikit-learn~\cite{pedregosa2011sklearn} 1.9.1.
 
@@ -181,8 +181,8 @@ picture (Section~\ref{sec:iat}).
 \begin{figure}[!t]
 \centering
 \includegraphics[width=0.85\columnwidth]{fig_cm8_full.png}
-\caption{8-class confusion matrix (row-normalised) of the best full-release model, XGBoost cfg3\_weighted.
-Source: \texttt{results/8\_class/xgboost\_cfg3\_weighted/results.json}.}
+\caption{8-class confusion matrix (row-normalised) of the best full-release model on validation, XGBoost
+balanced\_deep. Source: \texttt{results/8\_class/xgboost\_balanced\_deep/results.json}.}
 \label{fig:cm8}
 \end{figure}
 
@@ -368,7 +368,7 @@ the shuffled-split numbers.
 release, and we could not verify how it was sampled. (ii) CICIoT2023 has no IP addresses, so blocking is
 simulated with placeholder IPs and generated rules. (iii) All results come from one dataset and one testbed.
 (iv) Some early runs did not record validation metrics (marked n/r in the appendix). (v) Our claim about
-the paper's use of IAT is inferred from its stated pipeline (N7), not from re-running its code. (vi) All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1--v2, e.g.\ picking \texttt{xgboost\_balanced\_p050} among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3\_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced\_deep ranks first (validation macro-F1 \eightBdValMf{} vs \eightCfgThreeValMf{}), and its test macro-F1 of \eightBdTestMf{} also beats the paper's \paperMfEight{}.
+the paper's use of IAT is inferred from its stated pipeline (N7), not from re-running its code. (vi) All final reported results (v3 final ensembles, the 8-class XGBoost balanced\_deep, and v4) were selected on validation only. Some early exploration runs (v1--v2, e.g.\ picking \texttt{xgboost\_balanced\_p050} among 34-class models) ranked candidates by test macro-F1; we report this as a limitation.
 
 \textbf{Future work.} Re-extract features from the original pcaps with a corrected IAT; evaluate under
 file-grouped and cross-dataset splits; add aggregate (multi-flow) features to separate DoS from DDoS; test the

@@ -143,3 +143,6 @@ achieved with higher twin overlap from shuffled 80/20 split (N2 shows 28.5-point
 Running: multi_seed_eval (3 seeds) → phase2b_boost (ensemble/threshold) → phase4_figures → summary.
 Final BEST models: 2-class lightgbm_cfg2 (mF1=0.9328), 8-class xgboost_cfg3_weighted (mF1=0.7324),
 34-class xgboost_balanced_p050 (mF1=0.6429).
+(Corrected 2026-11-21: cfg3_weighted was the 8-class pick by test macro-F1. On validation macro-F1,
+xgboost_balanced_deep ranks first (0.729536 vs 0.728195), so the 8-class headline is now xgboost_balanced_deep,
+test acc 0.841456, mF1 0.730818; multi-seed re-run in src/evaluation/multi_seed_8c_balanced_deep.py.)

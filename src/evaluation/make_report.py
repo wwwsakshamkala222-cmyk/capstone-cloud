@@ -19,9 +19,9 @@ w("All paths are relative to `/dev/shm/saksham/` (`~/saksham/ids` → `ids/`).\n
 
 # ---------- headline ----------
 w("## 1. Headline\n")
-w("| Task | Prior best (test) | v3 best (test, selected by val) | Target | Status |\n|---|---|---|---|---|")
+w("| Task | Prior best single model (test; best on val) | v3 best (test, selected by val) | Target | Status |\n|---|---|---|---|---|")
 rows = {}
-for task, prior, pm in [("2_class", "LightGBM cfg2", (0.993754, 0.932755)), ("8_class", "XGB cfg3_weighted", (0.841009, 0.732366)),
+for task, prior, pm in [("2_class", "LightGBM cfg2", (0.993754, 0.932755)), ("8_class", "XGB balanced_deep", (0.841456, 0.730818)),
                         ("34_class", "XGB balanced_p050", (0.794564, 0.642876))]:
     best = None
     for name in ["final_ensemble", "phase_a"]:

@@ -6,10 +6,10 @@ All paths are relative to `/dev/shm/saksham/` (`~/saksham/ids` → `ids/`).
 
 ## 1. Headline
 
-| Task | Prior best (test) | v3 best (test, selected by val) | Target | Status |
+| Task | Prior best single model (test; best on val) | v3 best (test, selected by val) | Target | Status |
 |---|---|---|---|---|
 | 2_class | LightGBM cfg2: acc 0.9938, mF1 0.9328 | final_ensemble/A3_stack+A1: acc 0.9937, mF1 0.9339 | acc 0.9968, mF1 0.9653 | **NOT MET** |
-| 8_class | XGB cfg3_weighted: acc 0.8410, mF1 0.7324 | unchanged (prior model): acc 0.8410, mF1 0.7324 | acc 0.9944, mF1 0.7193 | **MET** |
+| 8_class | XGB balanced_deep: acc 0.8415, mF1 0.7308 | unchanged (prior model, best on val): acc 0.8415, mF1 0.7308 | acc 0.9944, mF1 0.7193 | **MET** |
 | 34_class | XGB balanced_p050: acc 0.7946, mF1 0.6429 | final_ensemble/A1_threshold: acc 0.7895, mF1 0.6452 | acc 0.9916, mF1 0.714 | **NOT MET** |
 
 2-class status is judged on accuracy (+0.30 pts needed); 8/34-class on macro-F1. 8-class was already MET and not re-tuned.
@@ -141,9 +141,9 @@ Figure: `ids/v3/figures/34class_flat_vs_hier_f1.png`
 
 ## 6. Novelty C3 — DoS vs DDoS
 
-`ids/v3/novelty/dos_ddos.json`. 8-class test confusion: DDoS→DoS 928,973, DoS→DDoS 485,919 — **95.2% of all 8-class errors**.
+`results/novelty/v3/dos_ddos_balanced_deep.json` (8-class model XGB balanced_deep). 8-class test confusion: DDoS→DoS 921,122, DoS→DDoS 489,145 — **95.1% of all 8-class errors**.
 
-Merging DoS+DDoS into 'Flood' (7 classes, same predictions): test acc 0.8410 → **0.9923**, mF1 0.7324 → **0.7660**.
+Merging DoS+DDoS into 'Flood' (7 classes, same predictions): test acc 0.8415 → **0.9923**, mF1 0.7308 → **0.7642**.
 
 Dedicated binary DoS-vs-DDoS classifier (prior run N3, `ids/novelty/N3_dos_vs_ddos/results.json`): AUC 0.894, acc 0.856; top features: Protocol Type, Min, fin_flag_number, psh_flag_number, Header_Length, fin_count, ICMP, UDP, syn_count, AVG.
 
@@ -210,7 +210,7 @@ Models and arrays stay in `/dev/shm/saksham/v4/` (not committed).
 | Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features | v4 46 features | Neto et al. 2023 RF | 38f vs paper | 46f vs paper |
 |---|---|---|---|---|---|---|---|
 | 2-class | accuracy | 0.9937 / 0.9339 | 0.9972 / 0.9696 (rf) | 0.9977 / 0.9754 (rf) | 0.9968 / 0.9653 | **BEAT** | **BEAT** |
-| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9961 / 0.8799 (xgb_best) | 0.9967 / 0.8925 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 8-class | macro-F1 | 0.8415 / 0.7308 | 0.9961 / 0.8799 (xgb_best) | 0.9967 / 0.8925 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
 | 34-class | macro-F1 | 0.7895 / 0.6452 | 0.9951 / 0.8361 (xgb_best) | 0.9957 / 0.8484 (xgb_best) | 0.9916 / 0.7140 | **BEAT** | **BEAT** |
 
 ### Without IAT (capture-timestamp proxy removed)
@@ -218,7 +218,7 @@ Models and arrays stay in `/dev/shm/saksham/v4/` (not committed).
 | Task | Judged on | v3: full release, 39f (75/5/20) | v4 38 features, no IAT | v4 46 features, no IAT | Neto et al. 2023 RF | 38nf vs paper | 46nf vs paper |
 |---|---|---|---|---|---|---|---|
 | 2-class | accuracy | 0.9937 / 0.9339 | 0.9947 / 0.9436 (xgb_best) | 0.9959 / 0.9562 (xgb_best) | 0.9968 / 0.9653 | NOT BEAT | NOT BEAT |
-| 8-class | macro-F1 | 0.8410 / 0.7324 | 0.9076 / 0.7346 (xgb_best) | 0.9154 / 0.7547 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
+| 8-class | macro-F1 | 0.8415 / 0.7308 | 0.9076 / 0.7346 (xgb_best) | 0.9154 / 0.7547 (xgb_best) | 0.9944 / 0.7193 | **BEAT** | **BEAT** |
 | 34-class | macro-F1 | 0.7895 / 0.6452 | 0.8900 / 0.6979 (xgb_best) | 0.8976 / 0.7143 (xgb_best) | 0.9916 / 0.7140 | NOT BEAT | **BEAT** |
 
 ### DoS vs DDoS confusions (8-class test set; ✓ = validation-selected model)

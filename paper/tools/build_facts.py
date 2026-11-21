@@ -158,11 +158,8 @@ for r in rows:
     if r["time_s"] is None:
         NOTREC.append({"key": f"training time {r['model']} ({r['task']}-class)", "source": r["src"]})
 
-# early runs ranked on test: what validation-based ranking would have picked (8-class full release)
+# the 8-class headline must be the validation-best full-release model
 _r8 = {r["model"]: r for r in rows if r["data"] == "full" and r["task"] == 8}
-for key, m in (("eightBd", "xgboost_balanced_deep"), ("eightCfgThree", "xgboost_cfg3_weighted")):
-    fact(key + "ValMf", _r8[m]["val_mf1"], f4, _r8[m]["src"])
-    fact(key + "TestMf", _r8[m]["test_mf1"], f4, _r8[m]["src"])
 assert max((r for r in _r8.values() if r["val_mf1"] is not None), key=lambda r: r["val_mf1"])["model"] == "xgboost_balanced_deep"
 fact("thirtyfourPfiftyValMf", next(r["val_mf1"] for r in rows if r["data"] == "full" and r["task"] == 34
      and r["model"] == "xgboost_balanced_p050"), f4, "results/34_class/v3/final_ensemble/results.json (single_val_mF1)")
@@ -183,9 +180,9 @@ for task in (2, 34):
 # ---------------------------------------------------------------- headline facts
 ms = {t: load(f"{t}_class/BEST/multi_seed_results.json") for t in (2, 8, 34)}
 fe2, fe34 = load("2_class/v3/final_ensemble/results.json"), load("34_class/v3/final_ensemble/results.json")
-x8 = load("8_class/xgboost_cfg3_weighted/results.json")
+x8 = load("8_class/xgboost_balanced_deep/results.json")
 full_best = {2: ("Stacked ensemble + threshold (v3)", fe2["selected_test"], "results/2_class/v3/final_ensemble/results.json"),
-             8: ("XGBoost cfg3_weighted (v1)", x8["test_metrics"], "results/8_class/xgboost_cfg3_weighted/results.json"),
+             8: ("XGBoost balanced_deep (v2)", x8["test_metrics"], "results/8_class/xgboost_balanced_deep/results.json"),
              34: ("XGBoost balanced_p050 + per-class thresholds (v3)", fe34["selected_test"], "results/34_class/v3/final_ensemble/results.json")}
 for t, (n, m, s) in full_best.items():
     fact(f"fullBestAcc{t}", m["accuracy"], f4, s)
@@ -223,11 +220,12 @@ fact("nTwoDrop", n2["protocol_a_paper"]["macro_f1"] - n2["protocol_d_file_groupe
      "results/novelty/N2_protocol_ladder/results.json (a - d)")
 fact("nTwoDedupPct", n2["dedup_removed_pct"], lambda x: f"{x:.2f}\\%", "results/novelty/N2_protocol_ladder/results.json")
 dd = load("novelty/v3/dos_ddos.json")
-fact("nThreeShare", dd["test_8class_dos_ddos_cells"]["share_of_all_8class_errors"] * 100, lambda x: f"{x:.2f}\\%", "results/novelty/v3/dos_ddos.json")
-fact("nThreeFloodAcc", dd["test_7class_flood"]["accuracy"], f4, "results/novelty/v3/dos_ddos.json")
-fact("nThreeFloodMf", dd["test_7class_flood"]["macro_f1"], f4, "results/novelty/v3/dos_ddos.json")
-fact("nThreeEightAcc", dd["test_8class"]["accuracy"], f4, "results/novelty/v3/dos_ddos.json")
-fact("nThreeEightMf", dd["test_8class"]["macro_f1"], f4, "results/novelty/v3/dos_ddos.json")
+dd8 = load("novelty/v3/dos_ddos_balanced_deep.json")
+fact("nThreeShare", dd8["test_8class_dos_ddos_cells"]["share_of_all_8class_errors"] * 100, lambda x: f"{x:.2f}\\%", "results/novelty/v3/dos_ddos_balanced_deep.json")
+fact("nThreeFloodAcc", dd8["test_7class_flood"]["accuracy"], f4, "results/novelty/v3/dos_ddos_balanced_deep.json")
+fact("nThreeFloodMf", dd8["test_7class_flood"]["macro_f1"], f4, "results/novelty/v3/dos_ddos_balanced_deep.json")
+fact("nThreeEightAcc", dd8["test_8class"]["accuracy"], f4, "results/novelty/v3/dos_ddos_balanced_deep.json")
+fact("nThreeEightMf", dd8["test_8class"]["macro_f1"], f4, "results/novelty/v3/dos_ddos_balanced_deep.json")
 fact("nThreeBinPaper", dd["binary_dos_vs_ddos_prior_run"]["paper_protocol"]["accuracy"], f4, "results/novelty/v3/dos_ddos.json")
 fact("nThreeBinGroup", dd["binary_dos_vs_ddos_prior_run"]["file_grouped"]["accuracy"], f4, "results/novelty/v3/dos_ddos.json")
 vdd = v4s["dos_ddos"]
@@ -382,7 +380,7 @@ for reg, d in regimes:
                      ("acc " if t == 2 else "mF1 ") + f"{delta:+.4f}", "\\textbf{BEAT}" if delta > 0 else "NOT BEAT"])
 write_table("best_vs_paper", ["Setting", "Task", "Model", "Test acc", "Test mF1", "Paper acc / F1",
                               "Δ (judged metric)", "Verdict"], body,
-            "Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper. All rows were selected on validation except the full-release 8-class row, an early (v1) model ranked on test macro-F1 (see Limitations).",
+            "Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper. All rows were selected on validation.",
             "tab:best", "p{3.4cm}lp{3.6cm}rrrrl")
 
 # T_v4 ablation
@@ -420,8 +418,8 @@ write_table("multiseed", ["Task", "Model", "Seeds", "Test acc (mean $\\pm$ std)"
 body = [
     ["N1 twins", "test rows with an exact train twin", f"{FACTS['nOneTwin']['value']} (full) / {FACTS['vfTwin']['value']} (v4)", "results/novelty/N1_twin_analysis/results.json; results/v4_46feat/summary.json"],
     ["N2 protocol ladder", "8-class mF1: paper protocol → file-grouped (twin-free)", f"{FACTS['nTwoAMf']['value']} → {FACTS['nTwoCMf']['value']} ({FACTS['nTwoDMf']['value']})", "results/novelty/N2_protocol_ladder/results.json"],
-    ["N3 DoS vs DDoS", "share of 8-class test errors (full / v4 no-IAT)", f"{FACTS['nThreeShare']['value']} / {FACTS['vfDdNoShare']['value']}", "results/novelty/v3/dos_ddos.json; results/v4_46feat/summary.json"],
-    ["N3 merge", "8-class acc → 7-class (DoS+DDoS merged) acc", f"{FACTS['nThreeEightAcc']['value']} → {FACTS['nThreeFloodAcc']['value']}", "results/novelty/v3/dos_ddos.json"],
+    ["N3 DoS vs DDoS", "share of 8-class test errors (full / v4 no-IAT)", f"{FACTS['nThreeShare']['value']} / {FACTS['vfDdNoShare']['value']}", "results/novelty/v3/dos_ddos_balanced_deep.json; results/v4_46feat/summary.json"],
+    ["N3 merge", "8-class acc → 7-class (DoS+DDoS merged) acc", f"{FACTS['nThreeEightAcc']['value']} → {FACTS['nThreeFloodAcc']['value']}", "results/novelty/v3/dos_ddos_balanced_deep.json"],
     ["N4 IAT", "IAT-only depth-8 tree, 8-class val acc (majority baseline)", f"{FACTS['iatAcc']['value']} ({FACTS['iatMaj']['value']})", "results/v4_46feat/iat_probe.json"],
     ["N5 window", "capture-window classifier accuracy", FACTS["nFiveAcc"]["value"], "results/novelty/N5_window_size/results.json"],
     ["N6 hierarchical", "34-class test mF1, hierarchical (3 seeds) vs flat", f"{FACTS['hierMf']['value']} vs {FACTS['flatMfThirtyFour']['value']}", "results/novelty/v3/hierarchical_s*.json"],

@@ -1,6 +1,6 @@
 """Make the paper/report figures that do not exist yet (300 dpi, from the result JSONs) and copy the rest.
 
-New: fig_iat_probe.png (results/v4_46feat/iat_probe.json), fig_dosddos_merge.png (results/novelty/v3/dos_ddos.json
+New: fig_iat_probe.png (results/v4_46feat/iat_probe.json), fig_dosddos_merge.png (results/novelty/v3/dos_ddos_balanced_deep.json
 and results/v4_46feat/summary.json). Copied: existing figures from figures/ into paper/figures and report/figures.
 """
 import json
@@ -58,7 +58,7 @@ b.xaxis.grid(True, color=GRID, lw=0.5)
 save(fig, "fig_iat_probe.png")
 
 # DoS/DDoS merge: full release (v3) and v4 no-IAT
-dd = json.loads((REPO / "results/novelty/v3/dos_ddos.json").read_text())
+dd = json.loads((REPO / "results/novelty/v3/dos_ddos_balanced_deep.json").read_text())
 v4 = json.loads((REPO / "results/v4_46feat/summary.json").read_text())
 fig, (a, b) = plt.subplots(1, 2, figsize=(8.5, 3.2))
 x = np.arange(2)
