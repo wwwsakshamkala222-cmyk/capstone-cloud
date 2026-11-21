@@ -142,12 +142,30 @@ for p in sorted((R / "v4_46feat").glob("*_*c_*f.json")):
     add("v4", "kaggle", j["task"], f"{j['model']} [{fs}]", cfg_str(j.get("config")), j["val_metrics"],
         j["test_metrics"], j.get("train_seconds"), str(p.relative_to(REPO)))
 
+# Some single-model val macro-F1 scores were computed later by v3 (from cached val probabilities).
+for task in (2, 34):
+    sv = load(f"{task}_class/v3/final_ensemble/results.json")["single_val_mF1"]
+    for r in rows:
+        k = f"xgb_{task}_class_{r['model'].removeprefix('xgboost_')}"
+        if r["data"] == "full" and r["task"] == task and r["val_mf1"] is None and k in sv:
+            r["val_mf1"] = sv[k]
+            r["src"] += f" + results/{task}_class/v3/final_ensemble/results.json (val mF1)"
 for r in rows:
     if r["val_acc"] is None and not r["note"]:
         r["note"] = "val not recorded"
-        NOTREC.append({"key": f"val metrics {r['model']} ({r['task']}-class)", "source": r["src"]})
+        what = "val accuracy" if r["val_mf1"] is not None else "val metrics"
+        NOTREC.append({"key": f"{what} {r['model']} ({r['task']}-class)", "source": r["src"]})
     if r["time_s"] is None:
         NOTREC.append({"key": f"training time {r['model']} ({r['task']}-class)", "source": r["src"]})
+
+# early runs ranked on test: what validation-based ranking would have picked (8-class full release)
+_r8 = {r["model"]: r for r in rows if r["data"] == "full" and r["task"] == 8}
+for key, m in (("eightBd", "xgboost_balanced_deep"), ("eightCfgThree", "xgboost_cfg3_weighted")):
+    fact(key + "ValMf", _r8[m]["val_mf1"], f4, _r8[m]["src"])
+    fact(key + "TestMf", _r8[m]["test_mf1"], f4, _r8[m]["src"])
+assert max((r for r in _r8.values() if r["val_mf1"] is not None), key=lambda r: r["val_mf1"])["model"] == "xgboost_balanced_deep"
+fact("thirtyfourPfiftyValMf", next(r["val_mf1"] for r in rows if r["data"] == "full" and r["task"] == 34
+     and r["model"] == "xgboost_balanced_p050"), f4, "results/34_class/v3/final_ensemble/results.json (single_val_mF1)")
 
 # ---------------------------------------------------------------- post-hoc (v2/v3) table
 posthoc = []
@@ -362,9 +380,9 @@ for reg, d in regimes:
         delta = m[key] - pv
         body.append([reg, f"{t}-class", mname, f4(m["accuracy"]), f4(m["macro_f1"]), f"{f4(PAPER[t][0])} / {f4(PAPER[t][1])}",
                      ("acc " if t == 2 else "mF1 ") + f"{delta:+.4f}", "\\textbf{BEAT}" if delta > 0 else "NOT BEAT"])
-write_table("best_vs_paper", ["Setting", "Task", "Model (selected on val)", "Test acc", "Test mF1", "Paper acc / F1",
+write_table("best_vs_paper", ["Setting", "Task", "Model", "Test acc", "Test mF1", "Paper acc / F1",
                               "Δ (judged metric)", "Verdict"], body,
-            "Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper.",
+            "Best model per task against Neto et al. 2023 (RF, Table 6). 2-class is judged on accuracy, 8- and 34-class on macro-F1. Δ = ours minus paper. All rows were selected on validation except the full-release 8-class row, an early (v1) model ranked on test macro-F1 (see Limitations).",
             "tab:best", "p{3.4cm}lp{3.6cm}rrrrl")
 
 # T_v4 ablation

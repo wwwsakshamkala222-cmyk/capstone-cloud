@@ -43,7 +43,7 @@
 | v2 | full 39f | 34 | rf_balanced | trees=100, w=balanced_subsample | n/r | n/r | 0.7737 | 0.6244 | 661 |
 | v2 | full 39f | 34 | xgboost_balanced_deep | depth=14, lr=0.05, sqrt class weights | 0.7945 | 0.6401 | 0.7944 | 0.6420 | 4,137 |
 | v2 | full 39f | 34 | xgboost_balanced_p025 | depth=12, lr=0.05, w-power=0.25 | n/r | n/r | 0.7974 | 0.6412 | 7,419 |
-| v2 | full 39f | 34 | xgboost_balanced_p050 | depth=12, lr=0.05, w-power=0.5 | n/r | n/r | 0.7946 | 0.6429 | 4,440 |
+| v2 | full 39f | 34 | xgboost_balanced_p050 | depth=12, lr=0.05, w-power=0.5 | n/r | 0.6412 | 0.7946 | 0.6429 | 4,440 |
 | v2 | full 39f | 34 | xgboost_deep | depth=16, lr=0.03 | 0.7977 | 0.6345 | 0.7977 | 0.6379 | 5,643 |
 | v2 | full 39f | 34 | xgboost_deep_balanced | depth=16, lr=0.03, w-power=0.5 | n/r | n/r | 0.7941 | 0.6416 | 4,589 |
 | v2 | full 39f | 34 | xgboost_trainval | leaves=1024, lr=0.05 | n/a | n/a | 0.7980 | 0.6377 | 12,618 |

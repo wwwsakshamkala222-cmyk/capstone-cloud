@@ -64,6 +64,31 @@
   "raw": 35086364,
   "source": "data_meta total - val - test"
  },
+ "eightBdValMf": {
+  "value": "0.7295",
+  "raw": 0.729535505481701,
+  "source": "results/8_class/xgboost_balanced_deep/results.json"
+ },
+ "eightBdTestMf": {
+  "value": "0.7308",
+  "raw": 0.7308179663174619,
+  "source": "results/8_class/xgboost_balanced_deep/results.json"
+ },
+ "eightCfgThreeValMf": {
+  "value": "0.7282",
+  "raw": 0.7281950191784914,
+  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+ },
+ "eightCfgThreeTestMf": {
+  "value": "0.7324",
+  "raw": 0.7323664100395664,
+  "source": "results/8_class/xgboost_cfg3_weighted/results.json"
+ },
+ "thirtyfourPfiftyValMf": {
+  "value": "0.6412",
+  "raw": 0.6412203948410538,
+  "source": "results/34_class/v3/final_ensemble/results.json (single_val_mF1)"
+ },
  "fullBestAcc2": {
   "value": "0.9937",
   "raw": 0.9936958648638127,

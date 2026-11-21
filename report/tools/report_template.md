@@ -28,7 +28,7 @@ benchmark for this task, and its authors (Neto et al., 2023) report Random Fores
 
 In this project I trained {{nModels}} models (Random Forest, LightGBM, XGBoost, CatBoost, an MLP, focal-loss
 XGBoost and a hierarchical classifier) and tried {{nPosthoc}} post-hoc variants (threshold tuning, calibration,
-ensembles), always choosing models on a validation split and never on the test split.
+ensembles), choosing all final results on a validation split, not on the test split.
 
 - On the **full 39-feature release** ({{fullRows}} rows) I beat the paper's 8-class macro-F1
   ({{fullBestMfEight}} vs {{paperMfEight}}) but not its 2-class accuracy ({{fullBestAccTwo}} vs {{paperAccTwo}})
@@ -78,8 +78,8 @@ rate-limiting the attacker.
 
 ## 2. Objectives
 
-1. Reproduce and try to beat the published results for 2, 8 and 34 classes, **honestly**: the test set is never
-   used to choose a model, a threshold or a feature.
+1. Reproduce and try to beat the published results for 2, 8 and 34 classes, **honestly**: final models, thresholds
+   and features are chosen on validation, not on the test set.
 2. Find out *why* the published numbers are hard to reproduce, and prove each finding with numbers and figures.
 3. Check whether the 8 features missing from our dataset version explain the gap.
 4. Build a working prevention layer (IDPS) on top of the best *deployable* model, with a live demo.
@@ -119,7 +119,9 @@ The full 34-class counts are in Appendix D.
   the training part as validation (train {{vfTrain}}, validation {{vfVal}}, test {{vfTest}} rows).
 
 The **validation split** is used for early stopping, model selection and tuning thresholds. The **test split**
-is scored once per reported model and never used for any decision.
+is scored once per reported model.
+
+All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 {{eightBdValMf}} vs {{eightCfgThreeValMf}}), and its test macro-F1 of {{eightBdTestMf}} also beats the paper's {{paperMfEight}}.
 
 ### 4.2 Preprocessing
 
@@ -255,8 +257,8 @@ cells are DDoS↔DoS. Source: `results/8_class/xgboost_cfg3_weighted/results.jso
 
 ![34-class confusion](figures/fig_cm34_full.png)
 
-*Figure 4. 34-class confusion matrix of XGBoost balanced_p050, the single model with the highest test macro-F1
-(decision D24; its validation score was not recorded, so this ranking is on test).
+*Figure 4. 34-class confusion matrix of XGBoost balanced_p050. Decision D24 ranked it first on test macro-F1; it also
+has the highest validation macro-F1 recorded for any 34-class single model ({{thirtyfourPfiftyValMf}}).
 Source: `results/34_class/xgboost_balanced_p050/results.json`.*
 
 ![v4 8-class confusion](figures/fig_v4_cm8.png)
@@ -459,6 +461,7 @@ same response anyway, it is accurate ({{idsActAcc}}).
 - Everything uses **one dataset** from one testbed.
 - A few early runs did not save validation metrics (Appendix C).
 - The claim that the paper used IAT is **inferred** from its text, not from running its code.
+- All final reported results (v3 final ensembles and v4) were selected on validation only. Some early exploration runs (v1–v2, e.g. picking `xgboost_balanced_p050` among 34-class models) ranked candidates by test macro-F1; we report this as a limitation. The 8-class full-release headline model, XGBoost cfg3_weighted (a v1 run), was also picked this way: on validation, XGBoost balanced_deep ranks first (validation macro-F1 {{eightBdValMf}} vs {{eightCfgThreeValMf}}), and its test macro-F1 of {{eightBdTestMf}} also beats the paper's {{paperMfEight}}.
 
 **Future work**
 
@@ -469,7 +472,7 @@ same response anyway, it is accurate ({{idsActAcc}}).
 
 ## 11. Conclusion
 
-With honest, validation-only selection, I beat the paper's 8-class result on the full release and all three
+With validation-based selection of the final results, I beat the paper's 8-class result on the full release and all three
 results on the 46-feature subset. The bigger lesson is *why* the numbers move: shuffled splits are full of
 duplicates, file-level grouping removes much of the score, and in the 46-feature data IAT works like a capture
 timestamp. The model I would actually deploy (no IAT) ties or beats the paper only on the multi-class
@@ -530,9 +533,10 @@ trained models) was not timed.
   34-class models and wrote `xgboost_balanced_p050` to `results/34_class/BEST/`, and the multi-seed run used it.
   Later, the Phase 2 v3 run (`ids/logs/phase2_v3.log`, 2026-11-19 09:06) compared only its own eight models and
   overwrote `BEST/results.json` with `xgboost_cfg3_weighted`. `BEST/results.json` now holds
-  `xgboost_balanced_p050` again. Note that both of these old scripts ranked models on **test** macro-F1, and the
-  validation score of `xgboost_balanced_p050` was not recorded. So the 34-class single-model "best" is a test-set
-  ranking. The 34-class headline result (the v3 final ensemble) was selected on validation.
+  `xgboost_balanced_p050` again. Both old scripts ranked models on **test** macro-F1. The original run did not
+  score `xgboost_balanced_p050` on validation; v3 later computed its validation macro-F1 ({{thirtyfourPfiftyValMf}}) from saved
+  predictions, the highest recorded for any 34-class single model. The 34-class headline result (the v3 final ensemble) was
+  selected on validation.
 - **8-class `xgboost_balanced_deep` config.** The script (`src/training/phase2_extra.py`) and the saved config
   both use depth 14, learning rate 0.05 and sqrt (power 0.5) class weights. Decision D19 wrongly said depth 16 /
   0.03, which is the config of `xgboost_deep`. D19 in `reports/DECISIONS.md` has been corrected.

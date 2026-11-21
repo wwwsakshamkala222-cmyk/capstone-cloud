@@ -28,8 +28,8 @@
   "source": "results/34_class/xgboost_balanced_p025/results.json"
  },
  {
-  "key": "val metrics xgboost_balanced_p050 (34-class)",
-  "source": "results/34_class/xgboost_balanced_p050/results.json"
+  "key": "val accuracy xgboost_balanced_p050 (34-class)",
+  "source": "results/34_class/xgboost_balanced_p050/results.json + results/34_class/v3/final_ensemble/results.json (val mF1)"
  },
  {
   "key": "val metrics xgboost_deep_balanced (34-class)",

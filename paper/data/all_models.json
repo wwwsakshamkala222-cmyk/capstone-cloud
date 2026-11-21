@@ -496,11 +496,11 @@
   "model": "xgboost_balanced_p050",
   "config": "depth=12, lr=0.05, w-power=0.5",
   "val_acc": null,
-  "val_mf1": null,
+  "val_mf1": 0.6412203948410538,
   "test_acc": 0.7945636954541779,
   "test_mf1": 0.6428761988904571,
   "time_s": 4440.299332618713,
-  "src": "results/34_class/xgboost_balanced_p050/results.json",
+  "src": "results/34_class/xgboost_balanced_p050/results.json + results/34_class/v3/final_ensemble/results.json (val mF1)",
   "note": "val not recorded"
  },
  {

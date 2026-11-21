@@ -5,6 +5,6 @@
 - val metrics random_forest (34-class) (`results/34_class/random_forest/results.json`)
 - val metrics rf_balanced (34-class) (`results/34_class/rf_balanced/results.json`)
 - val metrics xgboost_balanced_p025 (34-class) (`results/34_class/xgboost_balanced_p025/results.json`)
-- val metrics xgboost_balanced_p050 (34-class) (`results/34_class/xgboost_balanced_p050/results.json`)
+- val accuracy xgboost_balanced_p050 (34-class) (`results/34_class/xgboost_balanced_p050/results.json + results/34_class/v3/final_ensemble/results.json (val mF1)`)
 - val metrics xgboost_deep_balanced (34-class) (`results/34_class/xgboost_deep_balanced/results.json`)
 - training time accpush_xgb_ensemble_threshold (2-class) (`results/2_class/accuracy_push/results.json`)
